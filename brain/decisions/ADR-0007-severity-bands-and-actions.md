@@ -36,7 +36,7 @@ record. The severity band determines the action, and only the action.**
 | **Critical** — impact or collision-grade | Surfaced immediately, outside the weekly rhythm. Same-day expectation. | Pushed unconditionally ([[ADR-0002]]) |
 | **High** — warrants a conversation | Surfaced individually in the weekly review set. Coaching is the expected outcome. | Pushed |
 | **Medium** — the driver should know, the manager need not talk | Not surfaced individually. Grouped by driver and behaviour. Available action: send to the driver, at the manager's or depot manager's discretion. | Fetched on demand |
-| **Low** — logged, not actioned | Never individually surfaced. Contributes to score and trend. Sampled in look-back review. | Fetched on demand |
+| **Low** — logged, not actioned | Never individually surfaced. Contributes to score and trend. Sampled in downgrade audit. | Fetched on demand |
 
 **A band exists only if it has a distinct action.** That is the rule that stops
 this becoming a five-point scale nobody can act on differently.
@@ -61,9 +61,9 @@ decoration that makes the ranking harder to explain.
 1. **The critical failure moves.** It is no longer "we suppressed something
    real" — it is **mis-grading between medium and high**, where an event that
    deserved a conversation becomes a notification instead. That is the thing
-   look-back review exists to catch ([[ADR-0008]]).
+   downgrade audit exists to catch ([[ADR-0008]]).
 2. **[[M-11]] changes meaning.** It is no longer "share suppressed" but share
-   routed to each band, plus a sampled look-back on the medium and low bands.
+   routed to each band, plus a sampled downgrade audit on the medium and low bands.
    Better: nothing is hidden, so the counter-metric measures grading quality
    rather than concealment.
 3. **The medium band depends on a channel we do not own.** Sending to the driver
@@ -75,6 +75,6 @@ decoration that makes the ranking harder to explain.
 
 ## Revisit when
 
-The look-back sample shows systematic mis-grading at the medium/high boundary,
+The downgrade audit sample shows systematic mis-grading at the medium/high boundary,
 or the driver channel ships and the medium band's action becomes real rather
 than defined.

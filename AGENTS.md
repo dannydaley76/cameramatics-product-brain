@@ -49,6 +49,8 @@ considered done. Two rules protect it:
 
 1. Read `brain/canon.md`. Then read the register you are about to touch.
 2. Use the skill for the document type you are producing — [`skills/`](skills/).
+   User-visible strings go through [`skills/ux-writing.md`](skills/ux-writing.md),
+   including the copy quoted inside acceptance criteria.
    If there is no skill, the shape is not settled; say so rather than inventing
    a format.
 3. IDs are permanent and never reused (`US-`, `ADR-`, `A-`, `R-`, `M-`, `Q-`).

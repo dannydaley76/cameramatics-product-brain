@@ -1,6 +1,6 @@
 ---
 id: ADR-0008
-title: Bulk dismissal with a reason, subject to look-back review
+title: Bulk dismissal with a reason, subject to downgrade audit
 status: accepted
 date: 2026-09-14
 supersedes: none
@@ -12,7 +12,7 @@ metrics: [M-09, M-11]
 questions: [Q-08]
 ---
 
-# ADR-0008 — Bulk dismissal with a reason, subject to look-back review
+# ADR-0008 — Bulk dismissal with a reason, subject to downgrade audit
 
 ## Context
 
@@ -34,9 +34,9 @@ cleared in one click is one judgement, not forty ([[M-09]]).
   always the first option and tells us nothing.
 - A bulk dismissal counts as **one** signal in [[M-09]], never as N.
 - Every bulk dismissal is retained with its reason, its scope and its author, and
-  is eligible for **look-back review**.
+  is eligible for **downgrade audit**.
 
-## Look-back review
+## Downgrade audit
 
 A periodic sample of what did *not* get a conversation — bulk dismissals, and the
 medium and low bands from [[ADR-0007]] — read by a human, looking for events
@@ -45,7 +45,7 @@ that should have been graded higher.
 It is the control on the whole grading model. Without it, [[ADR-0007]] is a
 promise that nothing is hidden with no way to check.
 
-*Naming note: this was provisionally "autopsy review". Renamed deliberately —
+*Naming note: this was provisionally "autopsy review", then "look-back review". Renamed deliberately —
 in a product about preventing road collisions, autopsy is the wrong word, and it
 would eventually be said out loud in front of a customer who had lost a driver.*
 
@@ -70,11 +70,11 @@ first, taxonomy derived from it later.
    clips.
 2. **Free text is hard to analyse at scale.** Accepted for v1; the sample is read
    by a person, not aggregated.
-3. **Look-back review is human work we are creating.** It needs an owner. A
+3. **Downgrade audit is human work we are creating.** It needs an owner. A
    control nobody performs is not a control.
 
 ## Revisit when
 
-Enough dismissal reasons exist to derive a real taxonomy, or the look-back sample
+Enough dismissal reasons exist to derive a real taxonomy, or the downgrade audit sample
 stops finding mis-grades — at which point the sample rate can fall rather than
 the control disappearing.

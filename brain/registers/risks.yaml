@@ -207,7 +207,7 @@ risks:
     likelihood: medium
     impact: high
     mitigation: >
-      Look-back review: a periodic human-read sample of bulk dismissals and of
+      Downgrade audit: a periodic human-read sample of bulk dismissals and of
       the medium and low bands, looking for events that should have graded higher
       ([[ADR-0008]]). The control needs a named owner - a control nobody performs
       is not a control.

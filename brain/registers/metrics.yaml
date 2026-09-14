@@ -116,18 +116,18 @@ metrics:
 
   - id: M-11
     layer: counter
-    name: Band distribution, and look-back sample outcome
+    name: Band distribution, and downgrade audit sample outcome
     definition: >
       Share of detected events routed to each severity band (critical, high,
-      medium, low), plus the outcome of the periodic human-read look-back sample
+      medium, low), plus the outcome of the periodic human-read downgrade audit sample
       of bulk dismissals and of the medium and low bands: how many should have
       graded higher.
     target: >
-      Monitored, not optimised. The look-back finding rate is the number that
+      Monitored, not optimised. The downgrade audit finding rate is the number that
       matters - a rising share of "should have been higher" invalidates the
       grading model regardless of what M-09 says.
     horizon: From week 1
-    source: Platform telemetry plus the look-back review sample
+    source: Platform telemetry plus the downgrade audit sample
     note: >
       Reframed by ADR-0007. Nothing is suppressed - every event is retained,
       scored and contributes to the driver record, and the band decides only the

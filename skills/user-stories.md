@@ -54,13 +54,17 @@ drafted_by: agent | human
   same story, not separate stories.
 - Every story states what it does **not** do. Half of requirements work is
   boundary-drawing.
+- Where copy is load-bearing — an empty state, an absence state, a destructive
+  confirmation — quote the **exact string** in the criterion, written against
+  [[ux-writing]]. "Shows an appropriate message" is untestable and gets resolved
+  by whoever writes the code last.
 - A story that moves no metric does not get written. Push back rather than
   inventing a metric to satisfy the schema — that is gaming the validator, and
   the validator exists to catch the thinking, not to be satisfied.
 
 ## User types
-- **Fleet manager** — primary. 20–150 vehicle fleet, safety is one of six jobs,
-  10–15 min/day. See [[../brain/personas/fleet-manager]].
+- **Fleet manager** — primary. Safety is one of six jobs; attention is finite and
+  contested, and we do not assert a number for it (A-03). See [[../brain/personas/fleet-manager]].
 - **Driver** — subject of the event. Not a v1 product surface (see ADR-0004), but
   every v1 story must be defensible to them (canon C-07).
 - **Safety lead** — exists in larger accounts; consumes aggregates. Out of v1.
