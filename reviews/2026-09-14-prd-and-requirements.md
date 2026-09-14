@@ -757,8 +757,9 @@ except those listed in §8 as read in full.
 Per [`../skills/adversarial-review.md`](../skills/adversarial-review.md): every
 finding gets a disposition, and a rejection or a deferral carries its reason.
 Sixteen findings survived. Eleven are accepted and fixed, one is accepted and
-scheduled, and four are deferred — with the reasons below, because deferring
-silently is the same failure as not reviewing at all.
+scheduled, two are partly fixed with the remainder deferred, and two are
+deferred outright — with the reasons below, because deferring silently is the
+same failure as not reviewing at all.
 
 The fixes are committed separately from this review so the diff shows what the
 pass bought.
@@ -771,9 +772,9 @@ pass bought.
 | 4 | **Accepted, fixed** | ADR-0007's reframe propagated; remaining uses of "suppress" are either historical (ADR-0007 describing what it replaced) or about *their* product, not ours |
 | 5 | **Accepted, fixed** | [[ADR-0012]] supersedes [[ADR-0001]] — forward-facing detection in v1, and every event carries every signal |
 | 6 | **Partly accepted, partly deferred** | See below |
-| 7 | **Accepted, fixed** | [[M-09]] now reports per-judgement and per-event; which one carries the 90-day term is J-22, `proposed` |
+| 7 | **Accepted, fixed** | [[M-09]] reports per-judgement and per-event, and the 90-day test binds to per-judgement. The sweep that per-judgement cannot see is now its own term, [[M-14]] (J-22) |
 | 8 | **Deferred** | See below |
-| 9 | **Deferred** | See below |
+| 9 | **Partly accepted and fixed, remainder deferred** | See below |
 | 10 | **Accepted, fixed** | [[A-20]], [[A-21]] and [[A-22]] registered; the first-to-market claim removed outright under C-02 |
 | 11 | **Accepted, fixed** | "Severity model" → "severity ruleset" in US-006 and `stack-outline.md`, with the C-28 reasoning stated in both |
 | 12 | **Accepted, fixed** | US-003 gains an acceptance criterion: closed-unreviewed is not a terminal state for [[M-05]] |
@@ -808,16 +809,20 @@ inherited system in order to close a finding, which is the failure mode
 [[canon#C-02]] exists to prevent. Deferred until Q-09 is answered, and carried
 openly rather than papered over.
 
-**9 — The downgrade audit has no owner, no cadence and no story.** Accepted as
-correct, and the largest thing still open. It is deferred rather than fixed
-because what it needs is not prose: who performs the audit, how often, at what
-sample rate, and what it costs are staffing and operations decisions
-([[canon#C-25]] items 2 and 4), and the sampling and finding-recording surface
-is a sixteenth user story that does not exist. The reviewer's sharpest line
-stands unanswered — the control that protects the routing model consumes the
-exact resource the product exists to conserve, and that trade is not priced. It
-belongs in the phasing section and in the conversation, not in a sentence
-invented to close a finding.
+**9 — The downgrade audit has no owner, no cadence and no story.** The finding
+was right and it turned out to be two questions tangled together. *Does the
+control exist in phase 1* is now answered: [[ADR-0013]] says the audit runs from
+first release as a manual CameraMatics-side practice, with the sampling and
+finding-recording surface deferred to phase 2. That also answers the reviewer's
+sharpest line — the control no longer consumes the resource the product exists
+to conserve, because it is our attention rather than the fleet manager's.
+
+Still deferred, and deliberately: **cadence and sample rate**. They depend on
+event volume ([[A-19]], unmeasured) and on the early finding rate, and a number
+set now would be a false precision in the one control that has to be trusted
+([[canon#C-03]]). The operational cost of the manual pass is also still
+unpriced; that belongs in the phasing section rather than in a figure invented
+to close a finding.
 
 **16 — Copy rules contradict themselves inside acceptance criteria.** Accepted
 as correct and deferred deliberately, because these four strings get written for

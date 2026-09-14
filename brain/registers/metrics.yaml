@@ -107,10 +107,10 @@ metrics:
       counting every event inside a bulk dismissal.
       Together they are the best available proxy for precision at the top of the
       queue. Neither is readable alone.
-    target: "< 20% per event. Per judgement reported, not targeted."
+    target: "< 20% per judgement. Per event reported, not targeted."
     horizon: From week 1
     source: Portal review outcomes
-    counters: [M-11]
+    counters: [M-11, M-14]
     note: >
       Deliberately a workflow metric rather than a model metric. We do not have
       ground truth on the road; we have a manager's judgement, and that is the
@@ -121,10 +121,15 @@ metrics:
       45 events - 2.2%, which reads as excellent precision at the exact moment
       the queue was rejected wholesale. The metric moved in the wrong direction
       as the behaviour it exists to detect got worse.
-      The per-event number is what the 90-day test binds to; the per-judgement
-      number is what tells you whether events were read individually or swept.
-      Which of the two carries the pass/fail term is a commercial commitment
-      (canon C-25.5) - proposed, not ratified. See judgement-log J-22.
+      The per-judgement number carries the pass/fail term. A bulk dismissal is
+      one judgement, and counting it as N charges a grouping failure to the
+      grading model - forty events from one trip reaching the queue separately
+      is the grouping rule failing, not the grading rule. Targeting per event
+      would also point the cheapest route to the target straight at grouping
+      more aggressively, which is the behaviour ADR-0007 walked away from.
+      The hole that leaves - a manager who sweeps every week keeps this number
+      comfortable while rejecting almost everything - is closed by M-14, which
+      is a term in the 90-day test in its own right. See judgement-log J-22.
 
   - id: M-10
     layer: quality
@@ -150,7 +155,10 @@ metrics:
       matters - a rising share of "should have been higher" invalidates the
       grading model regardless of what M-09 says.
     horizon: From week 1
-    source: Platform telemetry plus the downgrade audit sample
+    source: >
+      Platform telemetry plus the downgrade audit sample. The audit runs from
+      first release as a manual CameraMatics-side practice; the sampling and
+      finding-recording surface is phase 2 ([[ADR-0013]]).
     note: >
       Reframed by ADR-0007. Nothing is suppressed - every event is retained,
       scored and contributes to the driver record, and the band decides only the
@@ -187,4 +195,27 @@ metrics:
       Introduced by ADR-0010. Deliberately not a target, because a recognition
       quota would produce exactly the unearned praise that R-13 warns about. It
       is a distribution to look at, not a number to hit.
+
+  - id: M-14
+    layer: counter
+    name: Sweep share - high-severity events cleared by bulk action
+    definition: >
+      Share of high-severity events that left the review set through a bulk
+      dismissal rather than through individual review, per account per week.
+    target: >
+      No account clearing more of its high-severity set by bulk action than by
+      individual review. Baseline measured from week 1; no tighter threshold
+      until there is evidence to set one with (canon C-03).
+    horizon: From week 1
+    source: Portal review outcomes
+    note: >
+      Exists because M-09 is targeted per judgement, which is right, and that
+      leaves a hole. A manager who sweeps the whole set every week records one
+      dismissal a week and keeps M-09 comfortable while rejecting almost
+      everything we put in front of them. M-07 catches the disengagement that
+      usually follows and M-11's audit samples sweeps for content, but neither
+      was a term in the 90-day test. This is.
+      The target is a comparison rather than a constant deliberately: if more of
+      the high-severity set leaves by sweep than by anyone looking at it, the
+      queue has been rejected, and that reading needs no invented threshold.
 

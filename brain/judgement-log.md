@@ -526,7 +526,7 @@ log's closing section showing up one more time.
 *Class of error: enumerated inside the existing frame (which detectors?) rather
 than testing the frame itself (is a trigger the same thing as a signal?).*
 
-## J-22 — Which M-09 number carries the 90-day pass/fail term
+## J-22 — Which M-09 number carries the 90-day pass/fail term *(agent overruled)*
 
 **Agent produced:** the finding, and a proposal. [[ADR-0008]] counts a bulk
 dismissal as one judgement rather than N, which is the right rule — forty clicks
@@ -537,35 +537,84 @@ rejected wholesale. [[M-09]] is now defined as two numbers, per judgement and
 per event.
 
 **Proposed:** that the 90-day test binds to the **per-event** number, the harder
-of the two.
+of the two, on the reasoning that it is the honest picture of how much of the
+queue was rejected.
 
-**Decided:** nothing yet. `decided_by: —` · `status: proposed`
+**Decided:** **per judgement**, at 20%, with per event reported and untargeted —
+plus a third term in the 90-day test to cover what that leaves open.
+`decided_by: danny` · `status: ratified`
 
-**Why it is not the agent's to close.** Reporting both numbers is a definition
-fix and squarely the agent's job. Choosing which one the capability is held to
-ninety days after release is a commitment made to a customer and to a board —
-[[canon#C-25]] item 5 — and the harder number is not automatically the right
-one to sign up to. The register and [[success-criteria]] currently say per-event
-because that is the honest reading of "precision at the top of the queue"; both
-carry the proposal marked as a proposal until it is ratified.
+**Reason for reversal.** The agent picked the harder number and treated harder
+as more honest. It is not the same thing. A bulk dismissal *is* one judgement,
+and counting it as forty charges a **grouping** failure to the **grading**
+model — forty events from one trip arriving in the queue separately is the
+grouping rule failing, and [[M-09]] exists to say whether the grading is any
+good. Worse, targeting per event points the cheapest route to the target
+straight at grouping more aggressively, which is the direction [[ADR-0007]]
+deliberately walked away from. The agent had both of those facts in front of it,
+in ADR-0008 and ADR-0007, and did not connect them.
+
+**What the reversal then exposed, which the proposal had accidentally covered.**
+Per judgement leaves one way to pass the test while failing the product: sweep
+the set every week. One judgement, a comfortable M-09, a queue rejected
+wholesale. That is a real hole and the answer is not to go back to the wrong
+number — it is [[M-14]], sweep share, written as a term of the 90-day test
+rather than a figure in a monthly deck. The decision is better than either
+option that was on the table when it started, which is the argument for showing
+the working rather than picking from a list.
+
+*Class of error: optimised for the appearance of rigour — choosing the stricter
+number because strictness reads as honesty — instead of asking what the metric
+is a measure of.*
+
+## J-23 — The downgrade audit ships as a practice before it ships as tooling
+
+**Agent produced:** the finding, from the adversarial pass — the audit is the
+only control on the grading model, [[R-12]] and [[R-13]] both name it as their
+mitigation, [[M-11]] says its finding rate outranks [[M-09]], and it had no
+owner, no cadence and no user story. The agent deferred it as an operations
+decision it could not make, which was right, and stopped there.
+
+**Decided:** separate the practice from the tooling. The audit runs from first
+release, performed by CameraMatics, with no product surface — a sample pulled
+and read by a person. The sampling and finding-recording surface is phase 2.
+`decided_by: danny` · `status: ratified` · [[ADR-0013]]
+
+**Why it matters that this was not left at "phase 2".** Read plainly, "the
+downgrade audit is phase 2" ships the grading model with nothing checking it for
+the whole of phase 1, while two risks carry a mitigation that does not exist
+yet. The release where grading is least trustworthy is the one with no control
+on it. Splitting practice from tooling costs nothing — a spreadsheet is an
+acceptable instrument — and it turns a promise back into a control.
+
+**And it answers the reviewer's sharpest line.** The audit is human attention
+spent on events nobody would otherwise read, in a product whose whole argument
+is that human attention is scarce. Putting it on CameraMatics rather than the
+fleet manager means the control does not consume the resource the product exists
+to conserve. The agent had priced that trade as an unpriced cost and had not
+noticed that *who pays* was the variable.
+
+*Class of error: treated an unanswered question as a single undecidable lump.
+Two decisions were tangled together — does the control exist, and who builds
+the tooling for it — and only the second one needed to wait.*
 
 ---
 
 ## Where the split actually falls
 
-Twenty-two entries. The agent generated the option sets, wrote the prose, held
-roughly forty cross-referenced IDs consistent and enforced the schema. Six
-entries are marked *(agent overruled)* — J-04, J-05, J-06, J-10, J-14, J-19.
-Beyond those: J-16 reframes a model the agent had already built, J-13 is a blind
-spot the agent did not see at all, J-18 is an insight the agent under-read in
-its own finding, J-11 reverses an earlier decision on new information, J-17 is
-an invented number caught by a human asking where it came from, J-15 is an
-attribution the agent refused to make, and J-21 is a principle the option set
-did not contain.
+Twenty-three entries. The agent generated the option sets, wrote the prose, held
+roughly forty cross-referenced IDs consistent and enforced the schema. Seven
+entries are marked *(agent overruled)* — J-04, J-05, J-06, J-10, J-14, J-19,
+J-22. Beyond those: J-16 reframes a model the agent had already built, J-13 is a
+blind spot the agent did not see at all, J-18 is an insight the agent under-read
+in its own finding, J-11 reverses an earlier decision on new information, J-17
+is an invented number caught by a human asking where it came from, J-15 is an
+attribution the agent refused to make, J-21 is a principle the option set did
+not contain, and J-23 splits a decision the agent had deferred as one lump.
 
-Two entries — **J-03** and **J-22** — are still `proposed`. They are the agent's
-recommendations, not my decisions, and this log will keep saying so until I make
-them.
+One entry — **J-03**, the commercial anchor — is still `proposed`. It is the
+agent's recommendation, not my decision, and this log will keep saying so until
+I make it.
 
 The productivity gain is real and large. It is not the judgement, and the record
 shows which is which.
@@ -576,8 +625,9 @@ Read together, J-04, J-06, J-10 and J-19 are the same error four times. In each
 case the agent reasoned competently *inside the frame it was handed* and could
 not tell that the frame was wrong: it optimised the artefact rather than the
 objective, treated a constraint as an obstacle rather than a signal, and hedged
-a generic risk without checking whether it applied here. J-21 is the same shape
-again, and the most recent.
+a generic risk without checking whether it applied here. J-21, J-22 and J-23 are
+the same shape again — and in J-22 the agent had both of the facts that undid
+its recommendation already written down in two of its own decision records.
 
 None of these were failures of analysis. Each recommendation was defensible on
 its own terms, which is exactly what makes them the useful entries — a bad
@@ -613,7 +663,7 @@ to notice.
 
 ### What this log does not cover
 
-Six of the twelve decision records carry `decided_by: danny` with no entry here
+Six of the thirteen decision records carry `decided_by: danny` with no entry here
 — ADR-0001, ADR-0003, ADR-0004, ADR-0005, ADR-0008 and ADR-0009. Canon
 [[canon#C-25]] items 2 and 3, scope cuts and severity thresholds, are precisely
 what several of them decide.

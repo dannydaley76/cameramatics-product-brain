@@ -26,7 +26,7 @@ check it.
 |---|---|
 | [`brain/annotated-brief.md`](brain/annotated-brief.md) | What your brief says, implies, and leaves out — first read and agent additions marked separately |
 | [`brain/problem.md`](brain/problem.md) | The problem, and the failure mode the whole design aims at |
-| [`brain/judgement-log.md`](brain/judgement-log.md) | Twenty-two decisions: what the agent proposed, what I decided, every time I overruled it, and the two entries still marked `proposed` |
+| [`brain/judgement-log.md`](brain/judgement-log.md) | Twenty-three decisions: what the agent proposed, what I decided, every time I overruled it, and the one entry still marked `proposed` |
 | [`reviews/`](reviews/) | The adversarial pass. Verdict: **Not yet.** Read it before you read anything else here charitably |
 | [`brain/canon.md`](brain/canon.md) | The thirty rules this brain does not break. The most opinionated file here |
 | [`docs/traceability.md`](docs/traceability.md) | Generated. Metric → stories → risks → phase, on one page |
@@ -60,7 +60,7 @@ The honest split, from the record in
 [`brain/judgement-log.md`](brain/judgement-log.md) rather than from memory:
 agents generated the option sets, wrote the prose, held the cross-references
 consistent, and enforced the schema. Every framing choice and every scope cut was
-mine, including six reversals of the agent's own recommendation — and the
+mine, including seven reversals of the agent's own recommendation — and the
 reversals were the consequential ones.
 
 Three of those reversals fixed something that was wrong rather than merely
@@ -89,15 +89,15 @@ for exactly that.
 Honest status, per canon C-24 — an unfinished artefact does not get to look
 finished.
 
-- [x] Canon (30 rules), registers — 22 assumptions, 13 metrics, 13 risks, 10 open questions
+- [x] Canon (30 rules), registers — 22 assumptions, 14 metrics, 13 risks, 10 open questions
 - [x] Annotated brief, company analysis, problem, JTBD, personas, success criteria
 - [x] Business case — submission section 1
 - [x] Stack outline — section 2
-- [x] PRD, 12 decision records, 15 stories across 4 epics — section 3
+- [x] PRD, 13 decision records, 15 stories across 4 epics — section 3
 - [x] Skills (7), adversarial reviewer, division of labour
 - [x] Validator (`scripts/validate.py`) and generated traceability matrix
 - [x] CI workflow (`.github/workflows/validate.yml`) — runs the validator and fails on a stale traceability matrix
-- [x] Adversarial pass — **ran 2026-09-14, verdict: Not yet.** 16 of 18 attacks survived; 11 accepted and fixed, 1 scheduled, 4 deferred with reasons stated. See `reviews/`
+- [x] Adversarial pass — **ran 2026-09-14, verdict: Not yet.** 16 of 18 attacks survived; 11 fixed, 1 scheduled, 2 partly fixed, 2 deferred — every one with its reason stated. See `reviews/`
 - [ ] Prioritisation and phasing — section 4
 - [ ] Risk and assumption narrative — section 5
 - [ ] Clickable prototype

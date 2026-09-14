@@ -6,7 +6,7 @@ persona: fleet-manager
 phase: v1
 priority: should
 size: S
-metrics: [M-09, M-11]
+metrics: [M-09, M-11, M-14]
 risks: [R-01, R-11, R-12]
 decisions: [ADR-0008]
 questions: [Q-08]
@@ -34,7 +34,11 @@ decision can be checked later.
   **then** it contributes **one** dismissal signal, not one per event.
 - **Given** a group dismissal is recorded, **when** the downgrade audit sample is
   drawn, **then** that dismissal is eligible for selection, with its reason,
-  scope and author attached.
+  scope and author attached. In phase 1 the sample is drawn and read by
+  CameraMatics without a product surface ([[ADR-0013]]).
+- **Given** high-severity events are cleared in a given week, **when** platform
+  metrics are emitted, **then** the share cleared by bulk action is reported
+  separately from the share cleared by individual review ([[M-14]]).
 - **Given** events do not share driver, behaviour and trip, **when** the manager
   selects them, **then** no group dismissal is offered. Bulk action across
   unrelated events is not available at any size.

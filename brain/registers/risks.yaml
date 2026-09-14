@@ -213,10 +213,13 @@ risks:
     likelihood: medium
     impact: high
     mitigation: >
-      Downgrade audit: a periodic human-read sample of bulk dismissals and of
-      the medium and low bands, looking for events that should have graded higher
-      ([[ADR-0008]]). The control needs a named owner - a control nobody performs
-      is not a control.
+      Downgrade audit: a human-read sample of bulk dismissals and of the medium
+      and low bands, looking for events that should have graded higher
+      ([[ADR-0008]]). Owned and performed by CameraMatics, running from first
+      release as a manual practice with the tooling in phase 2 ([[ADR-0013]]) -
+      because a control that arrives in phase 2 leaves this risk unmitigated
+      for the release where grading is least trustworthy. Sample rate and
+      cadence are set on early finding rates rather than guessed now.
     metrics: [M-09, M-11]
     owner: product
 
@@ -237,7 +240,8 @@ risks:
       manager confirmation before recognition reaches a driver ([[ADR-0010]]).
       Sample proposed-and-confirmed credit in the downgrade audit alongside
       downgrades, since the audit exists to catch classification error in both
-      directions. Never set a recognition target ([[M-13]]).
+      directions - running from first release rather than from phase 2
+      ([[ADR-0013]]). Never set a recognition target ([[M-13]]).
     metrics: [M-13, M-12]
     owner: product
 

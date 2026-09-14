@@ -8,9 +8,9 @@ drafted_by: agent
 decided_by: danny
 adversarial_pass: ran 2026-09-14
 assumptions: [A-03]
-metrics: [M-01, M-03, M-05, M-06, M-07, M-09, M-10, M-11, M-12]
+metrics: [M-01, M-03, M-05, M-06, M-07, M-09, M-10, M-11, M-12, M-14]
 risks: [R-06, R-09, R-12]
-decisions: [ADR-0007, ADR-0008]
+decisions: [ADR-0007, ADR-0008, ADR-0013]
 questions: [Q-07]
 links: [annotated-brief, business-case, registers/metrics]
 ---
@@ -100,16 +100,26 @@ drivers against the fleet average. A rising upheld-dispute rate invalidates
 ## The 90-day test
 
 > If, ninety days after first release, most live accounts do not have a weekly
-> review habit and the **per-event** dismissal rate at the top of the queue is
-> above 20%, the capability has failed — regardless of how good the detection
-> is.
+> review habit, **or** the per-judgement dismissal rate at the top of the queue
+> is above 20%, **or** accounts are clearing more of their high-severity set by
+> bulk action than by looking at it, the capability has failed — regardless of
+> how good the detection is.
 
-The word *per-event* is doing real work. [[ADR-0008]] counts a bulk dismissal as
-the one judgement it is, which is the right rule — forty clicks are not forty
-judgements. But it leaves the denominator alone, so the per-judgement number
-reads beautifully at the exact moment a manager rejects a whole queue in one
-action. [[M-09]] is therefore reported twice and the pass/fail term takes the
-harder of the two.
+Three terms, and the third one is there because of the second.
+
+[[ADR-0008]] counts a bulk dismissal as the one judgement it is, which is the
+right rule — forty clicks are not forty judgements. So [[M-09]] is targeted per
+judgement. Targeting it per event would charge a *grouping* failure to the
+grading model: forty events from one trip arriving separately is the grouping
+rule failing, and it would make the cheapest route to the target "group more
+aggressively", which is the direction [[ADR-0007]] deliberately walked away
+from. The per-event number is still reported; it is just not the bar.
+
+That leaves one way to pass the test while failing the product: sweep the set
+every week. One judgement, a comfortable M-09, and a queue rejected wholesale.
+[[M-14]] closes it, and it is a term in the test rather than a number we
+happen to report — because a measure that only appears in a monthly deck is not
+a commitment.
 
 Signing up to that is deliberate. It is a claim that can be checked, on a
 timescale where it can be acted on, using data that will exist. A collision
