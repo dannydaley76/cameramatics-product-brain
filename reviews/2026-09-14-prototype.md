@@ -241,8 +241,8 @@ findings 1, 2, 3, 4, 5, 6 (absence by grep + DOM), 7, 8 (walked the full queue t
 
 ## Human disposition — 2026-09-14, Danny
 
-Twenty findings. **Sixteen fixed, three partly fixed, one deferred** — and one
-gap outside the numbered findings, accessibility, untouched.
+Twenty findings. **Seventeen fixed, three partly fixed** — and one gap outside
+the numbered findings, accessibility, deliberately out of scope.
 
 *An earlier version of this section said "sixteen fixed, one fixed differently,
 three deferred". That was tidier than the truth and it is the same fault the
@@ -314,20 +314,30 @@ silent:**
   The second needs the repo to decide whether a character-exact acceptance
   criterion outranks the house rule about full stops on buttons. It has not.
 
-**Deferred, and now said out loud on the screens rather than silently:**
+**14 — camera channel selection** was going to stay as text, on the argument
+that a switcher demonstrates nothing a second grey box would not. Overturned on
+review: US-005 says the channels are *selectable*, a sentence claiming they are
+is precisely the asserting-rather-than-demonstrating this prototype exists to
+avoid, and it cost four lines. Road-facing and driver-facing are now buttons,
+road-facing shown first, and the panel header changes with the selection.
 
-- **14 — camera channel selection** is text, not a control. It stays text. The
-  behaviour in question is whether a manager can judge an event from the
-  evidence, and a channel switcher demonstrates nothing a second grey box would
-  not. The screen no longer implies otherwise.
-- **Accessibility.** The reviewer noted zero `aria-label`s, no keyboard-only
-  testing and no phone-width check. That is a real gap and it is not fixed. It is
-  deferred on time rather than on judgement, which is the honest reason.
+**Accessibility, out of scope by decision.** The reviewer noted zero
+`aria-label`s, no keyboard-only testing and no phone-width check. Real gaps, and
+the submission will not close them: this is a low-fidelity prototype whose job is
+demonstrating a workflow before anyone builds it, and an accessibility pass
+belongs against the built product, not against grey boxes. That is a decision,
+not a backlog item, and it is recorded here so it is not read as an oversight.
 
-**One finding I would defend rather than fix.** The reviewer calls the band
-screens' *"a full list would sit here"* copy "prototype apologetics in the
-product voice". It is, and it stays. A prototype that quietly draws a list
-nobody built is the theatre the same review is elsewhere attacking.
+**The nit I defended, and then took.** The reviewer called the band screens'
+*"a full list would sit here"* copy "prototype apologetics in the product voice".
+I argued it should stay, because a prototype that quietly draws a list nobody
+built is theatre. Both halves were right, and the fix was neither: every
+not-built note now lives in the grey footer with the requirement links, outside
+the product frame. Two explanatory paragraphs on the event screen went the same
+way — one restating ADR-0012's principle, one restating ADR-0014's — because a
+product that explains its own design decisions to the person using it has
+stopped being a product. The signals panel and three equal buttons make both
+arguments without a word of help.
 
 **What the pass bought.** Four fabrication bugs in the artefact whose stated job
 is proving this repository does not fabricate — caught by a reader who had never
