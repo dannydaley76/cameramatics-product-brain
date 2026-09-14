@@ -1,0 +1,130 @@
+# Metric register.
+# layer: outcome | behaviour | engagement | quality | counter
+# Every requirement must link to at least one metric (enforced by scripts/validate.py).
+# Every outcome/behaviour metric must have at least one counter metric watching it.
+
+metrics:
+  - id: M-01
+    layer: outcome
+    name: At-fault collisions per 100 vehicles per month
+    definition: >
+      Count of collisions recorded as at-fault by the customer, normalised per
+      100 active vehicles per calendar month. Mileage-normalised where the fleet
+      has reliable odometer data, vehicle-normalised where it does not.
+    target: Direction of travel down; no numeric target until baseline is measured.
+    horizon: 6-12 months
+    source: Customer-reported incident data, reconciled monthly
+    caveats: Low base rate; not readable at single-fleet level inside a quarter ([[R-06]]).
+    counters: [M-11]
+
+  - id: M-02
+    layer: outcome
+    name: Cost of at-fault claims per vehicle per year
+    definition: Total at-fault claim cost including repair, third-party and downtime, per vehicle per year.
+    target: Direction of travel down.
+    horizon: 12 months
+    source: Customer finance / insurer data, annual
+    caveats: Depends on customer willingness to share; likely only available for reference accounts.
+
+  - id: M-03
+    layer: behaviour
+    name: Coached-driver repeat rate (28-day)
+    definition: >
+      For drivers who received a coaching action on behaviour X, the share whose
+      event rate for behaviour X in the following 28 days is lower than their
+      preceding 28-day rate.
+    target: Baseline in first 8 weeks, then hold above baseline; this is the primary product metric.
+    horizon: 4-12 weeks
+    source: Platform event data joined to coaching records
+    caveats: Regression to the mean will flatter this; needs an uncoached control cohort to be credible.
+    counters: [M-11, M-12]
+
+  - id: M-04
+    layer: behaviour
+    name: Share of drivers in the high-risk band
+    definition: Percentage of active drivers whose rolling risk score places them in the top band, measured monthly.
+    target: Distribution shifts down over two quarters.
+    horizon: 3-6 months
+    source: Platform scoring
+    counters: [M-11]
+
+  - id: M-05
+    layer: engagement
+    name: High-severity events triaged within 7 days
+    definition: Share of events classified high severity that reach a terminal review state (coached or dismissed) within 7 days of availability.
+    target: ">= 90%"
+    horizon: From week 1
+    source: Portal event state transitions
+
+  - id: M-06
+    layer: engagement
+    name: Median manager time per reviewed event
+    definition: Median elapsed time from opening an event to setting a terminal state, per reviewing user.
+    target: "< 90 seconds"
+    horizon: From week 1
+    source: Portal instrumentation
+    caveats: Falling time can mean efficiency or rubber-stamping - read with M-09 and M-12.
+
+  - id: M-07
+    layer: engagement
+    name: Weekly reviewing accounts
+    definition: Share of live accounts with at least one review session in a given week.
+    target: ">= 80% by week 4 of an account going live"
+    horizon: From week 1
+    source: Portal instrumentation
+    note: This is the habit metric. It is the earliest honest signal that the capability will or will not work.
+
+  - id: M-08
+    layer: engagement
+    name: Coaching actions per 100 high-severity events
+    definition: Count of logged coaching actions per 100 high-severity events surfaced.
+    target: Baseline first; a very low number means the queue is not trusted, a very high number means severity is under-filtering.
+    horizon: From week 2
+    source: Portal instrumentation
+
+  - id: M-09
+    layer: quality
+    name: High-severity dismissal rate
+    definition: >
+      Share of high-severity events a manager dismisses as not worth action.
+      Our best available proxy for precision at the top of the queue.
+    target: "< 20%"
+    horizon: From week 1
+    source: Portal review outcomes
+    note: >
+      Deliberately a workflow metric rather than a model metric. We do not have
+      ground truth on the road; we have a manager's judgement, and that is the
+      judgement adoption depends on ([[R-02]]).
+
+  - id: M-10
+    layer: quality
+    name: Video availability
+    definition: >
+      Share of surfaced events with reviewable video, and median time from event
+      detection to video being playable in the portal.
+    target: ">= 98% availability; median < 15 minutes"
+    horizon: From week 1
+    source: Platform pipeline telemetry
+    note: An event without footage is not coachable. This metric gates the whole loop.
+
+  - id: M-11
+    layer: counter
+    name: Share of events auto-suppressed
+    definition: Share of detected events never surfaced to a human because of scoring, grouping or suppression rules.
+    target: Monitored, not optimised. Sampled weekly by a human for missed real risk.
+    horizon: From week 1
+    source: Platform telemetry plus weekly manual sample
+    note: >
+      The direct counter to the triage spine. If we get adoption by hiding real
+      risk, we have built something worse than the firehose.
+
+  - id: M-12
+    layer: counter
+    name: Driver disputes and coached-cohort attrition
+    definition: >
+      Count of driver disputes raised per 100 coaching actions and the share
+      upheld, plus voluntary attrition among coached drivers versus fleet average.
+    target: Monitored. A rising upheld-dispute rate invalidates M-03.
+    horizon: From month 2
+    source: Coaching records; customer HR data where shared
+    note: Proxy for the fairness constraint in [[personas/fleet-manager]] and [[jtbd]].

@@ -1,0 +1,114 @@
+# Open questions register.
+# audience: customer | engineering | commercial | legal | data
+# blocking: true means I would not commit to build without an answer.
+
+questions:
+  - id: Q-01
+    audience: customer
+    question: >
+      What is your current weekly safety routine, start to finish - and what
+      would you stop doing if this existed?
+    why: >
+      Tests the attention assumption ([[A-03]]) and tells us what we are actually
+      competing with. If nothing gets dropped, we are additive work.
+    how: 8-10 interviews with fleet managers across the target segment, plus session analytics on the existing portal.
+    blocking: true
+
+  - id: Q-02
+    audience: engineering
+    question: >
+      What event volume does current firmware actually produce per vehicle per
+      day at default sensitivity, broken down by event type?
+    why: >
+      The entire triage thesis rests on [[A-02]]. If volume is low, the product
+      problem is detection breadth, not attention.
+    how: 30 days of event telemetry from 10 representative fleets.
+    blocking: true
+
+  - id: Q-03
+    audience: engineering
+    question: >
+      Which device generations can run on-device inference for distraction and
+      following-distance, what share of the installed base is that, and what is
+      the realistic OTA reach and lead time?
+    why: Determines whether v1 is a software release or a hardware programme ([[A-04]], [[R-05]]).
+    how: Firmware and hardware capability audit by device generation.
+    blocking: true
+
+  - id: Q-04
+    audience: commercial
+    question: >
+      What is current ARPU, what is the attach rate of paid modules, and what
+      would customers pay per vehicle per month for this specifically?
+    why: Sets whether the ARPU-uplift argument in [[business-case]] holds ([[A-08]], [[R-08]]).
+    how: Pricing review with commercial; willingness-to-pay questions in the customer interviews.
+    blocking: false
+
+  - id: Q-05
+    audience: legal
+    question: >
+      Per target market, what is the lawful basis for footage-based coaching,
+      what retention period applies, and where do works councils or consent
+      requirements gate it?
+    why: A market where footage-based coaching is not usable needs a metadata-only variant ([[A-07]], [[R-04]]).
+    how: Legal review per market; audit of existing customer DPIAs.
+    blocking: true
+
+  - id: Q-06
+    audience: commercial
+    question: >
+      What evidence would our insurer partners actually price against, and is
+      there an agreed standard we could design toward?
+    why: Decides whether insurance is the headline of the business case or the upside case ([[A-06]]).
+    how: Structured conversation with existing insurer partners.
+    blocking: false
+
+  - id: Q-07
+    audience: data
+    question: >
+      Can we construct a credible uncoached control cohort within the existing
+      customer base without withholding safety information unethically?
+    why: Without it, M-03 is not defensible and the outcome claim is theatre ([[R-06]]).
+    how: Design review with data; likely staged rollout by depot rather than withheld capability.
+    blocking: false
+
+  - id: Q-09
+    audience: engineering
+    question: >
+      How is driver identity established across the installed base today - login,
+      tacho card, shift roster, manual assignment - and for what share of events
+      is it reliable enough to coach on?
+    why: >
+      Coaching needs a subject and M-03 needs a reliable driver ([[A-11]],
+      [[R-09]]). This is the constraint most likely to be underestimated because
+      it is unglamorous and sits outside the detection story.
+    how: Platform audit of attribution coverage across a sample of fleets, plus a review of how onboarding currently sets it up.
+    blocking: true
+
+  - id: Q-10
+    audience: commercial
+    question: >
+      Does the portal today rank, prioritise or suppress events - or does the
+      fleet manager still choose from a list? And when a customer asks whether
+      the coaching worked, what do you show them?
+    why: >
+      These two answers decide whether this submission is a proposal or a
+      critique ([[A-13]], [[A-14]], [[R-10]]). Everything else in the brain is
+      downstream of them, and both are answerable in one sentence by anyone who
+      works there.
+    how: >
+      Ask it first, out loud, at the start of the walkthrough - before defending
+      anything. A submission built on a hypothesis should open by testing it.
+    blocking: true
+
+  - id: Q-08
+    audience: customer
+    question: >
+      When a manager dismisses an event, what is the actual reason - wrong
+      detection, right detection but not the driver's fault, or right but too
+      minor to raise?
+    why: >
+      These three need different product responses and collapsing them into one
+      dismiss button loses the signal that would improve severity scoring ([[M-09]]).
+    how: Structured dismissal reasons in v1 plus follow-up interviews on a sample.
+    blocking: false

@@ -1,0 +1,287 @@
+# Assumption register.
+# Every assumption stated in the submission lives here with an ID, so any claim
+# in the deck can be traced to the thing we are assuming and how we would test it.
+# confidence: low | medium | high   impact: low | medium | high | critical
+
+assumptions:
+  - id: A-01
+    statement: >
+      The primary target is fleets of 20-150 vehicles in UK/IE/EU with no
+      dedicated safety manager, where the fleet manager owns safety alongside
+      several other functions.
+    confidence: medium
+    impact: high
+    if_wrong: >
+      Enterprise fleets with dedicated safety teams want programme management,
+      league tables and configurability - a materially different v1.
+    validate: Segment the installed base by vehicle count and by whether a safety role exists on the account.
+    source: stated assumption, no insider data
+    questions: [Q-04]
+
+  - id: A-02
+    statement: >
+      At default sensitivity the installed device generates roughly 0.5-3
+      detectable events per vehicle per day, i.e. 50-450/day for a 100-vehicle
+      fleet, and the large majority are not worth a coaching conversation.
+    confidence: low
+    impact: critical
+    if_wrong: >
+      If real volume is an order of magnitude lower, triage is not the binding
+      constraint and the spine of this submission is wrong; the product would be
+      about detection breadth instead.
+    validate: Pull 30 days of event telemetry from existing devices across 10 representative fleets before committing to build.
+    source: stated assumption, no insider data
+    questions: [Q-02]
+
+  - id: A-03
+    statement: >
+      A fleet manager will give this capability 10-15 minutes a day at most, in
+      practice 2-3 sessions a week rather than daily.
+    confidence: medium
+    impact: high
+    if_wrong: >
+      More capacity permits a richer review surface; less capacity means even a
+      short queue must be pushed to them rather than pulled.
+    validate: Portal session analytics on existing customers plus 8-10 customer interviews.
+    source: stated assumption, no insider data
+    questions: [Q-01]
+
+  - id: A-04
+    statement: >
+      A material share of the installed camera base can run on-device inference
+      for the v1 event types, or can be brought to that capability by OTA
+      firmware update within the phase window.
+    confidence: low
+    impact: critical
+    if_wrong: >
+      The capability becomes a hardware programme with a multi-quarter lead time
+      and a per-vehicle cost, not a software release. Phasing changes completely.
+    validate: Engineering audit of SoC capability and OTA reach by device generation.
+    source: stated assumption, no insider data
+    questions: [Q-03]
+
+  - id: A-05
+    statement: >
+      Cellular data per vehicle is contractually capped and video upload is the
+      dominant marginal cost of the capability.
+    confidence: high
+    impact: high
+    if_wrong: >
+      If bandwidth is effectively free, upload-everything becomes viable and the
+      edge design simplifies substantially.
+    validate: Finance review of current data cost per vehicle per month and the SIM contract terms.
+    source: stated assumption, no insider data
+
+  - id: A-06
+    statement: >
+      Insurance premium reduction requires an insurer partnership and an agreed
+      evidence standard; it is not something we can deliver unilaterally.
+    confidence: high
+    impact: medium
+    if_wrong: >
+      If premium influence is direct and provable, the commercial case gets much
+      stronger and insurance becomes the headline rather than the upside.
+    validate: Commercial conversation with existing insurer partners on what evidence they would price against.
+    source: stated assumption, no insider data
+    questions: [Q-06]
+
+  - id: A-07
+    statement: >
+      Coaching drivers using in-cab footage is permissible in target markets
+      given driver notice and a lawful basis, and requires a DPIA, a defined
+      retention period and role-based access to footage.
+    confidence: medium
+    impact: high
+    if_wrong: >
+      Works-council or consent constraints in some markets would gate the
+      driver-facing behaviour and could make footage-based coaching unusable
+      there, forcing a metadata-only variant.
+    validate: Legal review per market; check existing customer contracts and DPIAs.
+    source: stated assumption, no insider data
+    questions: [Q-05]
+
+  - id: A-09
+    statement: >
+      A 10-15 second event clip at reviewable quality is roughly 1.5-4 MB per
+      camera channel, and an event metadata packet is roughly 5-50 KB.
+    confidence: medium
+    impact: high
+    if_wrong: >
+      The cost arithmetic behind ADR-0002 changes. If clips are much smaller,
+      eager upload for everything is affordable and the severity gate is
+      unnecessary complexity.
+    validate: Measure actual clip sizes produced by current firmware at the quality setting we would ship.
+    source: stated assumption from general encoding characteristics, not measured on CameraMatics hardware
+    decisions: [ADR-0002]
+
+  - id: A-10
+    statement: >
+      The device can guarantee a retention window of roughly 7-14 days of loop
+      recording from which footage can still be fetched after the fact.
+    confidence: low
+    impact: critical
+    if_wrong: >
+      Promote-and-fetch fails, so a severity false-negative permanently loses the
+      footage and ADR-0002 becomes unsafe. A window shorter than the period in
+      which customers actually raise disputes would force eager upload.
+    validate: Engineering measurement per device generation and storage configuration; compare against observed dispute latency.
+    source: stated assumption, no insider data
+    decisions: [ADR-0002]
+    questions: [Q-03]
+
+  - id: A-11
+    statement: >
+      Driver-to-vehicle attribution is not reliably available for a material
+      share of events in mixed-shift fleets today.
+    confidence: medium
+    impact: critical
+    if_wrong: >
+      If attribution is already solid, the coaching loop has a reliable subject
+      and a whole class of v1 workflow disappears - a materially cheaper release.
+    validate: Measure what share of existing events can be attributed to a named driver with confidence, across a sample of fleets.
+    source: stated assumption, no insider data
+    risks: [R-09]
+    questions: [Q-09]
+
+  # ---------------------------------------------------------------------------
+  # A-12 to A-18 are derived from public web sources only (see company-analysis.md).
+  # A-18 is the meta-assumption that qualifies every one of them and should be
+  # read first. None of these were confirmed with anyone at CameraMatics.
+  # ---------------------------------------------------------------------------
+
+  - id: A-18
+    statement: >
+      All product knowledge in this brain comes from public web pages as of
+      September 2026. The most specific source - the driver-monitoring release
+      notes - is dated April 2024. Public marketing lags shipped product, and
+      absence from a website is not absence from the product.
+    confidence: high
+    impact: high
+    if_wrong: >
+      Not "wrong" so much as load-bearing: if the product has moved since these
+      pages were written, any assumption below built on absence of evidence may
+      be describing a gap that was closed a year ago.
+    validate: >
+      Fifteen minutes in the live product, or one direct question in the
+      interview. This is the cheapest and highest-value validation in the whole
+      register.
+    source: public web only
+    questions: [Q-10]
+    risks: [R-10]
+
+  - id: A-12
+    statement: >
+      The capability described in the brief substantially exists in the product
+      today - detection of fatigue, distraction, smoking, phone use, tailgating
+      and vulnerable road users; automated driver scoring on speeding, braking
+      and cornering; a coaching workflow with statuses; native driver apps;
+      interactive training; accident response with claims evidence.
+    confidence: medium
+    impact: high
+    if_wrong: >
+      If the brief really is greenfield - a new tier, a rebuild, or a
+      deliberately abstracted exercise - then framing the submission as a gap
+      analysis answers a question nobody asked.
+    validate: Ask directly. A product walkthrough settles it in minutes.
+    source: public product pages
+    assumptions: [A-18]
+    questions: [Q-10]
+
+  - id: A-13
+    statement: >
+      No automated ranking, prioritisation or suppression of events exists. The
+      fleet manager triages by scanning the dashboard and "selects events from
+      which lessons can be learned".
+    confidence: low
+    impact: critical
+    if_wrong: >
+      This is the thesis of the entire submission. If triage already exists and
+      simply is not marketed, the submission becomes a critique of an existing
+      queue rather than a proposal for a new one - the design largely survives,
+      the framing does not.
+    validate: Ask directly, or look at the event list in the live product.
+    source: >
+      Inference from absence in public material, chiefly their own description
+      of the coaching workflow. Absence of evidence, which is the weakest kind
+      of evidence there is - see A-18.
+    assumptions: [A-18]
+    questions: [Q-10]
+    risks: [R-10]
+
+  - id: A-14
+    statement: >
+      Coaching effectiveness is not measured. The workflow tracks status -
+      Under review, Coaching scheduled, Closed - and status is activity, not
+      behaviour change.
+    confidence: medium
+    impact: high
+    if_wrong: >
+      If repeat-rate or before/after measurement already exists, the proof half
+      of the submission's argument is already solved and the emphasis should
+      shift entirely to triage.
+    validate: Ask what a customer sees when they ask "did the coaching work?"
+    source: Inference from their published coaching workflow description
+    assumptions: [A-18]
+    metrics: [M-03]
+    questions: [Q-10]
+
+  - id: A-15
+    statement: >
+      Their strategy for alert noise to date has been configuration rather than
+      triage - an April 2024 release split distraction into looking left/right/
+      down, separated phone-use alerts, and made the alert trigger window
+      customer-configurable from 2-8 seconds, default 3.
+    confidence: high
+    impact: medium
+    if_wrong: >
+      Little changes in the design, but the framing of ADR-0003 does: arguing
+      against configuration to a company that ships it needs to acknowledge what
+      they shipped and why triage is additive rather than corrective.
+    validate: Documented in their own release notes; check whether it still reflects current behaviour.
+    source: CameraMatics driver-monitoring update, April 2024
+    assumptions: [A-18]
+    decisions: [ADR-0003]
+
+  - id: A-16
+    statement: >
+      Coaching is already a delegated, two-role workflow: the fleet manager
+      triages and shares an event with a depot manager, who has the conversation
+      with the driver.
+    confidence: medium
+    impact: high
+    if_wrong: >
+      If coaching is conducted by whoever triages, the single-user model holds
+      and the portal is materially simpler. If it is delegated, a handover
+      surface and two sets of permissions are v1 concerns, not later ones.
+    validate: Ask how it works at Royal Mail or a comparable multi-depot account.
+    source: Inference from their published coaching workflow description
+    assumptions: [A-18]
+    questions: [Q-10]
+
+  - id: A-17
+    statement: >
+      Commercial pressure is enterprise and international - the June 2026 raise
+      of up to EUR 49m is stated to fund enterprise sales, customer success, and
+      growth in North America and mainland Europe, against named accounts
+      including Royal Mail, XPO, DFDS, Wolseley and a 250+ depot US customer.
+    confidence: high
+    impact: medium
+    if_wrong: >
+      If the growth thesis is actually SME volume and self-serve, the scaling
+      argument in the business case is aimed at the wrong constraint.
+    validate: Publicly stated; confirm the segment mix and where the ARR sits.
+    source: Funding announcements, June 2026
+    assumptions: [A-18]
+
+  - id: A-08
+    statement: >
+      Cameras are already fitted and paid for across the target base, so this
+      capability is sold as a software module rather than a new hardware sale.
+    confidence: medium
+    impact: high
+    if_wrong: >
+      A hardware-attached commercial model changes pricing, CAC and the whole
+      ARPU-uplift argument in the business case.
+    validate: Commercial review of installed base, contract structure and current ARPU.
+    source: stated assumption, no insider data
+    questions: [Q-04]

@@ -1,0 +1,172 @@
+# Risk register.
+# likelihood/impact: low | medium | high    category: adoption | technical | commercial | legal | delivery | measurement
+# Every risk must carry either a mitigation or a linked open question (enforced by scripts/validate.py).
+
+risks:
+  - id: R-01
+    category: adoption
+    title: Alert fatigue kills the capability before the outcome can land
+    detail: >
+      The queue is never empty, the manager reviews a fraction, engagement decays
+      to zero inside 60 days and the renewal is at risk. This is the default
+      outcome for AI dashcam rollouts and the reason triage is the spine.
+    likelihood: high
+    impact: high
+    mitigation: >
+      Severity scoring plus suppression as v1 features rather than settings; a
+      finite ranked queue instead of a feed; measure M-07 weekly from day one and
+      treat a fall as a P1 product defect, not a customer-success problem.
+    metrics: [M-05, M-07, M-11]
+    owner: product
+
+  - id: R-02
+    category: technical
+    title: Precision at the top of the queue is below the trust threshold
+    detail: >
+      If a manager sees two nonsense events in their first session they will
+      discount the ranking permanently. Recall matters far less than precision
+      on the handful we actively push.
+    likelihood: high
+    impact: high
+    mitigation: >
+      Ship a narrow set of event types we can detect reliably rather than a broad
+      set we cannot; require corroborating signals before promoting to high
+      severity; instrument M-09 and hold a release gate on it.
+    metrics: [M-09]
+    questions: [Q-02, Q-03]
+    owner: product + ml
+
+  - id: R-03
+    category: commercial
+    title: Video upload cost breaks the unit economics
+    detail: >
+      Uploading footage for every detected event at usable quality may cost more
+      per vehicle per month than the module earns ([[A-05]]).
+    likelihood: medium
+    impact: high
+    mitigation: >
+      Metadata-first upload with video fetched on demand or only for high-severity
+      events; short clips at reduced resolution by default; explicit per-vehicle
+      data budget as a design constraint with a monitored ceiling.
+    metrics: [M-10]
+    decisions: [ADR-0002]
+    owner: product + platform
+
+  - id: R-04
+    category: legal
+    title: Driver and employee-relations backlash, and data protection exposure
+    detail: >
+      Camera-based coaching is contested. Works councils, unions and individual
+      drivers may resist; footage of identifiable people carries GDPR obligations
+      including lawful basis, DPIA, retention limits and access control ([[A-07]]).
+    likelihood: medium
+    impact: high
+    mitigation: >
+      Role-based access to footage, defined retention, DPIA before first
+      customer, driver notice as a rollout precondition, and an evidenced
+      coaching record so conversations are fair and reviewable.
+    metrics: [M-12]
+    questions: [Q-05]
+    owner: product + legal
+
+  - id: R-05
+    category: delivery
+    title: Installed-base fragmentation limits OTA reach
+    detail: >
+      Multiple device generations with different compute and connectivity mean
+      the capability may only reach a fraction of vehicles, and firmware lead
+      times are measured in months not weeks ([[A-04]]).
+    likelihood: high
+    impact: high
+    mitigation: >
+      Treat device capability as a phasing input, not a requirement; design the
+      cloud and portal to accept events from mixed-capability devices; publish a
+      supported-device matrix and gate account onboarding on it.
+    questions: [Q-03]
+    owner: product + firmware
+
+  - id: R-06
+    category: measurement
+    title: We cannot attribute behaviour change to the product
+    detail: >
+      Collision base rates are low, fleets are small, seasonality is real and
+      regression to the mean will make any coaching look effective. A confident
+      claim we cannot defend is worse than no claim.
+    likelihood: high
+    impact: medium
+    mitigation: >
+      Define M-03 with an uncoached control cohort from the start; report
+      direction of travel with confidence caveats; never put an unqualified
+      "reduced collisions by X%" in a customer-facing artefact.
+    metrics: [M-01, M-03]
+    owner: product + data
+
+  - id: R-07
+    category: adoption
+    title: Coaching happens outside the system
+    detail: >
+      The manager watches the clip, walks to the depot and has the conversation,
+      and never logs it. We lose the evidence trail, M-03 and M-08 become
+      meaningless, and the outcome story collapses even if behaviour improved.
+    likelihood: high
+    impact: medium
+    mitigation: >
+      Make logging a coaching action cheaper than not logging it - one click from
+      the clip, sensible defaults, no form. Accept "spoke to driver" as a valid
+      terminal state rather than forcing a structured session.
+    metrics: [M-08]
+    owner: product
+
+  - id: R-09
+    category: technical
+    title: Driver attribution is too unreliable to coach on
+    detail: >
+      You cannot coach an event you cannot attribute to a person. In mixed-shift
+      fleets the vehicle-to-driver mapping is often stale or absent ([[A-11]]),
+      and a coaching conversation with the wrong driver costs more trust than ten
+      missed events. It also makes M-03 - the primary product metric -
+      uncomputable, because per-driver repeat rate needs a reliable driver.
+    likelihood: high
+    impact: high
+    mitigation: >
+      Explicit unknown state with a resolve-who-was-driving step in the review
+      workflow; never infer identity silently; treat attribution coverage as a
+      reported metric and an onboarding precondition rather than an assumption.
+      Facial identification would solve it and is disproportionate - not proposed.
+    metrics: [M-03]
+    questions: [Q-09]
+    owner: product + platform
+
+  - id: R-10
+    category: measurement
+    title: The diagnosis is wrong because public sources lag the product
+    detail: >
+      The submission's central claim - that detection and coaching exist but
+      triage and proof do not ([[A-13]], [[A-14]]) - rests on absence of evidence
+      in public material, some of it two years old ([[A-18]]). If they shipped
+      event prioritisation and never marketed it, the story's premise is refuted
+      in the room by the person who built it.
+    likelihood: medium
+    impact: high
+    mitigation: >
+      Hold the diagnosis as an explicit, labelled hypothesis with the validation
+      step named, never as a verdict - so being wrong costs a correction rather
+      than credibility. Design so the work survives either way: if triage
+      already exists, the same requirements read as an improvement to it rather
+      than a proposal for it. Lead the interview by asking rather than asserting.
+    questions: [Q-10]
+    owner: product
+
+  - id: R-08
+    category: commercial
+    title: The capability is priced as a feature and absorbed into existing ARPU
+    detail: >
+      If it ships as an unbundled improvement to the current subscription we
+      carry the video cost with no revenue uplift ([[A-08]]).
+    likelihood: medium
+    impact: medium
+    mitigation: >
+      Agree the commercial model before build, not after; scope v1 so it is
+      packageable as a module with a per-vehicle price.
+    questions: [Q-04]
+    owner: product + commercial
