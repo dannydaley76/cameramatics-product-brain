@@ -3,7 +3,7 @@ id: US-015
 title: A fleet view that does not overstate what it knows
 epic: EP-04
 persona: fleet-manager
-phase: v1
+phase: v1.1
 priority: should
 size: M
 metrics: [M-04, M-03, M-07]

@@ -41,7 +41,7 @@
 | US-012 Confirm recognition for a driver who avoided harm | v1 | M-13, M-12 | R-13 | ADR-0010 |
 | US-013 Send a medium-band group to the driver | v1 | M-11, M-12 | R-04, R-12 | ADR-0004, ADR-0007 |
 | US-014 A driver record that shows both sides | v1 | M-03, M-13, M-12 | R-06, R-09 | ADR-0010 |
-| US-015 A fleet view that does not overstate what it knows | v1 | M-04, M-03, M-07 | R-06 | ADR-0010 |
+| US-015 A fleet view that does not overstate what it knows | v1.1 | M-04, M-03, M-07 | R-06 | ADR-0010 |
 
 ## Risk → mitigation owner and metrics
 

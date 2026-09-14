@@ -608,9 +608,8 @@ loop rather than the feature — a manager with a queue and no way to act on it
 has a better dashboard, and a manager with a coaching form and no triage has the
 firehose with extra steps.
 
-**Decided:** nothing yet. `decided_by: —` · `status: proposed`. [[phasing]]
-carries the proposal; US-015's frontmatter still says `v1` and does not move
-until this is ratified.
+**Decided:** v1.1. `decided_by: danny` · `status: ratified`. US-015's
+frontmatter moved after the decision rather than before it.
 
 **Why it is not the agent's to close.** [[canon#C-25]] item 2 — what is cut is
 the job, and an agent that quietly applies its own scope cut has made the one
@@ -628,9 +627,9 @@ of this entry is that the agent reached for "it is a `should` and it is lightly
 specified", which is an argument from the register rather than from the product,
 and only found the R-06 argument when asked why the cut was safe.
 
-**What would change the answer:** if the fleet view is what a buyer is shown in
-a renewal conversation, it is a commercial artefact rather than an analytical
-one and the low-base-rate objection does not decide it.
+**What would reopen it:** if the fleet view is what a buyer is shown in a
+renewal conversation, it is a commercial artefact rather than an analytical one,
+and the low-base-rate objection stops deciding it. That sits with [[Q-04]].
 
 ---
 
@@ -646,10 +645,9 @@ is an invented number caught by a human asking where it came from, J-15 is an
 attribution the agent refused to make, J-21 is a principle the option set did
 not contain, and J-23 splits a decision the agent had deferred as one lump.
 
-Two entries — **J-03**, the commercial anchor, and **J-24**, the one scope cut
-in the phasing plan — are still `proposed`. They are the agent's
-recommendations, not my decisions, and this log will keep saying so until I make
-them. In J-24's case the story frontmatter is the check: it still says `v1`.
+One entry — **J-03**, the commercial anchor — is still `proposed`. It is the
+agent's recommendation, not my decision, and this log will keep saying so until
+I make it.
 
 The productivity gain is real and large. It is not the judgement, and the record
 shows which is which.

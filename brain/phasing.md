@@ -1,11 +1,11 @@
 ---
 id: PHASE
 title: Phasing — what gets built when, and what would stop us
-status: proposed
+status: accepted
 owner: danny
 section: 4
 drafted_by: agent
-decided_by: —
+decided_by: danny
 adversarial_pass: not run
 produced_with: skills/phasing.md
 assumptions: [A-02, A-04, A-10, A-11, A-19, A-23]
@@ -18,9 +18,8 @@ links: [stack-outline, requirements/README, success-criteria]
 
 # Phasing
 
-**Status: proposed.** One scope cut in here is a decision I have not ratified,
-and it is marked where it appears. Everything else is sequence, derived from the
-dependency chain at the foot of [[stack-outline]].
+Mostly sequence, derived from the dependency chain at the foot of
+[[stack-outline]]. One scope cut, ratified 2026-09-14 (J-24).
 
 ---
 
@@ -121,7 +120,7 @@ and [[M-09]] are readable. That is the earliest honest signal, and under
 
 ### v1.1 — the fleet view
 
-US-015 only. **Proposed cut, not decided.**
+US-015 only.
 
 EP-04's value in v1 is the driver record (US-014): it is where coaching and
 recognition land, and where a manager answers *did this driver change*. The
@@ -134,10 +133,15 @@ weeks of a low-base-rate outcome overstates what it knows ([[R-06]]). Shipping
 the roll-up at the point where it can only mislead buys nothing and costs the
 credibility of every number next to it.
 
-*The story frontmatter still says `v1` and does not move until this is ratified
-([[canon#C-25]] item 2, judgement log J-24). A phasing document that quietly
-applied its own scope cut would have made a decision it was not entitled to
-make.*
+*Ratified 2026-09-14 (J-24), and the story frontmatter moved after that rather
+than before it. A phasing document that quietly applied its own scope cut would
+have made the one decision it was not entitled to make ([[canon#C-25]] item 2).*
+
+**What would reopen it.** If the fleet view turns out to be what a buyer is
+shown in a renewal conversation or passed up to their own board, it is a
+commercial artefact rather than an analytical one, the low-base-rate objection
+stops deciding it, and it comes back into v1. That is a question for [[Q-04]]'s
+commercial conversation, not for engineering.
 
 ### later — three things, each already a decision rather than a gap
 

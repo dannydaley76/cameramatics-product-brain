@@ -26,7 +26,7 @@ check it.
 |---|---|
 | [`brain/annotated-brief.md`](brain/annotated-brief.md) | What your brief says, implies, and leaves out — first read and agent additions marked separately |
 | [`brain/problem.md`](brain/problem.md) | The problem, and the failure mode the whole design aims at |
-| [`brain/judgement-log.md`](brain/judgement-log.md) | Twenty-four decisions: what the agent proposed, what I decided, every time I overruled it, and the two entries still marked `proposed` |
+| [`brain/judgement-log.md`](brain/judgement-log.md) | Twenty-four decisions: what the agent proposed, what I decided, every time I overruled it, and the one entry still marked `proposed` |
 | [`reviews/`](reviews/) | The adversarial pass. Verdict: **Not yet.** Read it before you read anything else here charitably |
 | [`brain/canon.md`](brain/canon.md) | The thirty rules this brain does not break. The most opinionated file here |
 | [`docs/traceability.md`](docs/traceability.md) | Generated. Metric → stories → risks → phase, on one page |
@@ -98,7 +98,7 @@ finished.
 - [x] Validator (`scripts/validate.py`) and generated traceability matrix
 - [x] CI workflow (`.github/workflows/validate.yml`) — runs the validator and fails on a stale traceability matrix
 - [x] Adversarial pass — **ran 2026-09-14, verdict: Not yet.** 16 of 18 attacks survived; 12 fixed, 2 partly fixed, 2 deferred — every one with its reason stated. See `reviews/`
-- [x] Prioritisation and phasing — section 4 (`brain/phasing.md`) — one scope cut in it is `proposed`, not ratified
+- [x] Prioritisation and phasing — section 4 (`brain/phasing.md`)
 - [ ] Risk and assumption narrative — section 5
 - [ ] Clickable prototype
 - [ ] Submission deck

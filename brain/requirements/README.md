@@ -50,8 +50,7 @@ overstating what the data supports.*
 Every story below carries a `phase` field, and [[../phasing]] is where those
 phases are argued rather than asserted. The short version: the unit of value is
 the loop, so v1 is a thin whole loop — EP-01 to EP-03 complete plus US-014 —
-and the only cut proposed is US-015 to v1.1. That cut is `proposed` and this
-frontmatter deliberately has not moved ahead of it.
+and the only cut is US-015 to v1.1, ratified as J-24.
 
 ## What these requirements do not cover
 

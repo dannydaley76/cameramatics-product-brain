@@ -777,7 +777,7 @@ pass bought.
 | 10 | **Accepted, fixed** | [[A-20]], [[A-21]] and [[A-22]] registered; the first-to-market claim removed outright under C-02 |
 | 11 | **Accepted, fixed** | "Severity model" → "severity ruleset" in US-006 and `stack-outline.md`, with the C-28 reasoning stated in both |
 | 12 | **Accepted, fixed** | US-003 gains an acceptance criterion: closed-unreviewed is not a terminal state for [[M-05]] |
-| 13 | **Accepted, fixed** | [[phasing]] written, with `skills/phasing.md` as its recipe. The dangling `[[phasing]]` link in `stack-outline.md` now resolves. The 15/15-v1 observation is answered rather than obeyed: the unit of value is the loop, so v1 is a thin whole loop and the one defensible cut is proposed as J-24 |
+| 13 | **Accepted, fixed** | [[phasing]] written, with `skills/phasing.md` as its recipe. The dangling `[[phasing]]` link in `stack-outline.md` now resolves. The 15/15-v1 observation is answered rather than obeyed: the unit of value is the loop, so v1 is a thin whole loop and the one defensible cut is ratified as J-24 |
 | 14 | **Accepted, fixed** | README's account of research corrected |
 | 15 | **Accepted, fixed** | Judgement log counts corrected; J-11's attribution corrected in a dated note rather than overwritten; J-05 removed from the exemplary list with the reason stated |
 | 16 | **Deferred** | See below |
