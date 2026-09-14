@@ -8,7 +8,7 @@ drafted_by: agent
 decided_by: danny
 adversarial_pass: ran 2026-09-14
 produced_with: skills/user-stories.md, skills/ux-writing.md
-links: [prd, success-criteria, decisions/ADR-0007, decisions/ADR-0010]
+links: [prd, phasing, success-criteria, decisions/ADR-0007, decisions/ADR-0010]
 ---
 
 # Portal requirements
@@ -44,6 +44,14 @@ conversation.*
 coached drivers actually changed, so that I can answer "is this working" without
 overstating what the data supports.*
 → US-014, US-015
+
+## Phases
+
+Every story below carries a `phase` field, and [[../phasing]] is where those
+phases are argued rather than asserted. The short version: the unit of value is
+the loop, so v1 is a thin whole loop — EP-01 to EP-03 complete plus US-014 —
+and the only cut proposed is US-015 to v1.1. That cut is `proposed` and this
+frontmatter deliberately has not moved ahead of it.
 
 ## What these requirements do not cover
 

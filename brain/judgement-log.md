@@ -600,9 +600,43 @@ the tooling for it — and only the second one needed to wait.*
 
 ---
 
+## J-24 — The only scope cut in the phasing plan
+
+**Agent proposed:** US-015, the fleet view, moves from v1 to v1.1. Everything
+else in the fifteen stays in v1, on the argument that the unit of value is the
+loop rather than the feature — a manager with a queue and no way to act on it
+has a better dashboard, and a manager with a coaching form and no triage has the
+firehose with extra steps.
+
+**Decided:** nothing yet. `decided_by: —` · `status: proposed`. [[phasing]]
+carries the proposal; US-015's frontmatter still says `v1` and does not move
+until this is ratified.
+
+**Why it is not the agent's to close.** [[canon#C-25]] item 2 — what is cut is
+the job, and an agent that quietly applies its own scope cut has made the one
+decision it is not entitled to make. Writing the phasing document and applying
+the cut it recommends in the same pass would have been exactly that, with the
+story frontmatter as the evidence that nobody had checked.
+
+**The reasoning, so it can be judged rather than accepted.** EP-04's value in v1
+is the driver record, which is where coaching and recognition land. The fleet
+roll-up is a view over data that record already produces, it is the one story
+whose absence does not break the loop, and a fleet trend drawn over four weeks
+of a low-base-rate outcome overstates what it knows ([[R-06]]). The second
+reason is the stronger one and it arrived after the first — the honest version
+of this entry is that the agent reached for "it is a `should` and it is lightly
+specified", which is an argument from the register rather than from the product,
+and only found the R-06 argument when asked why the cut was safe.
+
+**What would change the answer:** if the fleet view is what a buyer is shown in
+a renewal conversation, it is a commercial artefact rather than an analytical
+one and the low-base-rate objection does not decide it.
+
+---
+
 ## Where the split actually falls
 
-Twenty-three entries. The agent generated the option sets, wrote the prose, held
+Twenty-four entries. The agent generated the option sets, wrote the prose, held
 roughly forty cross-referenced IDs consistent and enforced the schema. Seven
 entries are marked *(agent overruled)* — J-04, J-05, J-06, J-10, J-14, J-19,
 J-22. Beyond those: J-16 reframes a model the agent had already built, J-13 is a
@@ -612,9 +646,10 @@ is an invented number caught by a human asking where it came from, J-15 is an
 attribution the agent refused to make, J-21 is a principle the option set did
 not contain, and J-23 splits a decision the agent had deferred as one lump.
 
-One entry — **J-03**, the commercial anchor — is still `proposed`. It is the
-agent's recommendation, not my decision, and this log will keep saying so until
-I make it.
+Two entries — **J-03**, the commercial anchor, and **J-24**, the one scope cut
+in the phasing plan — are still `proposed`. They are the agent's
+recommendations, not my decisions, and this log will keep saying so until I make
+them. In J-24's case the story frontmatter is the check: it still says `v1`.
 
 The productivity gain is real and large. It is not the judgement, and the record
 shows which is which.

@@ -207,5 +207,5 @@ Deliberately brief — [[requirements/README]] is where the depth goes.
 
 The useful consequence: the portal can be built and tested against a stubbed
 event source while the edge and attribution work proceeds. That is what makes
-the phasing possible rather than serial, and it is the reason I
-would start portal work early even though it is last in the data flow.
+[[phasing]] possible rather than serial, and it is the reason I would start
+portal work early even though it is last in the data flow.

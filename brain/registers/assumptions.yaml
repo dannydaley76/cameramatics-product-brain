@@ -394,3 +394,28 @@ assumptions:
       whose company sells detection, which is the reason to mark it as an
       assumption rather than lean on it.
     assumptions: [A-18]
+
+  - id: A-23
+    statement: >
+      For the purposes of this exercise, driver attribution is treated as a
+      solved problem with adequate coverage, so phasing is not gated on Q-09.
+      This is a working assumption for design, not a finding.
+    confidence: low
+    impact: critical
+    if_wrong: >
+      Coaching, recognition, the driver record and M-03 all lose their subject,
+      and the phasing in [[phasing]] changes shape completely - the review half
+      would ship first and the coaching half would wait. A-11 describes the real
+      position: attribution almost certainly exists, by a mechanism we have not
+      seen, with a gap rate we have not measured.
+    validate: >
+      Q-09, asked in week one. Which mechanism, what share of events it covers,
+      and what happens on overtime, agency and swapped shifts.
+    source: >
+      Danny's direction for this exercise - assumed, not measured. The brief
+      hands attribution over as existing platform capability and does not ask
+      for it to be designed; designing around it being broken would answer a
+      question nobody asked. Registered rather than assumed silently, on the
+      same footing as A-19, which does the same job for event volume.
+    assumptions: [A-11]
+    questions: [Q-09]
