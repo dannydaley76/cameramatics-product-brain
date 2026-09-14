@@ -30,7 +30,8 @@ check it.
 | [`reviews/`](reviews/) | The adversarial pass. Verdict: **Not yet.** Read it before you read anything else here charitably |
 | [`brain/canon.md`](brain/canon.md) | The thirty rules this brain does not break. The most opinionated file here |
 | [`docs/traceability.md`](docs/traceability.md) | Generated. Metric → stories → risks → phase, on one page |
-| [`prototype/index.html`](prototype/index.html) | The queue, the clip, the coaching record. Grey boxes, real behaviour — open it and try the bulk dismissal |
+| [`prototype/index.html`](prototype/index.html) | The queue, the clip, the coaching record. Grey boxes, real behaviour — open it and work through the group of five |
+| [`prototype/checks/`](prototype/checks/) | 43 scripted assertions against that prototype. The same argument as the validator, one layer out |
 
 Then the machinery: [`AGENTS.md`](AGENTS.md) for the division of labour,
 [`skills/`](skills/) for the recipe behind each document type,

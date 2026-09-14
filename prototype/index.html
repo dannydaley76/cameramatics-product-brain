@@ -351,6 +351,17 @@ const inSet = () => live().filter(e => e.band === "critical" || e.band === "high
 const closedSet = () => STATE.events.filter(e => e.closedSet && e.state === "closed");
 const criticalOpen = () => live().filter(e => e.band === "critical").length;
 const groupEvents = key => STATE.events.filter(e => e.group === key && e.state === "reviewing");
+const groupAll = key => STATE.events.filter(e => e.group === key);
+function nextInGroup(e) {
+  const left = groupEvents(e.group).filter(x => x.id !== e.id);
+  return left.length ? left[0] : null;
+}
+function afterGrouped(e) {
+  const n = nextInGroup(e);
+  if (n) { go("event", n.id); return true; }
+  if (groupEvents(e.group).length) { go("bulk", e.group); return true; }
+  return false;
+}
 
 function setItems() {
   const out = [], seen = {};
@@ -414,8 +425,7 @@ function viewSet() {
   h += "<h3>Last week</h3>";
   h += '<button class="card" data-go="closed"><span class="title">' + WEEK.closedLastWeek
     + " events closed unreviewed last week</span>"
-    + '<span class="line">They stay open. Every action you had then, you still have now &mdash; '
-    + "footage for as long as the camera kept it.</span></button>";
+    + '<span class="line">Still open, and still actionable.</span></button>';
 
   return h + refs(["US-001", "US-002", "US-003", "US-004", "ADR-0007", "ADR-0009"]);
 }
@@ -433,11 +443,11 @@ function cardGroup(g) {
   const e = g.events[0];
   return '<button class="card" data-go="bulk" data-arg="' + g.key + '">'
     + '<span class="hd"><span class="tag">High</span><span class="tag soft">' + g.events.length
+    + (groupAll(g.key).length > g.events.length ? " of " + groupAll(g.key).length : "")
     + " events</span>" + '<span class="title">' + esc(e.behaviour) + ", one trip</span></span>"
     + '<span class="line">' + esc(e.where) + " &middot; Friday 12 September, 05:40 to 06:12</span>"
     + '<span class="line">' + esc(e.driver) + " &middot; " + esc(e.vehicle) + "</span>"
-    + '<span class="why">Grouped because all five share a driver, a behaviour and a trip. '
-    + "Open the group to read them individually.</span></button>";
+    + '<span class="why">Same driver, same behaviour, same trip.</span></button>';
 }
 
 function bandStrip(active, setCount) {
@@ -455,7 +465,7 @@ function bandStrip(active, setCount) {
 function viewBand(which) {
   let h = "<h2>" + which[0].toUpperCase() + which.slice(1) + " band</h2>";
   h += '<p class="sub">' + WEEK[which] + " events this week. Every one is kept, scored and counted on the "
-    + "driver&rsquo;s record. The band decides what happens next, not whether the event exists.</p>";
+    + "driver&rsquo;s record.</p>";
   h += bandStrip(which, inSet().length);
   h += '<div class="empty"><p class="big">Nothing here needs a conversation.</p><p>'
     + (which === "medium" ? "These are passed to the driver as a group rather than discussed one at a time."
@@ -468,8 +478,8 @@ function viewBand(which) {
 function viewClosed() {
   let h = '<p class="crumb"><button class="link" data-go="set">Review set</button></p>';
   h += "<h2>Closed unreviewed &mdash; week of 1&ndash;7 September</h2>";
-  h += '<p class="sub">' + WEEK.closedLastWeek + " events closed when the week ended. They did not disappear "
-    + "and they are not a backlog: nothing rolls into this week&rsquo;s set.</p>";
+  h += '<p class="sub">' + WEEK.closedLastWeek + " events closed when the week ended. "
+    + "Nothing rolls into this week&rsquo;s set.</p>";
   for (const e of closedSet()) h += cardClosed(e);
   h += '<p class="hint">' + (WEEK.closedLastWeek - closedSet().length) + " more, not built in the prototype.</p>";
   return h + refs(["US-003", "ADR-0009"]);
@@ -531,9 +541,17 @@ function signalsPanel(e) {
 }
 
 function viewEvent(id) {
-  const e = byId(id), decided = !!e.klass, back = e.closedSet ? "closed" : "set";
-  let h = '<p class="crumb"><button class="link" data-go="' + back + '">'
-    + (e.closedSet ? "Closed unreviewed" : "Review set") + "</button></p>";
+  const e = byId(id), decided = !!e.klass;
+  let h;
+  if (e.group && !e.closedSet) {
+    const all = groupAll(e.group), pos = all.indexOf(e) + 1, left = groupEvents(e.group).length;
+    h = '<p class="crumb"><button class="link" data-go="bulk" data-arg="' + e.group + '">'
+      + all.length + " events, one trip</button> &middot; event " + pos + " of " + all.length
+      + (left < all.length ? " &middot; " + (all.length - left) + " done" : "") + "</p>";
+  } else {
+    h = '<p class="crumb"><button class="link" data-go="' + (e.closedSet ? "closed" : "set") + '">'
+      + (e.closedSet ? "Closed unreviewed" : "Review set") + "</button></p>";
+  }
   h += "<h2>" + esc(e.behaviour) + ". " + esc(e.where) + ".</h2>";
   h += '<p class="sub"><span class="tag">' + (e.band === "critical" ? "Critical" : "High") + "</span> "
     + classTag(e.klass || e.proposed, decided) + " &nbsp; "
@@ -547,16 +565,14 @@ function viewEvent(id) {
 
   h += "<h3>Why it was graded this way</h3>";
   h += '<div class="block quiet"><p>' + esc(e.why) + "</p>"
-    + '<p class="kv">Scored by ' + esc(e.ruleset) + ". Kept with the event, so re-tuning later does not "
-    + "rewrite what this said at the time.</p></div>";
+    + '<p class="kv">Scored by ' + esc(e.ruleset) + ".</p></div>";
 
   if (!decided) {
     h += "<h3>What kind of event was this, and what happens next?</h3>";
     h += '<div class="block"><p>' + esc(e.classWhy) + "</p>"
       + (e.proposed === "credit" && e.credit
         ? "<p><strong>If you agree, this is what goes on the record:</strong> " + esc(e.credit) + "</p>" : "")
-      + '<p class="kv">That is what the system thinks. Nothing is recorded until you choose, and whichever '
-      + "you choose is logged as yours.</p></div>";
+      + "</div>";
     h += choiceButtons(e);
   } else {
     h += "<h3>What you decided</h3>";
@@ -564,6 +580,18 @@ function viewEvent(id) {
       + (e.matchedProposal ? "Same as the system proposed."
         : "Changed from the system&rsquo;s proposal of " + CLASS_LABEL[e.proposed] + ".") + "</p></div>";
     h += riskActions(e);
+  }
+  if (e.group && !e.closedSet) {
+    const n = nextInGroup(e), left = groupEvents(e.group).length - 1;
+    h += "<h3>The rest of this trip</h3>";
+    if (n) {
+      h += '<button class="act" data-go="event" data-arg="' + n.id + '">Next event &mdash; '
+        + esc(n.when.replace("Friday 12 September, ", "")) + "</button>";
+      h += '<button class="act" data-go="bulk" data-arg="' + e.group + '">Dismiss the remaining '
+        + left + " together</button>";
+    } else {
+      h += '<p class="hint">This is the last one left.</p>';
+    }
   }
   return h + refs(["US-005", "US-006", "US-007", "US-009", "US-010", "US-012", "ADR-0005", "ADR-0012", "ADR-0014"]);
 }
@@ -604,11 +632,11 @@ function viewDismiss(id) {
   h += "<h2>Dismiss this event</h2>";
   h += '<p class="sub">' + esc(e.behaviour) + ", " + esc(e.when) + " &middot; " + esc(e.driver) + "</p>";
   h += '<label for="dr">Why is this not worth a conversation?</label>';
-  h += '<p class="helper">Free text. It is read later in the downgrade audit, so write it for someone who was not there.</p>';
+  h += '<p class="helper">Free text, and it is read later &mdash; write it for someone who was not there.</p>';
   h += '<textarea id="dr" data-watch="watchDismiss" data-arg="' + e.id + '"></textarea>';
   if (e.footage !== "ready") {
-    h += '<div class="block quiet" style="margin-top:14px"><p>There is no clip for this event. The dismissal '
-      + "will be recorded as made without footage, so the dismissal rate can be read with and without that group.</p></div>";
+    h += '<div class="block quiet" style="margin-top:14px"><p>There is no clip for this event. '
+      + "The dismissal will be recorded as made without footage.</p></div>";
   }
   h += '<p style="margin-top:14px"><button class="act primary" id="dgo" data-act="doDismiss" data-arg="'
     + e.id + '" disabled>Record dismissal</button>'
@@ -617,35 +645,36 @@ function viewDismiss(id) {
 }
 
 function viewBulk(key) {
-  const evs = groupEvents(key), e = evs[0];
+  const evs = groupEvents(key), all = groupAll(key), e = evs[0] || all[0];
+  const done = all.length - evs.length;
   let h = '<p class="crumb"><button class="link" data-go="set">Review set</button></p>';
-  h += "<h2>" + evs.length + " events, one trip</h2>";
+  h += "<h2>" + all.length + " events, one trip</h2>";
   h += '<p class="sub">' + esc(e.driver) + " &middot; " + esc(e.vehicle)
     + " &middot; Friday 12 September, 05:40 to 06:12</p>";
-  h += '<div class="block"><p><strong>Why these are together.</strong> All five share a driver, a behaviour '
-    + "and a trip &mdash; that is the only grouping we do, and it is deliberately narrow. Events from "
-    + "different drivers, different behaviours or different trips are never offered as a group at any size.</p>"
-    + '<p class="kv">All five are on the resurfaced stretch of Ashby Road, and the forward camera saw '
-    + "stationary traffic ahead each time.</p></div>";
-  h += "<h3>The five events</h3>";
+  h += '<div class="block"><p><strong>Why these are together.</strong> Same driver, same behaviour, '
+    + "same trip.</p>"
+    + '<p class="kv">All on the resurfaced stretch of Ashby Road, with stationary traffic ahead each time.</p></div>';
+  h += "<h3>" + (done ? evs.length + " left to look at" : "The five events") + "</h3>";
+  if (done) h += '<p class="hint">' + done + " already handled.</p>";
   for (const x of evs) {
     h += '<button class="card" data-go="event" data-arg="' + x.id + '">'
       + '<span class="hd"><span class="tag soft">' + esc(x.id) + "</span>"
       + '<span class="title">' + esc(x.when.replace("Friday 12 September, ", "")) + "</span></span>"
       + '<span class="line">' + esc(x.sig.speed) + " in a " + esc(x.sig.limit) + " limit &middot; "
       + esc(x.sig.g) + " &middot; stationary traffic ahead</span>"
-      + '<span class="why">Open it, watch the clip, coach or dismiss it on its own.</span></button>';
+      + "</button>";
   }
-  h += "<h3>Or handle them together</h3>";
-  h += '<p class="hint">Only if one reason covers all five. If it does not, they are five events.</p>';
+  h += "<h3>Or handle " + (done ? "the rest" : "them") + " together</h3>";
+  h += '<p class="hint">Only if one reason covers ' + (done ? "all " + evs.length : "all five")
+    + ". If it does not, they are " + evs.length + " events.</p>";
   h += '<label for="br">Why do these not need a conversation?</label>';
-  h += '<p class="helper">One reason covers the group and is read later in the downgrade audit.</p>';
+  h += '<p class="helper">One reason covers the group.</p>';
   h += '<textarea id="br" data-watch="watchBulk" data-arg="' + key + '"></textarea>';
   h += '<p style="margin-top:14px"><button class="act" id="bgo" data-act="doBulk" data-arg="' + key
-    + '" disabled>Dismiss all ' + evs.length + " with that reason</button>"
+    + '" disabled>Dismiss ' + (done ? "the remaining " + evs.length : "all " + evs.length)
+    + " with that reason</button>"
     + '<button class="act" data-go="set">Back to the set</button></p>';
-  h += '<p class="hint">This records one dismissal decision, not ' + evs.length
-    + ", and no classification &mdash; a sweep is not five judgements and it is not five confirmations either.</p>";
+
   return h + refs(["US-004", "ADR-0008"]);
 }
 
@@ -662,8 +691,7 @@ function viewCoach(id) {
   h += '<p class="helper">What you both saw in the clip, and what ' + esc(first) + " said was going on.</p>";
   h += '<textarea id="disc" data-watch="watchCoach" data-arg="' + e.id + '"></textarea>';
   h += '<label for="agr">What you agreed</label>';
-  h += '<p class="helper">What changes next time. Two required fields rather than one, because '
-    + "&ldquo;spoke to driver&rdquo; fills a box and records nothing.</p>";
+  h += '<p class="helper">What changes next time.</p>';
   h += '<textarea id="agr" data-watch="watchCoach" data-arg="' + e.id + '"></textarea>';
   h += '<label for="said">What ' + esc(first) + ' said <span class="opt">&mdash; optional</span></label>';
   h += '<p class="helper">In their words, as close as you can. ' + esc(first) + " may be shown this.</p>";
@@ -751,6 +779,7 @@ const ACTIONS = {
     STATE.neutrals.push({ driver: e.driver, id: e.id });
     e.state = e.closedSet ? "closed-done" : "neutralised";
     e.outcome = "neutral";
+    if (e.group && !e.closedSet && afterGrouped(e)) return;
     go(e.closedSet ? "closed" : "set");
   },
 
@@ -784,6 +813,7 @@ const ACTIONS = {
     e.outcome = "dismissed";
     STATE.dismissals.push({ events: 1, bulk: false, withoutFootage: e.footage !== "ready",
       band: e.band, week: e.closedSet ? "prior" : "current" });
+    if (e.group && !e.closedSet && afterGrouped(e)) return;
     go(e.closedSet ? "closed" : "set");
   },
 
