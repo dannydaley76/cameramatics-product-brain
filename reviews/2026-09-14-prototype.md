@@ -6,7 +6,7 @@ reviewer: adversarial agent (fresh context, never saw the build)
 target: prototype/index.html, checked against brain/requirements/, skills/ux-writing.md, brain/canon.md, brain/registers/metrics.yaml and ADR-0002/0005/0007/0008/0009/0010/0012/0013/0014
 mode: refute
 method: driven in Chromium — 13 scripted runs, DOM enumeration, computed-style and bounding-box measurement, 12 screenshots
-status: findings issued, not dispositioned
+status: dispositioned 2026-09-14 by danny
 ---
 
 # Adversarial review — clickable prototype (`prototype/index.html`)
@@ -236,3 +236,80 @@ findings 1, 2, 3, 4, 5, 6 (absence by grep + DOM), 7, 8 (walked the full queue t
 **Not examined:** `brain/prd.md`, `phasing.md`, `business-case.md`, `problem.md`, `jtbd.md`, `judgement-log.md`, the personas, `risks.yaml`, `questions.yaml`, `docs/traceability.md`, `scripts/validate.py`, ADR-0001/0003/0004/0006/0011, and assumptions other than A-02/03/04/05/09/10/11/12/18/19. I did not check the prototype at phone width, did not test keyboard-only navigation or screen-reader output (there are zero `aria-label`s in the file, and the classification row is three unlabelled buttons in a group), and did not audit the remaining copy against the banned list beyond a regex pass.
 
 **One thing I could not decide.** Whether the fixture fleet's 161 events/week is consistent with A-02 (0.5–3 events/vehicle/day) is uncheckable: the prototype never states how many vehicles Northgate Logistics runs. At 15 vehicles it is in range; at 100 it is an order of magnitude under, which would put it on the wrong side of A-02's own discovery gate. That number should be on the screen.
+
+---
+
+## Human disposition — 2026-09-14, Danny
+
+Twenty findings. Sixteen fixed, one fixed differently from the way the reviewer
+implied, three deferred. Every fix is verified by a scripted run against the
+rebuilt file rather than by reading the diff — the reviewer's own method, and
+the reason its findings landed.
+
+**Fixed, and the four that mattered most were all the same fault.** The
+recognition record is now built from the event it belongs to, so confirming
+credit on Joe Mensah's Saturday event records Joe Mensah's Saturday event.
+Coaching asks two questions instead of one, because one box accepts *"Spoke to
+driver"* and two cannot — that is a change to [[US-010]], made because the
+prototype proved the requirement's own stated intent was unenforceable as
+written. A sweep now classifies nothing: bulk dismissal adds one dismissal
+decision and zero confirmations, where before it manufactured five and reported
+them as agreement with the grading model. Changing a classification removes that
+event's own counter entry rather than whichever was most recent.
+
+All four errors ran toward flattering the model. That is the finding behind the
+findings, and it is worth more than any of them individually.
+
+**Also fixed:** the review set is now genuinely ordered by a severity score that
+exists (12); M-09's population is critical and high band, current week only, and
+[[M-09]]'s own definition in the register now says so rather than leaving it to
+the reader (8); retention dates are internally consistent (9); last week's events
+carry real signals instead of the word "recorded", and the invented 60-metre
+range figure — a capability [[ADR-0012]] spent a paragraph excluding — is gone
+(10); the device that cannot flag objects ahead now says exactly that, which
+makes its footage and its low-confidence grading agree (11); the fetching panel
+carries [[US-007]]'s string verbatim and no longer describes an upload model
+[[ADR-0007]] did not choose (6, 7); the critical event's physics support the word
+"impact" (16); the bulk group's five events are a coherent trip rather than a
+generated sequence (17); the blocked-credit action says *"watch the clip first"*
+rather than borrowing US-010's line about a conversation (18); the artefact
+carries provenance (19); and the fleet size is on screen, so 161 events a week
+can be checked against [[A-02]] (the reviewer's closing point).
+
+**Fixed differently: finding 5.** The reviewer was right that the proposal button
+was 46% taller and that neutral was the cheapest path through any event. The
+agent proposed evening that up with a required reason on neutral. Danny rejected
+it — neutral is *nothing to see here*, and charging someone to type that buys
+compliance text rather than judgement. The asymmetry was real but the diagnosis
+was backwards: neutral was not too cheap, risk and credit were badly built at
+three clicks and a redundant second confirmation. All three are now one click
+that states its own consequence, the proposal is named in the panel rather than
+marked on a button, and the cost tracks what an action reaches — neutral needs no
+clip, credit needs the clip watched, risk needs the clip watched and something
+written. [[ADR-0014]] carries a dated correction; J-27 carries the overrule.
+
+**Deferred, and now said out loud on the screens rather than silently:**
+
+- **14 — camera channel selection** is text, not a control. It stays text. The
+  behaviour in question is whether a manager can judge an event from the
+  evidence, and a channel switcher demonstrates nothing a second grey box would
+  not. The screen no longer implies otherwise.
+- **13 — US-013, US-008 and US-015 are absent.** The footers now claim only what
+  is built, and name what is not: the medium-band screen says the send-to-driver
+  action is not built, the driver record says unattributed counts are not built
+  because [[A-23]] assumes attribution solved for this exercise, and the fleet
+  view is v1.1 by J-24. A false *Implements* line is worse than no line, and the
+  reviewer was right that C-24's principle covers this too.
+- **Accessibility.** The reviewer noted zero `aria-label`s, no keyboard-only
+  testing and no phone-width check. That is a real gap and it is not fixed. It is
+  deferred on time rather than on judgement, which is the honest reason.
+
+**One finding I would defend rather than fix.** The reviewer calls the band
+screens' *"a full list would sit here"* copy "prototype apologetics in the
+product voice". It is, and it stays. A prototype that quietly draws a list
+nobody built is the theatre the same review is elsewhere attacking.
+
+**What the pass bought.** Four fabrication bugs in the artefact whose stated job
+is proving this repository does not fabricate — caught by a reader who had never
+seen it, in about eleven minutes of driving it. That is the strongest argument in
+the submission for the method, and it cost one agent invocation.

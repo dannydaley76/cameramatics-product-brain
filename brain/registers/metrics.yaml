@@ -101,10 +101,13 @@ metrics:
     definition: >
       Reported as two numbers, always together, because ADR-0008 makes a bulk
       dismissal one judgement rather than N.
-      Per judgement - share of dismissal decisions taken on high-severity
-      events, counting a bulk dismissal once.
-      Per event - share of high-severity events that ended in a dismissed state,
-      counting every event inside a bulk dismissal.
+      Population for both numbers: events in the critical or high band - the
+      top of the queue - within the reporting week. Events closed unreviewed in
+      an earlier week are counted against that week, not this one.
+      Per judgement - dismissal decisions as a share of all terminal decisions
+      taken on that population, counting a bulk dismissal once.
+      Per event - share of that population's resolved events that ended in a
+      dismissed state, counting every event inside a bulk dismissal.
       Together they are the best available proxy for precision at the top of the
       queue. Neither is readable alone.
     target: "< 20% per judgement. Per event reported, not targeted."

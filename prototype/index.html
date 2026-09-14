@@ -113,7 +113,9 @@
   .notes { background: #fff; border: 1px solid var(--faint); border-style: dashed; padding: 12px 14px; }
   @media (min-width: 940px) { .notes { position: sticky; top: 14px; } }
   .notes[hidden] { display: none; }
-  .notes h3 { margin-top: 0; }
+  .notes h3 { margin: 0; }
+  .notes-hd { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px; }
+  #notesbody[hidden] { display: none; }
   .notes p { color: var(--mid); font-size: 13px; }
   .notes .m { border-top: 1px solid var(--hair); padding: 8px 0 0; margin: 8px 0 0; }
   .notes .m .top { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
@@ -131,26 +133,31 @@
     <div>
       <div class="appbar">
         <span class="name">Northgate Logistics</span>
-        <span class="who">Safety review &middot; week of 8&ndash;14 September 2026</span>
+        <span class="who">42 vehicles &middot; safety review, week of 8&ndash;14 September 2026</span>
         <span class="spacer"></span>
         <span class="who">Sam Okafor</span>
-        <button class="toggle" id="notesbtn">Hide notes</button>
       </div>
       <div class="critbar" id="critbar" hidden></div>
       <div class="main" id="screen"></div>
       <p class="storyref" style="border-top:0">
-        Prototype for the CameraMatics product exercise. Fixture data.
-        Every screen links to the requirement it implements.
+        Prototype for the CameraMatics product exercise &middot; drafted by agent,
+        decided by Danny Daley &middot; adversarial pass ran 2026-09-14, findings being worked through.
+        Fixture data throughout. Each screen links to the requirement it implements.
       </p>
     </div>
 
     <aside class="notes" id="notes">
-      <h3>Notes — not product</h3>
-      <p>This panel is not part of the product and a fleet manager never sees it.
-      It shows what the platform emits as you work, so the metric definitions can
-      be checked against the behaviour. Dismiss the group of five and watch
-      <a href="#" data-doc="M">M-09</a> split.</p>
-      <div id="readout"></div>
+      <div class="notes-hd">
+        <h3>Notes &mdash; not product</h3>
+        <button class="toggle" id="notesbtn" aria-expanded="true">Hide</button>
+      </div>
+      <div id="notesbody">
+        <p>A fleet manager never sees this. It shows what the platform emits as you
+        work, so the metric definitions can be checked against the behaviour.
+        Work through a few events individually, then sweep the group of five, and
+        watch <a href="#" data-doc="M">M-09</a>'s two numbers come apart.</p>
+        <div id="readout"></div>
+      </div>
     </aside>
   </div>
 </div>
@@ -169,12 +176,10 @@ const DOC = {
   "US-005": "brain/requirements/US-005-watch-the-clip.md",
   "US-006": "brain/requirements/US-006-why-it-was-graded.md",
   "US-007": "brain/requirements/US-007-footage-states.md",
-  "US-008": "brain/requirements/US-008-resolve-driver.md",
   "US-009": "brain/requirements/US-009-dismiss-with-reason.md",
   "US-010": "brain/requirements/US-010-log-coaching.md",
   "US-011": "brain/requirements/US-011-driver-response.md",
   "US-012": "brain/requirements/US-012-confirm-recognition.md",
-  "US-013": "brain/requirements/US-013-send-to-driver.md",
   "US-014": "brain/requirements/US-014-driver-record.md",
   "ADR-0002": "brain/decisions/ADR-0002-severity-gated-video-upload.md",
   "ADR-0005": "brain/decisions/ADR-0005-coaching-requires-viewed-footage.md",
@@ -183,11 +188,9 @@ const DOC = {
   "ADR-0009": "brain/decisions/ADR-0009-weekly-review-sets.md",
   "ADR-0010": "brain/decisions/ADR-0010-classification-is-orthogonal-to-severity.md",
   "ADR-0012": "brain/decisions/ADR-0012-forward-facing-detection-and-all-signals.md",
-  "ADR-0013": "brain/decisions/ADR-0013-downgrade-audit-practice-before-tooling.md",
   "ADR-0014": "brain/decisions/ADR-0014-classification-is-always-confirmed.md",
   "M": "brain/registers/metrics.yaml",
-  "canon": "brain/canon.md",
-  "ux-writing": "skills/ux-writing.md"
+  "canon": "brain/canon.md"
 };
 const href = id => REPO + (DOC[id] || (/^M-/.test(id) ? DOC.M : "README.md"));
 const link = (id, label) => '<a href="' + href(id) + '" target="_blank" rel="noopener">' + (label || id) + "</a>";
@@ -195,150 +198,139 @@ const link = (id, label) => '<a href="' + href(id) + '" target="_blank" rel="noo
 /* ------------------------------------------------------------------ state */
 
 const WEEK = { medium: 38, low: 112, closedLastWeek: 14 };
-const RETENTION_DAYS = 10;
+const RETENTION_DAYS = 10;   /* this account's contracted window; A-10 is a 7–14 day range */
 
 function ev(o) {
   return Object.assign({
-    band: "high", proposed: "risk", klass: null, played: false,
-    state: "reviewing", footage: "ready", outcome: null, group: null,
-    closedSet: false, forwardCam: true
+    band: "high", proposed: "risk", klass: null, played: false, state: "reviewing",
+    footage: "ready", outcome: null, group: null, closedSet: false, credit: null
   }, o);
 }
-
-const SIG = (o) => Object.assign({
-  speed: "", limit: "", g: "", place: "", time: "", conditions: "",
-  forward: "", driverCam: ""
-}, o);
+const SIG = o => Object.assign({ speed: "", limit: "", g: "", place: "", time: "",
+  conditions: "", forward: "", forwardMissing: false, driverCam: "" }, o);
 
 const STATE = {
-  screen: { name: "set" },
-  notes: true,
+  screen: { name: "set" }, notes: true,
   events: [
     ev({
-      id: "E-104", band: "critical", vehicle: "YJ19 KTX", driver: "Marek Nowak",
-      when: "Monday 8 September, 07:42", behaviour: "Hard braking",
-      where: "30 mph zone, Ashby Road",
-      why: "Graded critical: deceleration consistent with an impact. The clip uploaded without being asked for — anything collision-grade goes now.",
-      classWhy: "Proposed as risk: no object detected ahead before the deceleration began.",
+      id: "E-104", band: "critical", score: 96, vehicle: "YJ19 KTX", driver: "Marek Nowak",
+      when: "Monday 8 September, 07:42", behaviour: "Hard braking", where: "30 mph zone, Ashby Road",
+      why: "Graded critical: a 2.4 g spike over 0.12 s is a shock load rather than a stop, and the vehicle ahead was stationary 1.5 s before it.",
+      classWhy: "Proposed as risk: the vehicle ahead was stationary and in view for 4 seconds before the brake.",
       ruleset: "severity ruleset v4",
-      sig: SIG({ speed: "29 mph", limit: "30 mph", g: "1.14 g, 0.4 s", place: "Ashby Road, Coventry",
+      sig: SIG({ speed: "31 mph", limit: "30 mph", g: "2.4 g spike, 0.12 s", place: "Ashby Road, Coventry",
         time: "07:42, Monday", conditions: "Wipers on, lights on",
-        forward: "No object detected in the 4 s before", driverCam: "Eyes on road" })
+        forward: "Vehicle ahead, stationary, in view 4 s", driverCam: "No phone detected" })
     }),
     ev({
-      id: "E-121", vehicle: "BK21 OHP", driver: "Dee Fitzgerald",
-      when: "Tuesday 9 September, 09:14", behaviour: "Hard braking",
-      where: "40 mph zone, Coldharbour Lane",
-      why: "Graded high: deceleration in the top few percent, with a vehicle ahead.",
-      classWhy: "Proposed as risk: the vehicle ahead was in view for 9 seconds before the deceleration.",
-      ruleset: "severity ruleset v4",
-      sig: SIG({ speed: "38 mph", limit: "40 mph", g: "0.71 g, 0.9 s", place: "Coldharbour Lane, Rugby",
-        time: "09:14, Tuesday", conditions: "Wipers off, lights off",
-        forward: "Vehicle ahead, in view 9 s", driverCam: "Eyes on road" })
-    }),
-    ev({
-      id: "E-127", proposed: "credit", vehicle: "LM70 VDC", driver: "Priya Raman",
-      when: "Tuesday 9 September, 14:06", behaviour: "Hard braking",
-      where: "30 mph zone, Mill Lane",
+      id: "E-127", score: 74, proposed: "credit", vehicle: "LM70 VDC", driver: "Priya Raman",
+      when: "Tuesday 9 September, 14:06", behaviour: "Hard braking", where: "30 mph zone, Mill Lane",
       why: "Graded high: deceleration in the top few percent.",
       classWhy: "Proposed as credit: a cyclist entered from the left 0.8 s before the brake, and there was no contact.",
+      credit: "Tuesday 14:06, Mill Lane. Stopped in time for a cyclist who came out of the junction.",
       ruleset: "severity ruleset v4",
       sig: SIG({ speed: "27 mph", limit: "30 mph", g: "0.83 g, 0.6 s", place: "Mill Lane, Rugby",
         time: "14:06, Tuesday", conditions: "Wipers off, lights off",
-        forward: "Cyclist entering from the left, 0.8 s before", driverCam: "Eyes on road" })
+        forward: "Cyclist entering from the left, 0.8 s before", driverCam: "No phone detected" })
     }),
     ev({
-      id: "E-133", vehicle: "YJ19 KTX", driver: "Marek Nowak",
-      when: "Wednesday 10 September, 16:51", behaviour: "Phone in hand",
-      where: "70 mph zone, M40 northbound",
-      why: "Graded high: phone in hand for 6 seconds at motorway speed.",
-      classWhy: "Proposed as risk: sustained, and the road ahead was clear — nothing external explains it.",
-      ruleset: "severity ruleset v4", footage: "fetching",
-      sig: SIG({ speed: "62 mph", limit: "70 mph", g: "No event", place: "M40 northbound, J12",
-        time: "16:51, Wednesday", conditions: "Wipers off, lights on",
-        forward: "Road clear, no vehicle within 60 m", driverCam: "Phone in hand, 6 s" })
-    }),
-    ev({
-      id: "E-140", vehicle: "RV18 EWA", driver: "Alan Reid", forwardCam: false,
-      when: "Thursday 11 September, 11:23", behaviour: "Hard cornering",
-      where: "20 mph zone, Ladywell Way",
-      why: "Graded high: lateral force in the top few percent for this vehicle type.",
-      classWhy: "Proposed as risk — with low confidence. This device has no forward camera, so nothing rules out a hazard we cannot see.",
-      ruleset: "severity ruleset v4",
-      sig: SIG({ speed: "23 mph", limit: "20 mph", g: "0.52 g lateral", place: "Ladywell Way, Coventry",
-        time: "11:23, Thursday", conditions: "Wipers on, lights on",
-        forward: "", driverCam: "Eyes on road" })
-    }),
-    ev({
-      id: "E-150", proposed: "neutral", vehicle: "KX67 TRB", driver: "Joe Mensah",
-      when: "Saturday 13 September, 08:05", behaviour: "Hard braking",
-      where: "30 mph zone, Farnham Road",
+      id: "E-150", score: 71, proposed: "neutral", vehicle: "KX67 TRB", driver: "Joe Mensah",
+      when: "Saturday 13 September, 08:05", behaviour: "Hard braking", where: "30 mph zone, Farnham Road",
       why: "Graded high: deceleration in the top few percent.",
       classWhy: "Proposed as neutral: a vehicle crossed in from the left lane 1.1 s before the brake.",
       ruleset: "severity ruleset v4",
       sig: SIG({ speed: "28 mph", limit: "30 mph", g: "0.76 g, 0.7 s", place: "Farnham Road, Coventry",
         time: "08:05, Saturday", conditions: "Wipers off, lights off",
-        forward: "Vehicle cutting in from the left, 1.1 s before", driverCam: "Eyes on road" })
+        forward: "Vehicle cutting in from the left, 1.1 s before", driverCam: "No phone detected" })
+    }),
+    ev({
+      id: "E-121", score: 68, vehicle: "BK21 OHP", driver: "Dee Fitzgerald",
+      when: "Tuesday 9 September, 09:14", behaviour: "Hard braking", where: "40 mph zone, Coldharbour Lane",
+      why: "Graded high: deceleration in the top few percent, with a vehicle ahead.",
+      classWhy: "Proposed as risk: the vehicle ahead was in view for 9 seconds before the deceleration.",
+      ruleset: "severity ruleset v4",
+      sig: SIG({ speed: "38 mph", limit: "40 mph", g: "0.71 g, 0.9 s", place: "Coldharbour Lane, Rugby",
+        time: "09:14, Tuesday", conditions: "Wipers off, lights off",
+        forward: "Vehicle ahead, in view 9 s", driverCam: "No phone detected" })
+    }),
+    ev({
+      id: "E-133", score: 66, vehicle: "YJ19 KTX", driver: "Marek Nowak",
+      when: "Wednesday 10 September, 16:51", behaviour: "Phone in hand", where: "70 mph zone, M40 northbound",
+      why: "Graded high: phone in hand for 6 seconds at motorway speed.",
+      classWhy: "Proposed as risk: sustained, and nothing ahead explains it.",
+      ruleset: "severity ruleset v4", footage: "fetching",
+      sig: SIG({ speed: "62 mph", limit: "70 mph", g: "No braking event", place: "M40 northbound, J12",
+        time: "16:51, Wednesday", conditions: "Wipers off, lights on",
+        forward: "No vehicle detected ahead", driverCam: "Phone in hand, 6 s" })
+    }),
+    ev({
+      id: "E-140", score: 58, vehicle: "RV18 EWA", driver: "Alan Reid",
+      when: "Thursday 11 September, 11:23", behaviour: "Hard cornering", where: "20 mph zone, Ladywell Way",
+      why: "Graded high: lateral force in the top few percent for this vehicle type.",
+      classWhy: "Proposed as risk, at low confidence. This device generation records the road ahead but cannot flag what is in it, so the clip is the only evidence either way.",
+      ruleset: "severity ruleset v4",
+      sig: SIG({ speed: "23 mph", limit: "20 mph", g: "0.52 g lateral", place: "Ladywell Way, Coventry",
+        time: "11:23, Thursday", conditions: "Wipers on, lights on",
+        forward: "Recorded, but object detection is not supported on this device generation",
+        forwardMissing: true, driverCam: "No phone detected" })
     })
   ],
-  closed: [],
-  coaching: [],
-  recognitions: [],
-  neutrals: [],
-  dismissals: [],
-  classDecisions: []   // { matchedProposal: bool }
+  coaching: [], recognitions: [], neutrals: [], dismissals: [], classDecisions: []
 };
 
-/* the five that share a driver, a behaviour and a trip */
-["05:40", "05:48", "05:55", "06:04", "06:12"].forEach((t, i) => {
+/* five on one trip — stop-start behind temporary signals on a resurfaced road */
+[["05:40", "0.68", 27], ["05:48", "0.74", 30], ["05:55", "0.63", 26],
+ ["06:04", "0.71", 29], ["06:12", "0.66", 28]].forEach(([tm, g, mph], i) => {
   STATE.events.push(ev({
-    id: "E-14" + (2 + i), vehicle: "GV69 NPD", driver: "Tomasz Bielik", group: "G-1",
-    when: "Friday 12 September, " + t, behaviour: "Hard braking",
-    where: "30 mph zone, Ashby Road",
+    id: "E-14" + (2 + i), score: 65 - i, vehicle: "GV69 NPD", driver: "Tomasz Bielik", group: "G-1",
+    when: "Friday 12 September, " + tm, behaviour: "Hard braking", where: "30 mph zone, Ashby Road",
     why: "Graded high: deceleration in the top few percent.",
-    classWhy: "Proposed as risk: no object detected ahead.",
+    classWhy: "Proposed as risk: stationary traffic ahead, in view before each brake.",
     ruleset: "severity ruleset v4",
-    sig: SIG({ speed: (26 + i) + " mph", limit: "30 mph", g: (0.62 + i * 0.03).toFixed(2) + " g",
-      place: "Ashby Road, Coventry", time: t + ", Friday", conditions: "Wipers off, lights off",
-      forward: "No object detected ahead", driverCam: "Eyes on road" })
+    sig: SIG({ speed: mph + " mph", limit: "30 mph", g: g + " g", place: "Ashby Road, Coventry",
+      time: tm + ", Friday", conditions: "Wipers off, lights on",
+      forward: "Stationary traffic ahead", driverCam: "No phone detected" })
   }));
 });
 
-/* last week's set, closed unreviewed — reachable, and still actionable */
+/* last week's set. Today is Sunday 14 September; the window is 10 days, so
+   anything before 4 September has aged out. */
 [
   { id: "E-088", driver: "Dee Fitzgerald", vehicle: "BK21 OHP", behaviour: "Hard braking",
-    where: "30 mph zone, Brook Street", when: "Tuesday 2 September, 10:31", footage: "ready" },
+    where: "30 mph zone, Brook Street", when: "Tuesday 2 September, 10:31", footage: "expired", score: 70,
+    sig: SIG({ speed: "29 mph", limit: "30 mph", g: "0.73 g, 0.8 s", place: "Brook Street, Rugby",
+      time: "10:31, Tuesday", conditions: "Wipers off, lights off",
+      forward: "Vehicle ahead, in view 5 s", driverCam: "No phone detected" }) },
   { id: "E-093", driver: "Alan Reid", vehicle: "RV18 EWA", behaviour: "Hard cornering",
-    where: "40 mph zone, Bilton Road", when: "Wednesday 3 September, 15:02", footage: "expired" },
+    where: "40 mph zone, Bilton Road", when: "Wednesday 3 September, 15:02", footage: "expired", score: 64,
+    sig: SIG({ speed: "37 mph", limit: "40 mph", g: "0.55 g lateral", place: "Bilton Road, Rugby",
+      time: "15:02, Wednesday", conditions: "Wipers off, lights off",
+      forward: "Recorded, but object detection is not supported on this device generation",
+      forwardMissing: true, driverCam: "No phone detected" }) },
   { id: "E-097", driver: "Joe Mensah", vehicle: "KX67 TRB", behaviour: "Phone in hand",
-    where: "70 mph zone, M6 southbound", when: "Thursday 4 September, 08:47", footage: "ready" }
+    where: "70 mph zone, M6 southbound", when: "Thursday 4 September, 08:47", footage: "ready", score: 67,
+    sig: SIG({ speed: "58 mph", limit: "70 mph", g: "No braking event", place: "M6 southbound, J2",
+      time: "08:47, Thursday", conditions: "Wipers on, lights on",
+      forward: "No vehicle detected ahead", driverCam: "Phone in hand, 4 s" }) }
 ].forEach(o => STATE.events.push(ev(Object.assign({
   closedSet: true, state: "closed",
   why: "Graded high: in the top few percent for this behaviour.",
-  classWhy: "Proposed as risk.", ruleset: "severity ruleset v3",
-  sig: SIG({ speed: "—", limit: o.where.split(",")[0], g: "recorded", place: o.where.split(", ")[1],
-    time: o.when, conditions: "recorded", forward: "recorded", driverCam: "recorded" })
+  classWhy: "Proposed as risk.", ruleset: "severity ruleset v3"
 }, o))));
 
 STATE.seededCoaching = {
-  "Marek Nowak": [{
-    behaviour: "Phone in hand", date: "12 August 2026",
-    discussed: "Watched the clip together. Marek said the call was from the depot and he thought answering was quicker than pulling over. Agreed depot calls go to voicemail and he pulls in at the next layby.",
-    said: "Said he had not realised it had been that long.", disputed: false,
-    before: 4, after: 1
-  }],
-  "Priya Raman": [{
-    behaviour: "Hard cornering", date: "29 July 2026",
-    discussed: "Roundabout approach on the Lutterworth run. Agreed she comes off the accelerator earlier rather than braking into it. Walked the route on the map together.",
-    said: "Said the run is tight on time and she would rather leave 10 minutes earlier than rush it.",
-    disputed: false, before: 3, after: 0
-  }]
+  "Marek Nowak": [{ behaviour: "Phone in hand", date: "12 August 2026",
+    discussed: "Watched the clip together. The call was from the depot and Marek thought answering was quicker than pulling over.",
+    agreed: "Depot calls go to voicemail; he pulls in at the next layby and calls back.",
+    said: "Said he had not realised it had been that long.", disputed: false, before: 4, after: 1 }],
+  "Priya Raman": [{ behaviour: "Hard cornering", date: "29 July 2026",
+    discussed: "Roundabout approach on the Lutterworth run, three times in a fortnight.",
+    agreed: "She comes off the accelerator earlier rather than braking into it, and leaves ten minutes earlier on that run.",
+    said: "Said the run is tight on time and she would rather leave early than rush it.",
+    disputed: false, before: 3, after: 0 }]
 };
 STATE.seededRecognition = {
-  "Priya Raman": [{
-    when: "Thursday 21 August, 16:40",
-    text: "Thursday 16:40, Bilton Road. Waited behind a cyclist on the narrow stretch rather than squeezing past."
-  }]
+  "Priya Raman": [{ text: "Thursday 21 August, 16:40, Bilton Road. Waited behind a cyclist on the narrow stretch rather than squeezing past.", system: true }]
 };
 STATE.seededNeutral = { "Joe Mensah": 2, "Priya Raman": 1 };
 
@@ -346,7 +338,8 @@ STATE.seededNeutral = { "Joe Mensah": 2, "Priya Raman": 1 };
 
 const byId = id => STATE.events.find(e => e.id === id);
 const live = () => STATE.events.filter(e => e.state === "reviewing");
-const inSet = () => live().filter(e => e.band === "critical" || e.band === "high");
+const inSet = () => live().filter(e => e.band === "critical" || e.band === "high")
+  .sort((a, b) => b.score - a.score);
 const closedSet = () => STATE.events.filter(e => e.closedSet && e.state === "closed");
 const criticalOpen = () => live().filter(e => e.band === "critical").length;
 const groupEvents = key => STATE.events.filter(e => e.group === key && e.state === "reviewing");
@@ -367,40 +360,30 @@ function setItems() {
 const el = () => document.getElementById("screen");
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 function go(name, arg) { STATE.screen = { name: name, arg: arg }; render(); }
-
 const CLASS_LABEL = { risk: "Risk", neutral: "Neutral", credit: "Credit" };
+const firstName = n => n.split(" ")[0];
+
 function classTag(kind, settled) {
   const cls = kind === "credit" ? "credit" : kind === "neutral" ? "neutral" : "";
-  return '<span class="tag ' + cls + '">' + CLASS_LABEL[kind]
-    + (settled ? "" : " &mdash; proposed") + "</span>";
+  return '<span class="tag ' + cls + '">' + CLASS_LABEL[kind] + (settled ? "" : " &mdash; proposed") + "</span>";
 }
-
-function refs(list) {
-  return '<p class="storyref">Implements ' + list.map(id => link(id)).join(", ") + "</p>";
-}
+const refs = (list, note) => '<p class="storyref">Implements ' + list.map(id => link(id)).join(", ")
+  + (note ? ". " + note : "") + "</p>";
 
 /* ----------------------------------------------------------------- render */
 
 function render() {
-  const c = document.getElementById("critbar");
-  const n = criticalOpen();
+  const c = document.getElementById("critbar"), n = criticalOpen();
   c.hidden = n === 0;
   c.textContent = n === 1 ? "1 critical event needs review" : n + " critical events need review";
 
   const s = STATE.screen;
-  el().innerHTML = ({
-    set: viewSet, band: viewBand, closed: viewClosed, event: viewEvent,
-    dismiss: viewDismiss, bulk: viewBulk, coach: viewCoach,
-    recognise: viewRecognise, driver: viewDriver
-  })[s.name](s.arg);
+  el().innerHTML = ({ set: viewSet, band: viewBand, closed: viewClosed, event: viewEvent,
+    dismiss: viewDismiss, bulk: viewBulk, coach: viewCoach, driver: viewDriver })[s.name](s.arg);
 
-  el().querySelectorAll("[data-go]").forEach(b =>
-    b.addEventListener("click", () => go(b.dataset.go, b.dataset.arg)));
-  el().querySelectorAll("[data-act]").forEach(b =>
-    b.addEventListener("click", () => ACTIONS[b.dataset.act](b.dataset.arg, el())));
-  el().querySelectorAll("[data-watch]").forEach(t =>
-    t.addEventListener("input", () => ACTIONS[t.dataset.watch](t.dataset.arg, el())));
-
+  el().querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => go(b.dataset.go, b.dataset.arg)));
+  el().querySelectorAll("[data-act]").forEach(b => b.addEventListener("click", () => ACTIONS[b.dataset.act](b.dataset.arg, el())));
+  el().querySelectorAll("[data-watch]").forEach(t => t.addEventListener("input", () => ACTIONS[t.dataset.watch](t.dataset.arg, el())));
   renderNotes();
 }
 
@@ -415,15 +398,14 @@ function viewSet() {
 
   if (count === 0) {
     h += '<div class="empty"><p class="big">Nothing needs your attention this week.</p><p>'
-      + (WEEK.medium + WEEK.low)
-      + " events were graded and handled without you. You can look at any of them.</p></div>";
+      + (WEEK.medium + WEEK.low) + " events were graded and handled without you. You can look at any of them.</p></div>";
   } else {
     for (const it of items) h += it.kind === "single" ? cardSingle(it.event) : cardGroup(it);
   }
 
   h += "<h3>Last week</h3>";
-  h += '<button class="card flat" style="cursor:pointer" data-go="closed">'
-    + '<span class="title">' + WEEK.closedLastWeek + " events closed unreviewed last week</span>"
+  h += '<button class="card" data-go="closed"><span class="title">' + WEEK.closedLastWeek
+    + " events closed unreviewed last week</span>"
     + '<span class="line">They stay open. Every action you had then, you still have now &mdash; '
     + "footage for as long as the camera kept it.</span></button>";
 
@@ -433,8 +415,7 @@ function viewSet() {
 function cardSingle(e) {
   return '<button class="card' + (e.band === "critical" ? " crit" : "") + '" data-go="event" data-arg="' + e.id + '">'
     + '<span class="hd"><span class="tag">' + (e.band === "critical" ? "Critical" : "High") + "</span>"
-    + classTag(e.proposed, false)
-    + '<span class="title">' + esc(e.behaviour) + "</span></span>"
+    + classTag(e.proposed, false) + '<span class="title">' + esc(e.behaviour) + "</span></span>"
     + '<span class="line">' + esc(e.where) + " &middot; " + esc(e.when) + "</span>"
     + '<span class="line">' + esc(e.driver) + " &middot; " + esc(e.vehicle) + "</span>"
     + '<span class="why">' + esc(e.classWhy) + "</span></button>";
@@ -443,9 +424,8 @@ function cardSingle(e) {
 function cardGroup(g) {
   const e = g.events[0];
   return '<button class="card" data-go="bulk" data-arg="' + g.key + '">'
-    + '<span class="hd"><span class="tag">High</span>'
-    + '<span class="tag soft">' + g.events.length + " events</span>"
-    + '<span class="title">' + esc(e.behaviour) + ", one trip</span></span>"
+    + '<span class="hd"><span class="tag">High</span><span class="tag soft">' + g.events.length
+    + " events</span>" + '<span class="title">' + esc(e.behaviour) + ", one trip</span></span>"
     + '<span class="line">' + esc(e.where) + " &middot; Friday 12 September, 05:40 to 06:12</span>"
     + '<span class="line">' + esc(e.driver) + " &middot; " + esc(e.vehicle) + "</span>"
     + '<span class="why">Grouped because all five share a driver, a behaviour and a trip. '
@@ -457,38 +437,33 @@ function bandStrip(active, setCount) {
              ["medium", WEEK.medium, "Medium", "driver informed, no conversation"],
              ["low", WEEK.low, "Low", "recorded only"]];
   let h = '<div class="bands">';
-  for (const [k, n, t, l] of b) {
-    h += '<button data-go="' + (k === "set" ? "set" : "band") + '" data-arg="' + k
-      + '" aria-pressed="' + (active === k) + '"><span class="n">' + n
-      + '</span><span class="l">' + t + " &mdash; " + l + "</span></button>";
+  for (const [k, n, tl, l] of b) {
+    h += '<button data-go="' + (k === "set" ? "set" : "band") + '" data-arg="' + k + '" aria-pressed="'
+      + (active === k) + '"><span class="n">' + n + '</span><span class="l">' + tl + " &mdash; " + l + "</span></button>";
   }
   return h + "</div>";
 }
 
 function viewBand(which) {
   let h = "<h2>" + which[0].toUpperCase() + which.slice(1) + " band</h2>";
-  h += '<p class="sub">' + WEEK[which] + " events this week. Every one is kept, scored and counted "
-    + "on the driver&rsquo;s record. The band decides what happens next, not whether the event exists.</p>";
+  h += '<p class="sub">' + WEEK[which] + " events this week. Every one is kept, scored and counted on the "
+    + "driver&rsquo;s record. The band decides what happens next, not whether the event exists.</p>";
   h += bandStrip(which, inSet().length);
   h += '<div class="empty"><p class="big">Nothing here needs a conversation.</p><p>'
-    + (which === "medium"
-      ? "These are passed to the driver as a group rather than discussed one at a time."
-      : "These are recorded and contribute to trends. Nobody is asked to look at them.")
-    + "</p></div>";
-  h += '<p class="hint">A full list would sit here. It is left out because a list is not the '
-    + "behaviour in question.</p>";
+    + (which === "medium" ? "These are passed to the driver as a group rather than discussed one at a time."
+      : "These are recorded and contribute to trends. Nobody is asked to look at them.") + "</p></div>";
   h += '<button class="act" data-go="set">Back to the review set</button>';
-  return h + refs(["US-001", "US-013", "ADR-0007"]);
+  return h + refs(["US-001", "ADR-0007"],
+    "The list itself, and the action that passes a medium group to a driver (US-013), are not built here.");
 }
 
 function viewClosed() {
   let h = '<p class="crumb"><button class="link" data-go="set">Review set</button></p>';
   h += "<h2>Closed unreviewed &mdash; week of 1&ndash;7 September</h2>";
-  h += '<p class="sub">' + WEEK.closedLastWeek + " events closed when the week ended. They did not "
-    + "disappear and they are not a backlog: nothing rolls into this week&rsquo;s set.</p>";
+  h += '<p class="sub">' + WEEK.closedLastWeek + " events closed when the week ended. They did not disappear "
+    + "and they are not a backlog: nothing rolls into this week&rsquo;s set.</p>";
   for (const e of closedSet()) h += cardClosed(e);
-  h += '<p class="hint">' + (WEEK.closedLastWeek - closedSet().length)
-    + " more, not shown in the prototype.</p>";
+  h += '<p class="hint">' + (WEEK.closedLastWeek - closedSet().length) + " more, not built in the prototype.</p>";
   return h + refs(["US-003", "ADR-0009"]);
 }
 
@@ -518,43 +493,35 @@ function footagePanel(e) {
   }
   if (e.footage === "fetching") {
     return '<div class="footage"><span class="frame">Road-facing camera</span>'
-      + '<p class="state">Footage is on its way. This page will update when it arrives.</p>'
-      + '<p class="state">The camera keeps everything for ' + RETENTION_DAYS + " days and only sends a clip when "
-      + "an event is graded high enough to need one, so this was requested rather than pushed. "
-      + "You can dismiss the event without it, and the record will say you did.</p></div>";
+      + '<p class="state">Footage is on its way. This page will update when it arrives. '
+      + "You can still dismiss this event.</p>"
+      + '<p class="state">The device started uploading when it graded this high. It has been in and out '
+      + "of signal on the M40 since.</p></div>";
   }
   return '<div class="footage"><span class="frame">Road-facing camera</span>'
     + '<p class="state">Footage no longer available. This event is outside the ' + RETENTION_DAYS
-    + "-day window the camera keeps.</p>"
-    + '<p class="state">You can still dismiss it, and the record will say there was no footage.</p></div>';
+    + "-day window the camera keeps. You can still dismiss it, and the record will say there was no footage.</p></div>";
 }
 
 function signalsPanel(e) {
   const s = e.sig;
-  const row = (k, v, missing) => '<div' + (missing ? ' class="missing"' : "")
-    + "><dt>" + k + "</dt><dd" + (v.trigger ? ' class="trigger"' : "") + ">"
-    + esc(v.text) + "</dd></div>";
+  const row = (k, text, opts) => '<div' + ((opts && opts.missing) ? ' class="missing"' : "") + "><dt>" + k
+    + "</dt><dd" + ((opts && opts.trigger) ? ' class="trigger"' : "") + ">" + esc(text) + "</dd></div>";
   let h = '<dl class="signals">';
-  h += row("Speed at the event", { text: s.speed + (s.limit ? " in a " + s.limit + " limit" : "") });
-  h += row("Force", { text: s.g, trigger: /braking|cornering/i.test(e.behaviour) });
-  h += row("Where", { text: s.place });
-  h += row("When", { text: s.time });
-  h += row("Conditions", { text: s.conditions });
-  h += row("Forward camera", s.forward
-      ? { text: s.forward }
-      : { text: "Not fitted on this device generation" }, !s.forward);
-  h += row("Driver-facing camera", { text: s.driverCam, trigger: /phone/i.test(e.behaviour) });
-  h += "</dl>";
-  return h;
+  h += row("Speed at the event", s.speed + " in a " + s.limit + " limit");
+  h += row("Force", s.g, { trigger: /braking|cornering/i.test(e.behaviour) });
+  h += row("Where", s.place);
+  h += row("When", s.time);
+  h += row("Conditions", s.conditions);
+  h += row("Forward camera", s.forward, { missing: s.forwardMissing });
+  h += row("Driver-facing camera", s.driverCam, { trigger: /phone/i.test(e.behaviour) });
+  return h + "</dl>";
 }
 
 function viewEvent(id) {
-  const e = byId(id);
-  const decided = !!e.klass;
-  const back = e.closedSet ? "closed" : "set";
+  const e = byId(id), decided = !!e.klass, back = e.closedSet ? "closed" : "set";
   let h = '<p class="crumb"><button class="link" data-go="' + back + '">'
     + (e.closedSet ? "Closed unreviewed" : "Review set") + "</button></p>";
-
   h += "<h2>" + esc(e.behaviour) + ". " + esc(e.where) + ".</h2>";
   h += '<p class="sub"><span class="tag">' + (e.band === "critical" ? "Critical" : "High") + "</span> "
     + classTag(e.klass || e.proposed, decided) + " &nbsp; "
@@ -564,8 +531,8 @@ function viewEvent(id) {
   h += footagePanel(e);
 
   h += "<h3>Everything the device recorded</h3>";
-  h += '<p class="hint">Every event carries every signal the device had, whichever one set it off. '
-    + "The trigger decides that an event exists; it does not decide what evidence it carries.</p>";
+  h += '<p class="hint">Every event carries every signal the device had, whichever one set it off. The '
+    + "trigger decides that an event exists; it does not decide what evidence it carries.</p>";
   h += signalsPanel(e);
 
   h += "<h3>Why it was graded this way</h3>";
@@ -574,58 +541,48 @@ function viewEvent(id) {
     + "rewrite what this said at the time.</p></div>";
 
   if (!decided) {
-    h += "<h3>What kind of event was this?</h3>";
+    h += "<h3>What kind of event was this, and what happens next?</h3>";
     h += '<div class="block"><p>' + esc(e.classWhy) + "</p>"
-      + '<p class="kv">That is what the system thinks. It is not recorded until you say so, and '
-      + "whichever you choose is logged as yours.</p></div>";
-    h += actionButtons(e);
+      + (e.proposed === "credit" && e.credit
+        ? "<p><strong>If you agree, this is what goes on the record:</strong> " + esc(e.credit) + "</p>" : "")
+      + '<p class="kv">That is what the system thinks. Nothing is recorded until you choose, and whichever '
+      + "you choose is logged as yours.</p></div>";
+    h += choiceButtons(e);
   } else {
     h += "<h3>What you decided</h3>";
     h += '<div class="block"><p>' + CLASS_LABEL[e.klass] + ". "
-      + (e.matchedProposal ? "Same as the system proposed." : "Changed from the system&rsquo;s proposal of "
-        + CLASS_LABEL[e.proposed] + ".") + "</p></div>";
-    h += outcomeButtons(e);
+      + (e.matchedProposal ? "Same as the system proposed."
+        : "Changed from the system&rsquo;s proposal of " + CLASS_LABEL[e.proposed] + ".") + "</p></div>";
+    h += riskActions(e);
   }
-
   return h + refs(["US-005", "US-006", "US-007", "US-009", "US-010", "US-012", "ADR-0005", "ADR-0012", "ADR-0014"]);
 }
 
-function actionButtons(e) {
-  const P = c => e.proposed === c ? '<span class="pr">the system&rsquo;s proposal</span>' : "";
+function choiceButtons(e) {
+  const watched = e.played, noClip = e.footage !== "ready";
   let h = "";
-  h += '<button class="act' + (e.proposed === "risk" ? "" : "") + '" data-act="classify" data-arg="'
-    + e.id + '|risk">Risk &mdash; this was their handling' + P("risk") + "</button>";
-  h += '<button class="act" data-act="classify" data-arg="' + e.id
-    + '|neutral">Neutral &mdash; not their doing' + P("neutral") + "</button>";
-  h += '<button class="act" data-act="classify" data-arg="' + e.id
-    + '|credit">Credit &mdash; they avoided harm' + P("credit") + "</button>";
-  h += '<p class="hint">Nothing is preselected. Confirming the system&rsquo;s proposal and changing it '
-    + "are the same amount of work, and the record says which you did.</p>";
+  h += '<button class="act" data-act="chooseRisk" data-arg="' + e.id + '">Risk &mdash; this was their handling'
+    + '<span class="pr">Opens coaching or dismissal</span></button>';
+  h += '<button class="act" data-act="chooseNeutral" data-arg="' + e.id + '">Neutral &mdash; not their doing'
+    + '<span class="pr">Records it on ' + esc(firstName(e.driver)) + "&rsquo;s side and closes</span></button>";
+  h += '<button class="act" data-act="chooseCredit" data-arg="' + e.id + '"' + (watched ? "" : " disabled")
+    + ">Credit &mdash; they avoided harm"
+    + '<span class="pr">' + (watched ? "Records the recognition above" : "Watch the clip first") + "</span></button>";
+  h += '<p class="hint">One click each, and the system&rsquo;s proposal has no head start &mdash; it is named in '
+    + "the panel above, not preselected here. Credit and coaching need the clip watched because they reach a "
+    + "driver; recording something as not their doing does not.</p>";
+  if (noClip) h += '<p class="hint">There is no clip yet, so this event can be classified and dismissed but not coached.</p>';
   return h;
 }
 
-function outcomeButtons(e) {
+function riskActions(e) {
   const watched = e.played;
   let h = "";
   if (e.klass === "risk") {
-    h += '<button class="act primary" data-act="toCoach" data-arg="' + e.id + '"'
-      + (watched ? "" : " disabled") + ">Log coaching conversation</button>";
+    h += '<button class="act primary" data-act="toCoach" data-arg="' + e.id + '"' + (watched ? "" : " disabled")
+      + ">Log coaching conversation</button>";
     h += '<button class="act" data-go="dismiss" data-arg="' + e.id + '">Dismiss with a reason</button>';
-  } else if (e.klass === "credit") {
-    h += '<button class="act primary" data-act="toRecognise" data-arg="' + e.id + '"'
-      + (watched ? "" : " disabled") + ">Confirm recognition</button>";
-    h += '<button class="act" data-go="dismiss" data-arg="' + e.id + '">Dismiss with a reason</button>';
-  } else {
-    h += '<button class="act primary" data-act="doNeutral" data-arg="' + e.id
-      + '">Record on ' + esc(e.driver.split(" ")[0]) + "&rsquo;s record and close</button>";
-    h += '<p class="hint">No conversation. The event stays on the record as evidence on their side, '
-      + "which dismissing it would have lost.</p>";
-  }
-  if (!watched && e.klass !== "neutral") {
-    h += '<p class="hint">Watch the clip before recording a conversation.</p>';
-  }
-  if (e.footage !== "ready" && e.klass !== "neutral") {
-    h += '<p class="hint">There is no clip to watch yet, so this can be dismissed but not coached.</p>';
+    if (!watched) h += '<p class="hint">Watch the clip before recording a conversation.</p>';
   }
   h += '<p style="margin-top:10px"><button class="link" data-act="unclassify" data-arg="' + e.id
     + '">Change the classification</button></p>';
@@ -640,279 +597,257 @@ function viewDismiss(id) {
   h += "<h2>Dismiss this event</h2>";
   h += '<p class="sub">' + esc(e.behaviour) + ", " + esc(e.when) + " &middot; " + esc(e.driver) + "</p>";
   h += '<label for="dr">Why is this not worth a conversation?</label>';
-  h += '<p class="helper">Free text. It is read later in the downgrade audit, so write it for '
-    + "someone who was not there.</p>";
+  h += '<p class="helper">Free text. It is read later in the downgrade audit, so write it for someone who was not there.</p>';
   h += '<textarea id="dr" data-watch="watchDismiss" data-arg="' + e.id + '"></textarea>';
-  if (e.footage !== "ready" || !e.played) {
-    h += '<div class="block quiet" style="margin-top:14px"><p>'
-      + (e.footage === "ready"
-        ? "You have not played the clip."
-        : "There is no clip to play.")
-      + " This dismissal will be recorded as made without footage, so the dismissal rate can be read "
-      + "with and without that group.</p></div>";
+  if (e.footage !== "ready") {
+    h += '<div class="block quiet" style="margin-top:14px"><p>There is no clip for this event. The dismissal '
+      + "will be recorded as made without footage, so the dismissal rate can be read with and without that group.</p></div>";
   }
-  h += '<p style="margin-top:14px">'
-    + '<button class="act primary" id="dgo" data-act="doDismiss" data-arg="' + e.id + '" disabled>Record dismissal</button>'
+  h += '<p style="margin-top:14px"><button class="act primary" id="dgo" data-act="doDismiss" data-arg="'
+    + e.id + '" disabled>Record dismissal</button>'
     + '<button class="act" data-go="event" data-arg="' + e.id + '">Cancel</button></p>';
   return h + refs(["US-009", "ADR-0008"]);
 }
 
 function viewBulk(key) {
-  const evs = groupEvents(key);
-  const e = evs[0];
+  const evs = groupEvents(key), e = evs[0];
   let h = '<p class="crumb"><button class="link" data-go="set">Review set</button></p>';
   h += "<h2>" + evs.length + " events, one trip</h2>";
   h += '<p class="sub">' + esc(e.driver) + " &middot; " + esc(e.vehicle)
     + " &middot; Friday 12 September, 05:40 to 06:12</p>";
-
-  h += '<div class="block"><p><strong>Why these are together.</strong> All five share a driver, a '
-    + "behaviour and a trip &mdash; that is the only grouping we do, and it is deliberately narrow. "
-    + "Events from different drivers, different behaviours or different trips are never offered as a "
-    + "group at any size.</p>"
-    + '<p class="kv">Forward camera saw no object ahead on any of the five, and all five fall within '
-    + "1.2 miles of each other.</p></div>";
-
+  h += '<div class="block"><p><strong>Why these are together.</strong> All five share a driver, a behaviour '
+    + "and a trip &mdash; that is the only grouping we do, and it is deliberately narrow. Events from "
+    + "different drivers, different behaviours or different trips are never offered as a group at any size.</p>"
+    + '<p class="kv">All five are on the resurfaced stretch of Ashby Road, and the forward camera saw '
+    + "stationary traffic ahead each time.</p></div>";
   h += "<h3>The five events</h3>";
   for (const x of evs) {
     h += '<button class="card" data-go="event" data-arg="' + x.id + '">'
       + '<span class="hd"><span class="tag soft">' + esc(x.id) + "</span>"
       + '<span class="title">' + esc(x.when.replace("Friday 12 September, ", "")) + "</span></span>"
       + '<span class="line">' + esc(x.sig.speed) + " in a " + esc(x.sig.limit) + " limit &middot; "
-      + esc(x.sig.g) + " &middot; " + esc(x.where) + "</span>"
+      + esc(x.sig.g) + " &middot; stationary traffic ahead</span>"
       + '<span class="why">Open it, watch the clip, coach or dismiss it on its own.</span></button>';
   }
-
   h += "<h3>Or handle them together</h3>";
   h += '<p class="hint">Only if one reason covers all five. If it does not, they are five events.</p>';
   h += '<label for="br">Why do these not need a conversation?</label>';
   h += '<p class="helper">One reason covers the group and is read later in the downgrade audit.</p>';
   h += '<textarea id="br" data-watch="watchBulk" data-arg="' + key + '"></textarea>';
-  h += '<p style="margin-top:14px">'
-    + '<button class="act" id="bgo" data-act="doBulk" data-arg="' + key + '" disabled>Dismiss all '
-    + evs.length + " with that reason</button>"
+  h += '<p style="margin-top:14px"><button class="act" id="bgo" data-act="doBulk" data-arg="' + key
+    + '" disabled>Dismiss all ' + evs.length + " with that reason</button>"
     + '<button class="act" data-go="set">Back to the set</button></p>';
   h += '<p class="hint">This records one dismissal decision, not ' + evs.length
-    + ". Both numbers are in the notes panel.</p>";
+    + ", and no classification &mdash; a sweep is not five judgements and it is not five confirmations either.</p>";
   return h + refs(["US-004", "ADR-0008"]);
 }
 
 /* ---------------------------------------------------------------- coaching */
 
 function viewCoach(id) {
-  const e = byId(id);
+  const e = byId(id), first = firstName(e.driver);
   let h = '<p class="crumb"><button class="link" data-go="event" data-arg="' + e.id + '">Back to the event</button></p>';
   h += "<h2>Log a coaching conversation</h2>";
   h += '<p class="sub">' + esc(e.driver) + " &middot; " + esc(e.behaviour) + ", " + esc(e.when) + "</p>";
-  h += '<label for="beh">Behaviour</label><input type="text" id="beh" value="' + esc(e.behaviour) + '">';
-  h += '<label for="disc">What was discussed and agreed</label>';
-  h += '<p class="helper">Enough that someone reading it later can see what happened, not just that '
-    + "something happened. " + esc(e.driver.split(" ")[0]) + " may be shown this.</p>";
+  h += '<label for="beh">Behaviour</label>';
+  h += '<input type="text" id="beh" value="' + esc(e.behaviour) + '" data-watch="watchCoach" data-arg="' + e.id + '">';
+  h += '<label for="disc">What you talked about</label>';
+  h += '<p class="helper">What you both saw in the clip, and what ' + esc(first) + " said was going on.</p>";
   h += '<textarea id="disc" data-watch="watchCoach" data-arg="' + e.id + '"></textarea>';
-  h += '<label for="said">What the driver said <span class="opt">&mdash; optional</span></label>';
-  h += '<p class="helper">In their words, as close as you can.</p><textarea id="said"></textarea>';
-  h += '<div class="checkrow"><input type="checkbox" id="disp"><label for="disp">Driver disputes this</label></div>';
-  h += '<p style="margin-top:14px">'
-    + '<button class="act primary" id="cgo" data-act="doCoach" data-arg="' + e.id + '" disabled>Save coaching record</button>'
+  h += '<label for="agr">What you agreed</label>';
+  h += '<p class="helper">What changes next time. Two required fields rather than one, because '
+    + "&ldquo;spoke to driver&rdquo; fills a box and records nothing.</p>";
+  h += '<textarea id="agr" data-watch="watchCoach" data-arg="' + e.id + '"></textarea>';
+  h += '<label for="said">What ' + esc(first) + ' said <span class="opt">&mdash; optional</span></label>';
+  h += '<p class="helper">In their words, as close as you can. ' + esc(first) + " may be shown this.</p>";
+  h += '<textarea id="said"></textarea>';
+  h += '<div class="checkrow"><input type="checkbox" id="disp"><label for="disp">' + esc(first)
+    + " disputes this</label></div>";
+  h += '<p style="margin-top:14px"><button class="act primary" id="cgo" data-act="doCoach" data-arg="'
+    + e.id + '" disabled>Save coaching record</button>'
     + '<button class="act" data-go="event" data-arg="' + e.id + '">Cancel</button></p>';
   h += '<p class="hint">The clip reference is attached automatically.</p>';
   return h + refs(["US-010", "US-011", "ADR-0005"]);
 }
 
-function viewRecognise(id) {
-  const e = byId(id);
-  let h = '<p class="crumb"><button class="link" data-go="event" data-arg="' + e.id + '">Back to the event</button></p>';
-  h += "<h2>Confirm recognition</h2>";
-  h += '<p class="sub">' + esc(e.driver) + " &middot; " + esc(e.when) + "</p>";
-  h += '<div class="block"><p><strong>What will be recorded</strong></p>'
-    + "<p>Tuesday 14:06, Mill Lane. Stopped in time for a cyclist who came out of the junction.</p>"
-    + '<p class="kv">Confirmed by Sam Okafor &middot; clip attached</p></div>';
-  h += '<p class="hint">Nothing is sent anywhere. It goes on ' + esc(e.driver.split(" ")[0])
-    + "&rsquo;s record and you show them.</p>";
-  h += '<p style="margin-top:14px">'
-    + '<button class="act primary" data-act="doRecognise" data-arg="' + e.id + '">Confirm recognition</button>'
-    + '<button class="act" data-act="unclassify" data-arg="' + e.id + '">Change the classification</button></p>';
-  return h + refs(["US-012", "ADR-0010", "ADR-0014", "canon"]);
-}
-
 /* ---------------------------------------------------------- driver record */
 
 function viewDriver(name) {
-  const first = name.split(" ")[0];
-  const coached = STATE.coaching.filter(c => c.driver === name)
-    .concat(STATE.seededCoaching[name] || []);
-  const recs = STATE.recognitions.filter(r => r.driver === name)
-    .concat(STATE.seededRecognition[name] || []);
-  const neutral = STATE.neutrals.filter(n => n.driver === name).length
-    + (STATE.seededNeutral[name] || 0);
+  const first = firstName(name);
+  const coached = STATE.coaching.filter(c => c.driver === name).concat(STATE.seededCoaching[name] || []);
+  const recs = STATE.recognitions.filter(r => r.driver === name).concat(STATE.seededRecognition[name] || []);
+  const neutral = STATE.neutrals.filter(n => n.driver === name).length + (STATE.seededNeutral[name] || 0);
   const thisWeek = STATE.events.filter(e => e.driver === name && !e.closedSet).length;
 
   let h = '<p class="crumb"><button class="link" data-go="set">Review set</button></p>';
   h += "<h2>" + esc(name) + "</h2>";
   h += '<p class="sub">What happened, what was said, and what they got right &mdash; on one page.</p>';
-
   h += "<h3>This week</h3>";
   h += '<div class="block quiet"><p>' + thisWeek + " event" + (thisWeek === 1 ? "" : "s")
-    + " in the critical and high bands. " + neutral + " event" + (neutral === 1 ? "" : "s")
-    + " recorded as not their doing.</p></div>";
+    + " in the critical and high bands. " + neutral + " recorded as not their doing.</p>"
+    + '<p class="kv">Medium and low band counts would sit here too &mdash; every event contributes to this '
+    + "record, whatever band it landed in. Not built in the prototype.</p></div>";
 
   h += "<h3>Coaching conversations</h3>";
   if (!coached.length) h += '<p class="kv">None recorded.</p>';
   for (const c of coached) {
-    h += '<div class="block"><p><strong>' + esc(c.behaviour) + "</strong> &middot; "
-      + esc(c.date || "today") + "</p><p>" + esc(c.discussed) + "</p>"
+    h += '<div class="block"><p><strong>' + esc(c.behaviour) + "</strong> &middot; " + esc(c.date || "today") + "</p>"
+      + "<p><strong>Talked about.</strong> " + esc(c.discussed) + "</p>"
+      + "<p><strong>Agreed.</strong> " + esc(c.agreed) + "</p>"
       + (c.said ? "<p><strong>What " + esc(first) + " said.</strong> " + esc(c.said) + "</p>" : "")
-      + (c.disputed ? "<p><strong>" + esc(first) + " disputes this.</strong> Recorded and kept "
-          + "alongside the event.</p>" : "")
+      + (c.disputed ? "<p><strong>" + esc(first) + " disputes this.</strong> Recorded and kept alongside the event.</p>" : "")
       + '<p class="kv">Clip attached &middot; recorded by Sam Okafor</p></div>';
   }
 
   h += "<h3>Did it change anything?</h3>";
-  let any = false;
+  if (!coached.length) h += '<p class="kv">Nothing to compare yet.</p>';
   for (const c of coached) {
-    if (typeof c.before === "number") {
-      any = true;
-      h += '<div class="block quiet"><p><strong>' + esc(c.behaviour) + "</strong> &mdash; 28 days either "
-        + "side of " + esc(c.date) + "</p><p>" + c.before + " before, " + c.after + " after.</p>"
-        + '<p class="kv">A comparison, not proof. One driver over four weeks cannot separate a '
-        + "conversation from an ordinary quiet month.</p></div>";
-    } else {
-      any = true;
-      h += '<div class="block quiet"><p><strong>' + esc(c.behaviour) + "</strong> &mdash; today</p>"
+    h += typeof c.before === "number"
+      ? '<div class="block quiet"><p><strong>' + esc(c.behaviour) + "</strong> &mdash; 28 days either side of "
+        + esc(c.date) + "</p><p>" + c.before + " before, " + c.after + " after.</p>"
+        + '<p class="kv">A comparison, not proof. One driver over four weeks cannot separate a conversation '
+        + "from an ordinary quiet month.</p></div>"
+      : '<div class="block quiet"><p><strong>' + esc(c.behaviour) + "</strong> &mdash; today</p>"
         + "<p>Too early to say. This needs 4 weeks after the conversation.</p></div>";
-    }
   }
-  if (!any) h += '<p class="kv">Nothing to compare yet.</p>';
 
   h += "<h3>Recognised</h3>";
   if (!recs.length) h += '<p class="kv">None recorded.</p>';
   for (const r of recs) {
     h += '<div class="block"><p>' + esc(r.text) + "</p>"
-      + '<p class="kv">Confirmed by Sam Okafor &middot; clip attached'
-      + (r.humanInitiated ? " &middot; spotted by the manager, not the system" : "") + "</p></div>";
+      + '<p class="kv">Confirmed by Sam Okafor &middot; clip attached &middot; '
+      + (r.system ? "spotted by the system, confirmed by a person" : "spotted by the manager, not the system")
+      + "</p></div>";
   }
-
-  return h + refs(["US-014", "US-011", "ADR-0010"]);
+  return h + refs(["US-014", "US-011", "ADR-0010"],
+    "Unattributed-event counts (US-008, US-014) are not built: this exercise assumes attribution solved (A-23).");
 }
 
 /* ---------------------------------------------------------------- actions */
 
+function recordClass(e, kind) {
+  e.klass = kind;
+  e.matchedProposal = kind === e.proposed;
+  STATE.classDecisions = STATE.classDecisions.filter(d => d.id !== e.id);
+  STATE.classDecisions.push({ id: e.id, matched: e.matchedProposal });
+}
+
 const ACTIONS = {
   play(id) { byId(id).played = true; go("event", id); },
   toCoach(id) { go("coach", id); },
-  toRecognise(id) { go("recognise", id); },
 
-  classify(arg) {
-    const [id, kind] = arg.split("|");
+  chooseRisk(id) { recordClass(byId(id), "risk"); go("event", id); },
+
+  chooseNeutral(id) {
     const e = byId(id);
-    e.klass = kind;
-    e.matchedProposal = kind === e.proposed;
-    STATE.classDecisions.push({ matched: e.matchedProposal });
-    go("event", id);
-  },
-  unclassify(id) {
-    const e = byId(id);
-    e.klass = null;
-    STATE.classDecisions.pop();
-    go("event", id);
-  },
-
-  watchDismiss(id, root) { root.querySelector("#dgo").disabled = !root.querySelector("#dr").value.trim(); },
-  watchBulk(key, root) { root.querySelector("#bgo").disabled = !root.querySelector("#br").value.trim(); },
-  watchCoach(id, root) { root.querySelector("#cgo").disabled = !root.querySelector("#disc").value.trim(); },
-
-  doDismiss(id) {
-    const e = byId(id);
-    e.state = e.closedSet ? "closed-done" : "dismissed";
-    e.outcome = "dismissed";
-    STATE.dismissals.push({ events: 1, bulk: false, withoutFootage: e.footage !== "ready" || !e.played });
-    go(e.closedSet ? "closed" : "set");
-  },
-
-  doBulk(key) {
-    const evs = groupEvents(key);
-    for (const x of evs) {
-      if (!x.klass) { x.klass = x.proposed; x.matchedProposal = true; STATE.classDecisions.push({ matched: true }); }
-      x.state = "dismissed"; x.outcome = "dismissed";
-    }
-    STATE.dismissals.push({ events: evs.length, bulk: true, withoutFootage: true });
-    go("set");
-  },
-
-  doNeutral(id) {
-    const e = byId(id);
+    recordClass(e, "neutral");
     STATE.neutrals.push({ driver: e.driver, id: e.id });
     e.state = e.closedSet ? "closed-done" : "neutralised";
     e.outcome = "neutral";
     go(e.closedSet ? "closed" : "set");
   },
 
+  chooseCredit(id) {
+    const e = byId(id);
+    recordClass(e, "credit");
+    const text = e.credit || (e.sig.forward + " — " + e.sig.time + ", " + e.sig.place);
+    STATE.recognitions.push({ driver: e.driver, text: text, system: e.matchedProposal });
+    e.state = "recognised";
+    e.outcome = "recognised";
+    go("driver", e.driver);
+  },
+
+  unclassify(id) {
+    const e = byId(id);
+    e.klass = null;
+    STATE.classDecisions = STATE.classDecisions.filter(d => d.id !== e.id);
+    go("event", id);
+  },
+
+  watchDismiss(id, root) { root.querySelector("#dgo").disabled = !root.querySelector("#dr").value.trim(); },
+  watchBulk(key, root) { root.querySelector("#bgo").disabled = !root.querySelector("#br").value.trim(); },
+  watchCoach(id, root) {
+    root.querySelector("#cgo").disabled = !(root.querySelector("#beh").value.trim()
+      && root.querySelector("#disc").value.trim() && root.querySelector("#agr").value.trim());
+  },
+
+  doDismiss(id) {
+    const e = byId(id);
+    e.state = e.closedSet ? "closed-done" : "dismissed";
+    e.outcome = "dismissed";
+    STATE.dismissals.push({ events: 1, bulk: false, withoutFootage: e.footage !== "ready",
+      band: e.band, week: e.closedSet ? "prior" : "current" });
+    go(e.closedSet ? "closed" : "set");
+  },
+
+  doBulk(key) {
+    const evs = groupEvents(key);
+    for (const x of evs) { x.state = "dismissed"; x.outcome = "dismissed"; }
+    STATE.dismissals.push({ events: evs.length, bulk: true, withoutFootage: false,
+      band: "high", week: "current" });
+    go("set");
+  },
+
   doCoach(id, root) {
     const e = byId(id);
     STATE.coaching.push({
-      driver: e.driver,
-      behaviour: root.querySelector("#beh").value.trim() || e.behaviour,
+      driver: e.driver, behaviour: root.querySelector("#beh").value.trim(),
       discussed: root.querySelector("#disc").value.trim(),
+      agreed: root.querySelector("#agr").value.trim(),
       said: root.querySelector("#said").value.trim(),
       disputed: root.querySelector("#disp").checked
     });
     e.state = e.closedSet ? "closed-done" : "coached";
     e.outcome = "coached";
     go("driver", e.driver);
-  },
-
-  doRecognise(id) {
-    const e = byId(id);
-    STATE.recognitions.push({
-      driver: e.driver,
-      text: "Tuesday 14:06, Mill Lane. Stopped in time for a cyclist who came out of the junction.",
-      humanInitiated: !e.matchedProposal
-    });
-    e.state = "recognised"; e.outcome = "recognised";
-    go("set");
   }
 };
 
 /* ------------------------------------------------------------------ notes */
 
-document.getElementById("notesbtn").addEventListener("click", () => {
+document.getElementById("notesbtn").addEventListener("click", function () {
   STATE.notes = !STATE.notes;
-  document.getElementById("notes").hidden = !STATE.notes;
+  document.getElementById("notesbody").hidden = !STATE.notes;
   document.getElementById("cols").classList.toggle("with-notes", STATE.notes);
-  document.getElementById("notesbtn").textContent = STATE.notes ? "Hide notes" : "Show notes";
+  this.textContent = STATE.notes ? "Hide" : "Show";
+  this.setAttribute("aria-expanded", String(STATE.notes));
 });
 
 function renderNotes() {
-  const judgements = STATE.dismissals.length;
-  const dismissedEvents = STATE.dismissals.reduce((a, d) => a + d.events, 0);
-  const swept = STATE.dismissals.filter(d => d.bulk).reduce((a, d) => a + d.events, 0);
+  const cur = d => d.week === "current";
+  const dis = STATE.dismissals.filter(cur);
+  const judgements = dis.length;
+  const dismissedEvents = dis.reduce((a, d) => a + d.events, 0);
+  const swept = dis.filter(d => d.bulk).reduce((a, d) => a + d.events, 0);
+  const topBand = e => (e.band === "critical" || e.band === "high") && !e.closedSet;
+  const resolved = STATE.events.filter(e => topBand(e)
+    && ["dismissed", "coached", "recognised", "neutralised"].indexOf(e.state) >= 0).length;
   const decisions = judgements + STATE.coaching.length + STATE.recognitions.length + STATE.neutrals.length;
-  const resolved = STATE.events.filter(e => ["dismissed", "coached", "recognised", "neutralised", "closed-done"].indexOf(e.state) >= 0).length;
   const looked = resolved - swept;
   const matched = STATE.classDecisions.filter(d => d.matched).length;
   const cls = STATE.classDecisions.length;
   const pct = (a, b) => b ? Math.round((a / b) * 1000) / 10 + "%" : "&mdash;";
+  const was = n => n === 1 ? " was" : " were";
 
   const rows = [
     ["M-09", "per judgement", pct(judgements, decisions),
-      judgements + " of " + decisions + " decisions was a dismissal. Under 20% is the pass/fail term."],
+      judgements + " of " + decisions + " decision" + (decisions === 1 ? "" : "s") + was(judgements)
+      + " a dismissal. Under 20% is the pass/fail term. Critical and high bands, this week only."],
     ["M-09", "per event", pct(dismissedEvents, resolved),
       dismissedEvents + " of " + resolved + " resolved events ended dismissed. Reported, not targeted."],
     ["M-14", "sweep share", swept + " swept / " + looked + " looked at",
-      "Bar: never more cleared by bulk action than by looking."],
+      "Bar: never more cleared by bulk action than by looking." + (swept > looked ? " Breached." : "")],
     ["M-11", "confirmed without change", matched + " of " + cls,
-      "Added by ADR-0014. High is either good grading or rubber-stamping — the rate alone cannot say which."],
+      "Added by ADR-0014, and only a person can add to it — a sweep classifies nothing. High is either good grading or rubber-stamping; the rate alone cannot say which."],
     ["M-11", "band distribution", "1 / 10 / " + WEEK.medium + " / " + WEEK.low,
       "Critical, high, medium, low. Nothing discarded."],
-    ["M-03", "coaching records", String(STATE.coaching.length),
-      "Each anchors a 28-day repeat window."],
-    ["M-13", "recognition", String(STATE.recognitions.length),
-      "Ratio to coaching watched, never targeted."]
+    ["M-03", "coaching records", String(STATE.coaching.length), "Each anchors a 28-day repeat window."],
+    ["M-13", "recognition", String(STATE.recognitions.length), "Ratio to coaching watched, never targeted."]
   ];
 
   document.getElementById("readout").innerHTML = rows.map(r =>
     '<div class="m"><div class="top"><span class="id">' + link(r[0], r[0] + " " + r[1])
-    + '</span><span class="val">' + r[2] + "</span></div>"
-    + '<p class="note">' + r[3] + "</p></div>").join("");
+    + '</span><span class="val">' + r[2] + "</span></div><p class=\"note\">" + r[3] + "</p></div>").join("");
 }
 
 render();

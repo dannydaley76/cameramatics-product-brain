@@ -28,13 +28,18 @@ adversarial_pass: ran 2026-09-14
   a coaching conversation, **then** the action is unavailable and reads
   *"Watch the clip before recording a conversation"* ([[ADR-0005]]).
 - **Given** the manager logs a conversation, **when** the form is displayed,
-  **then** two fields are required: the behaviour, pre-filled from the
-  classification, and **what was discussed and agreed** in free text. A status
+  **then** three fields are required: the behaviour, pre-filled from the
+  classification; **what you talked about**; and **what you agreed**. A status
   change with no content is not a coaching record.
-- **Given** the manager submits with the discussion field empty, **when** they
-  attempt to save, **then** the action is unavailable. *"Spoke to driver"* is
-  explicitly **not** an acceptable complete record — it is the tick-box this
-  requirement exists to prevent.
+- **Given** any of the three is empty, **when** the manager attempts to save,
+  **then** the action is unavailable.
+- *"Spoke to driver"* is explicitly **not** an acceptable complete record — it
+  is the tick-box this requirement exists to prevent. **Splitting the single
+  free-text box into "talked about" and "agreed" is what makes that
+  enforceable**: one box accepts the tick-box and the prototype proved it,
+  where two cannot be satisfied by a phrase that describes neither. Sincerity
+  is not something a field can validate; asking the two questions the
+  conversation actually has is the closest a form gets.
 - **Given** a coaching record is saved, **when** it is displayed, **then** it
   contains the clip reference, what was discussed and agreed, and the driver's
   response ([[US-011]]) — enough for a third party to see what happened rather

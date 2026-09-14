@@ -88,6 +88,29 @@ that hides what it knows to check whether you agree with it is not a tool.
 4. **"The system said so" stops being available** as an account of a decision.
    That is the consequence this decision is actually for.
 
+## Correction, 2026-09-14, on the prototype's adversarial pass
+
+Consequence 1 above claimed the cost was contained because *"confirming and
+acting are one action, not two"*. Built, it was two: classify, then act. The
+adversarial pass also measured the proposed classification's button at 46%
+taller than the alternatives, and costed the three paths — neutral at two
+clicks and no typing, risk and credit at three plus typing. So the cheapest
+path through any event was the one this decision calls the dangerous one.
+
+**What changed.** The three classifications are now one click each and each
+states its consequence: risk opens coaching or dismissal, neutral records and
+closes, credit records the recognition. The proposal is named in the panel
+above the buttons rather than marked on one of them, so the three weigh the
+same. The cost gradient now tracks consequence: neutral needs no clip, credit
+needs the clip watched, risk needs the clip watched and something written.
+
+**What was proposed and rejected.** The agent proposed requiring a typed reason
+for neutral, to even the cost. Danny overruled it: neutral is *nothing to see
+here*, and making someone type that buys friction rather than judgement. The
+guard against neutral being over-used is the downgrade audit sampling it
+afterwards — the same argument [[ADR-0008]] already makes about bulk dismissal
+— not friction at the point of decision. Recorded as J-27.
+
 ## Revisit when
 
 The confirm-without-change rate is high enough for long enough that the

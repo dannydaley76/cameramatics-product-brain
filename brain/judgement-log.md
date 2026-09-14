@@ -700,12 +700,51 @@ from anywhere a validator looks.*
 
 ---
 
+## J-27 — Friction on neutral, rejected *(agent overruled)*
+
+**Agent proposed:** requiring a typed reason before an event can be classified
+neutral. The adversarial pass had found that neutral was the cheapest path
+through any event — two clicks, no typing, against three plus typing for risk
+and credit — and that [[ADR-0014]] itself calls neutral the dangerous class
+because it removes a conversation nobody later goes looking for. Evening up the
+cost looked like the fix.
+
+**Decided:** no. `decided_by: danny` · `status: ratified`
+
+**Reason for reversal, in his words:** *"neutral is 'nothing to see here', so
+why force them to type that."* The proposal would have charged a manager for
+agreeing with evidence already on the screen — the forward camera saw the
+vehicle cut in, the panel says so, and typing it out again produces a sentence
+nobody will read. Friction bought no judgement; it bought compliance text for
+the audit sample to wade through.
+
+**What the agent had missed** is that its own repository already answers this.
+[[ADR-0008]] argues that the control on a cheap action belongs in the sample
+read afterwards, not in friction at the point of decision — that is why bulk
+dismissal exists at all rather than being forbidden. Neutral is the same shape.
+The guard is the downgrade audit, which [[ADR-0014]] had already added
+confirmed-without-change to.
+
+**The real fix was elsewhere.** Neutral was not too cheap; risk and credit were
+badly built. Three clicks and a second redundant confirmation screen for
+recognition was the actual defect, and flattening those to one click each fixed
+the asymmetry without touching neutral. The cost now tracks consequence rather
+than danger: neutral needs no clip, credit needs the clip watched, risk needs
+the clip watched and something written.
+
+*Class of error: took a measured asymmetry and reached for the lever that
+equalises it, rather than asking which side of it was wrong. Adding friction is
+always available and almost never the answer, and this repository had already
+made that argument once in a decision the agent drafted.*
+
+---
+
 ## Where the split actually falls
 
-Twenty-six entries. The agent generated the option sets, wrote the prose, held
-roughly forty cross-referenced IDs consistent and enforced the schema. Seven
+Twenty-seven entries. The agent generated the option sets, wrote the prose, held
+roughly forty cross-referenced IDs consistent and enforced the schema. Eight
 entries are marked *(agent overruled)* — J-04, J-05, J-06, J-10, J-14, J-19,
-J-22. Beyond those: J-16 reframes a model the agent had already built, J-13 is a
+J-22, J-27. Beyond those: J-16 reframes a model the agent had already built, J-13 is a
 blind spot the agent did not see at all, J-18 is an insight the agent under-read
 in its own finding, J-11 reverses an earlier decision on new information, J-15
 is an attribution the agent refused to make, J-21 is a principle the option set
