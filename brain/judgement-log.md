@@ -426,6 +426,53 @@ by what it implied. Evidence found while reading marketing was filed as a
 marketing insight — and so its consequences for the product model went
 unexamined.*
 
+## J-19 — A coaching record must contain an artefact *(agent overruled)*
+
+**Agent had written:** [[../brain/requirements/US-010]] accepting *"Spoke to
+driver"* as a complete coaching record, reasoning from [[R-07]] that logging must
+cost less than not logging or the conversation happens in the depot and never
+reaches the system.
+
+**Decided:** the record must show *what happened*, not that something happened.
+Behaviour plus what was discussed and agreed, both required, alongside the clip
+reference and the driver's response. `decided_by: danny` · `status: ratified`
+
+**Reason for reversal:** the agent optimised one risk into another. Removing
+friction does protect against coaching happening outside the system — but a
+frictionless tick produces a record that cannot support [[M-03]], cannot evidence
+a fair conversation to a driver who disputes it, and cannot tell anyone six
+months later whether coaching is working. We would have bought a high coaching
+count and learned nothing from it, which is the measurement failure this whole
+submission is built on criticising.
+
+The resolution is not "more friction" but *the minimum friction that still
+produces an artefact*: one free-text box, behaviour pre-filled, clip attached
+automatically. [[R-07]]'s mitigation was rewritten, because it had said the
+opposite.
+
+*Class of error: mitigated a named risk without checking what the mitigation
+cost elsewhere — single-risk optimisation.*
+
+## J-20 — Email for critical events, carrying almost nothing
+
+**Agent had written:** no notification outside the portal in v1, named as a
+known weakness in [[../brain/requirements/US-002]].
+
+**Decided:** email for critical events ([[decisions/ADR-0011]]).
+`decided_by: danny` · `status: ratified`
+
+**What it rested on:** the weakness the agent had named and then left standing. A
+bypass that requires the manager to already be in the portal is a sorting rule,
+not a bypass, and naming a gap is not the same as deciding to accept it.
+
+**What the agent added once the decision was made:** the email carries the
+vehicle, the time and a link — no driver name, no footage, no still image, no
+location. Footage and driver identity are personal data ([[A-07]]) and an inbox
+is forwarded, read on shared screens, and retained outside our retention policy.
+That is a data-minimisation call the brief for this change did not ask for, and
+it is the kind of thing an agent *should* contribute: not the decision, the
+consequences of it.
+
 ---
 
 ## Where the split actually falls

@@ -7,9 +7,9 @@ phase: v1
 priority: must
 size: S
 metrics: [M-05, M-10]
-risks: [R-01]
+risks: [R-01, R-04]
 assumptions: [A-10]
-decisions: [ADR-0002, ADR-0007]
+decisions: [ADR-0002, ADR-0007, ADR-0011]
 status: proposed
 drafted_by: agent
 ---
@@ -36,9 +36,23 @@ for the weekly set
   event exists, **then** that event is **not** closed with the set and remains
   outstanding.
 
+- **Given** a critical event has been unreviewed for 15 minutes, **when** the
+  platform evaluates notifications, **then** an email is sent to the account's
+  nominated recipients with the subject *"A critical event needs review"*.
+- **Given** that email is composed, **when** it is sent, **then** it contains the
+  vehicle, the time and a link to the event, and contains **no driver name, no
+  footage, no still image and no location detail** ([[ADR-0011]]). Anyone who
+  needs those signs in.
+- **Given** several critical events occur within 15 minutes on one account,
+  **when** notification is evaluated, **then** one email is sent stating the
+  count, not one per event.
+- **Given** an event is graded high, medium or low, **when** notification is
+  evaluated, **then** no email is sent. Email is critical-band only.
+
 ## Out of scope for this story
 
-- Notification outside the portal — email, SMS or push. v1 requires the manager
-  to be in the portal to see the indicator, which is a known weakness and is
-  named as such in [[../phasing]].
-- Escalation to anyone else when a critical event goes unreviewed.
+- SMS, push, or any channel other than email ([[ADR-0011]]).
+- Escalation to anyone else when a critical event goes unreviewed, and any
+  reminder after the first email.
+- Managing who the nominated recipients are — account configuration, assumed to
+  exist.

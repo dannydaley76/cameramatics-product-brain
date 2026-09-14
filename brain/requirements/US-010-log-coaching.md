@@ -27,8 +27,17 @@ drafted_by: agent
   a coaching conversation, **then** the action is unavailable and reads
   *"Watch the clip before recording a conversation"* ([[ADR-0005]]).
 - **Given** the manager logs a conversation, **when** the form is displayed,
-  **then** the only required field is the event's behaviour, pre-filled from the
-  classification, and *"Spoke to driver"* is an acceptable complete record.
+  **then** two fields are required: the behaviour, pre-filled from the
+  classification, and **what was discussed and agreed** in free text. A status
+  change with no content is not a coaching record.
+- **Given** the manager submits with the discussion field empty, **when** they
+  attempt to save, **then** the action is unavailable. *"Spoke to driver"* is
+  explicitly **not** an acceptable complete record — it is the tick-box this
+  requirement exists to prevent.
+- **Given** a coaching record is saved, **when** it is displayed, **then** it
+  contains the clip reference, what was discussed and agreed, and the driver's
+  response ([[US-011]]) — enough for a third party to see what happened rather
+  than that something happened.
 - **Given** a coaching record is created, **when** it is saved, **then** it is
   attached to the driver, the event and the footage reference, and is
   retrievable as a single artefact the manager could show the driver.
@@ -37,7 +46,9 @@ drafted_by: agent
 
 ## Out of scope for this story
 
-- Structured coaching content, training assignment, or any curriculum.
+- Structured coaching content, training assignment, or any curriculum. The
+  required field is one free-text box, not a form — the discipline is that
+  *something happened and here is what*, not that it was filled in correctly.
 - Sending the record anywhere. The driver sees it when the manager shows them
   ([[ADR-0004]]).
 - Scheduling. This records a conversation, it does not arrange one.

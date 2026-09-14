@@ -111,9 +111,12 @@ risks:
     likelihood: high
     impact: medium
     mitigation: >
-      Make logging a coaching action cheaper than not logging it - one click from
-      the clip, sensible defaults, no form. Accept "spoke to driver" as a valid
-      terminal state rather than forcing a structured session.
+      Make logging a coaching action nearly as cheap as not logging it - one step
+      from the clip, behaviour pre-filled, one free-text box. But the box is
+      required: a coaching record with no content cannot support M-03 or evidence
+      a fair conversation, so "spoke to driver" as a bare status is refused
+      ([[US-010]]). The friction is deliberate and is the minimum that still
+      produces an artefact.
     metrics: [M-08]
     owner: product
 

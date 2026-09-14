@@ -6,9 +6,10 @@ persona: fleet-manager
 phase: v1
 priority: must
 size: S
-metrics: [M-09, M-11]
+metrics: [M-09, M-11, M-13]
 risks: [R-12]
 decisions: [ADR-0008, ADR-0010]
+links: [[US-012]]
 questions: [Q-08]
 status: proposed
 drafted_by: agent
@@ -32,6 +33,15 @@ drafted_by: agent
   **when** the dismissal is recorded, **then** the manager is offered
   reclassification to **neutral** ([[ADR-0010]]) so the event is recorded as
   evidence on the driver's side rather than disappearing.
+- **Given** the manager watched the clip and judges that the driver's action
+  avoided harm, **when** they are dismissing, **then** reclassification to
+  **credit** is offered alongside neutral, and choosing it routes the event to
+  recognition ([[US-012]]) rather than closing it. A manager who has just seen a
+  driver do something well must not have to dismiss it to move on.
+- **Given** an event is reclassified from risk to credit by the manager, **when**
+  the record is written, **then** it is marked as human-initiated rather than
+  system-proposed, so [[M-13]] can distinguish recognition the system spotted
+  from recognition only a person saw.
 - **Given** a dismissal is recorded, **when** the downgrade audit sample is
   drawn, **then** it is eligible for selection.
 - **Given** footage was never available, **when** the manager dismisses,

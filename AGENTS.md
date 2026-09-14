@@ -35,6 +35,9 @@ judgement.
 
 ## The adversarial pass, and the honesty rule
 
+Procedure: [`skills/adversarial-review.md`](skills/adversarial-review.md).
+Agent definition: [`agents/adversarial-reviewer.md`](agents/adversarial-reviewer.md).
+
 Anything carrying a real decision gets an adversarial pass before it is
 considered done. Two rules protect it:
 
