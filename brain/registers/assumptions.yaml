@@ -38,16 +38,44 @@ assumptions:
 
   - id: A-03
     statement: >
-      A fleet manager will give this capability 10-15 minutes a day at most, in
-      practice 2-3 sessions a week rather than daily.
-    confidence: medium
+      The fleet manager's attention is finite and contested. How finite is
+      UNKNOWN. An earlier version of this register asserted 10-15 minutes a day;
+      that figure was invented rather than observed and has been withdrawn.
+    confidence: low
     impact: high
+    correction: >
+      Withdrawn 2026-09-14 on Danny's challenge. The number had no source, and
+      worse, it had started to act as a design target - review speed was drifting
+      into a goal when the goal is fewer collisions. A time budget is an OUTPUT
+      of a good design, not an input to it. If preventing collisions takes forty
+      well-spent minutes a week, that is the right answer and a fifteen-minute
+      product would be the wrong one.
     if_wrong: >
-      More capacity permits a richer review surface; less capacity means even a
-      short queue must be pushed to them rather than pulled.
-    validate: Portal session analytics on existing customers plus 8-10 customer interviews.
-    source: stated assumption, no insider data
+      The failure mode this guards against is not "we assumed the wrong number".
+      It is designing for speed of clearance and calling that success - a
+      manager who clears a queue quickly and changes nothing has used the product
+      exactly as designed and got no value from it.
+    validate: >
+      Observe real sessions. Ask what they currently spend on safety and what
+      they would trade for it. Measure time per event as a diagnostic, never as
+      a target.
+    source: withdrawn assumption, retained as a record of the correction
+    metrics: [M-06]
     questions: [Q-01]
+
+  - id: A-19
+    statement: >
+      Event volume is high - high enough that individually reviewing every
+      detected event is not possible for any fleet manager at any realistic
+      staffing level. This is the working assumption for design purposes.
+    confidence: medium
+    impact: critical
+    if_wrong: >
+      If volume is genuinely low, grading is unnecessary and every event can go
+      to a human. See A-02, which carries the discovery gate.
+    validate: See Q-02. Thirty days of telemetry across ten representative fleets.
+    source: Danny's direction for this exercise - assumed, not measured
+    questions: [Q-02]
 
   - id: A-04
     statement: >

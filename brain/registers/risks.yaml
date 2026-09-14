@@ -174,3 +174,43 @@ risks:
       packageable as a module with a per-vehicle price.
     questions: [Q-04]
     owner: product + commercial
+
+  - id: R-11
+    category: adoption
+    title: Sustained non-use, and a product that only reports it
+    detail: >
+      A manager accumulates consecutive weeks of closed unreviewed sets
+      ([[ADR-0009]]). The product counts them and displays the number, which at
+      that point is a receipt rather than a solution. This is the failure mode
+      the whole capability is meant to prevent, arriving through the front door.
+    likelihood: medium
+    impact: high
+    mitigation: >
+      Instrument consecutive unreviewed weeks from day one and treat two in a row
+      as a defect signal, not a customer-success ticket (canon C-29). Bulk
+      dismissal with a reason exists partly so a returning manager can clear a
+      backlog rather than abandon the tool ([[ADR-0008]]). What to do about
+      sustained non-use - re-engagement, reducing what we surface, or a
+      conversation rather than a feature - is deliberately deferred to phase 2
+      and named as deferred.
+    metrics: [M-07]
+    owner: product
+
+  - id: R-12
+    category: technical
+    title: Mis-grading at the medium/high boundary
+    detail: >
+      Under ADR-0007 nothing is discarded, so the critical failure is no longer
+      suppression - it is an event that deserved a conversation being graded
+      medium and sent to the driver as a notification instead. That is invisible
+      unless somebody goes looking.
+    likelihood: medium
+    impact: high
+    mitigation: >
+      Look-back review: a periodic human-read sample of bulk dismissals and of
+      the medium and low bands, looking for events that should have graded higher
+      ([[ADR-0008]]). The control needs a named owner - a control nobody performs
+      is not a control.
+    metrics: [M-09, M-11]
+    owner: product
+

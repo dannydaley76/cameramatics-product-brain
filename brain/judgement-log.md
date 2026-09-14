@@ -331,6 +331,61 @@ per-driver scoring in front of it and still wrote that attribution was probably
 unreliable. Absence of mention in the brief was allowed to outweigh presence of
 proof in the product.*
 
+## J-16 — Grade and route, do not suppress *(agent reframed)*
+
+**Agent had built:** a suppression model. Most events are noise; filter them;
+show the manager what survives. Every threshold was therefore a discard.
+
+**Decided:** every detected event is relevant and is retained. Severity decides
+the *action*, not whether the event exists — four bands, each with its own
+distinct action, nothing thrown away ([[decisions/ADR-0007]]).
+`decided_by: danny` · `status: ratified`
+
+**Reason for the reframe:** the agent had accepted "too many events" as an
+argument for deletion when it is only an argument about routing. The consequences
+of the correction run further than the wording:
+
+- The critical failure moves from "we suppressed something real" to "we graded a
+  conversation down to a notification" ([[R-12]]) — which is catchable, where the
+  first was not.
+- [[M-11]] stops measuring concealment and starts measuring grading quality.
+- The low band gains a purpose: it still contributes to the driver's record and
+  trend even though no one is interrupted about it.
+
+*Class of error: took a constraint on human attention as licence to destroy
+information, when the constraint only ever justified routing it.*
+
+## J-17 — The fifteen-minute assumption, withdrawn *(agent error)*
+
+**Agent had asserted:** the fleet manager has 10–15 minutes a day, two or three
+sessions a week. It appeared in [[personas/fleet-manager]], in [[A-03]], as a
+design constraint in the stack outline, and had hardened into a 90-second target
+for time-per-event in [[M-06]].
+
+**Challenged:** where did that come from, and is it even the right goal? The
+brief is about reducing collisions, not about getting through a list quickly.
+`decided_by: danny` · `status: ratified`
+
+**What was wrong, in two layers.** The figure was invented — no source, no
+observation, presented as a reasonable assumption and then cited by four other
+documents until it read like a finding. That is exactly the failure [[canon#C-01]]
+exists to prevent, committed inside the repository that defines the rule.
+
+The second layer is worse and is the one that mattered. The number had quietly
+become a *target*. Review speed was drifting into a goal, and a manager who
+clears a set in twelve minutes and changes no behaviour has used the product
+exactly as designed and got nothing from it. A time budget is an output of a good
+design, not an input to it: if preventing a collision takes forty well-spent
+minutes a week, that is the right answer.
+
+[[A-03]] now records the withdrawal rather than deleting it, [[M-06]] carries no
+target at all, and the persona no longer asserts a number it cannot support.
+
+*Class of error: invented a quantity to make a persona feel concrete, then
+optimised against it. Efficiency is the metric that is always available when the
+real outcome is hard to measure — which is precisely why it substitutes itself
+for the goal.*
+
 ---
 
 ## Where the split actually falls

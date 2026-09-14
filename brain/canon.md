@@ -47,8 +47,11 @@ is the spine of the capability ([[problem]]); a feature that increases what a
 human must look at needs to justify itself against it explicitly.
 
 **C-06 — Nothing reaches a human that has not earned it.**
-Suppression, grouping and scoring are product features with owners and metrics,
-not configuration we hand to the customer.
+Grading, grouping and scoring are product features with owners and metrics, not
+configuration we hand to the customer.
+*Amended by [[decisions/ADR-0007]]: "not reaching a human" now means routed to a
+lower band, never discarded. Every event is retained and contributes to the
+driver record; the band decides the action.*
 
 **C-07 — The top of the queue must be defensible to the driver in the clip.**
 If a manager could not justify the event to the person who was driving, it does
@@ -183,3 +186,15 @@ Note the asymmetry, because it is deliberate: this repository is heavily
 agent-produced, and it argues for restraint about putting AI in the product.
 Those are not in tension. They are the same judgement applied twice — use the
 tool where it earns its place, and not where it does not.
+
+## 8. Adoption
+
+**C-29 — A tool that is not being used is a failure of the tool.**
+Non-use is a product defect, not a customer-success problem and not a
+characteristic of the user. If a fleet manager stops opening the review set, the
+finding is about what we built. This rule exists because the opposite reflex —
+"they aren't engaging" — is available, comfortable, and has killed more
+capabilities in this category than bad detection ever has.
+
+The practical consequence: adoption metrics are release gates, not reporting.
+[[M-07]] falling is a P1.

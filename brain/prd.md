@@ -35,8 +35,9 @@ Without this, detection quality keeps improving and nothing changes in a cab.
 **Decide which events deserve a human, make the resulting conversation quick and
 evidenced, and measure whether it worked.**
 
-Three parts. The cloud scores, groups and suppresses, producing a short ranked
-queue rather than a feed. The portal presents that queue with honest footage
+Three parts. The cloud scores and groups every event into one of four severity
+bands, each with its own action — nothing is discarded ([[ADR-0007]]) — producing
+a weekly review set that can be finished rather than a feed that cannot. The portal presents that queue with honest footage
 states and a one-step coaching action. The platform measures repeat behaviour
 after coaching, with counter-metrics on what we suppressed and what drivers
 disputed.
@@ -54,7 +55,8 @@ footage the manager has actually watched ([[ADR-0005]]), which is the whole of
 their protection in this release ([[ADR-0004]]). Watched via [[M-12]].
 
 **Depot manager** — exists in their real workflow and has no surface here
-([[A-16]]). First phase-2 candidate.
+([[A-16]]). First phase-2 candidate; the handover and visibility model is
+defined below rather than left unstated.
 
 **Support** — must be able to answer "why did this event surface", which is why
 severity carries its reasons rather than just a score.
@@ -111,3 +113,30 @@ overstating what the data supports.
 | Depot-manager handover and event ownership transfer | [[ADR-0006]] |
 | Eager upload of footage for every event | [[ADR-0002]] |
 | Collision reconstruction, claims handling, ADAS intervention | [[problem]] |
+| Driver notification delivery channel | [[ADR-0007]], [[ADR-0004]] |
+| Depot-manager decision visibility | [[ADR-0006]] |
+
+## Defined, but out of scope
+
+Two things v1 does not build, written down so that the boundary is a decision
+rather than a silence. Both are specified to the point where the next phase can
+pick them up without rediscovering the thinking.
+
+**Sending a medium-band event to the driver.** [[ADR-0007]] gives the medium band
+a single action — send it to the driver so they know, without requiring a
+manager conversation — at the fleet manager's or depot manager's discretion. The
+*action* is in scope and defined. The *delivery channel* is not: there is no
+driver app, notification service or acknowledgement flow in v1 ([[ADR-0004]]).
+Until a channel exists the action degrades to grouped visibility with no
+outbound step. The capability is worth having early and cheap even without the
+app, because "the driver was told" is the difference between a record and a
+surprise.
+
+**Depot-manager decisions visible to the fleet manager.** In the real workflow
+the fleet manager triages and a depot manager holds the conversation
+([[A-16]]). When that arrives, the fleet manager should be able to see what the
+depot manager decided — not as surveillance of their colleague, but because an
+event that left their queue and was then dismissed is information they need and
+currently would not get. v1 has one role and no handover ([[ADR-0006]]), so
+there is nothing yet to make visible. Specified here so that when handover is
+built, the visibility question is already answered rather than discovered.

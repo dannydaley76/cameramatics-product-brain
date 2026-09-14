@@ -60,10 +60,17 @@ metrics:
     layer: engagement
     name: Median manager time per reviewed event
     definition: Median elapsed time from opening an event to setting a terminal state, per reviewing user.
-    target: "< 90 seconds"
+    target: >
+      NONE. Deliberately no target - this is a diagnostic, never a goal.
+      The earlier version of this register set 90 seconds, which was an error:
+      the objective is fewer collisions, not a faster reviewer. A manager who
+      clears a set quickly and changes nothing has used the product exactly as
+      designed and got nothing from it. See A-03.
     horizon: From week 1
     source: Portal instrumentation
-    caveats: Falling time can mean efficiency or rubber-stamping - read with M-09 and M-12.
+    caveats: >
+      Falling time can mean efficiency or rubber-stamping, and the two are
+      indistinguishable from this number alone - read only with M-09 and M-12.
 
   - id: M-07
     layer: engagement
@@ -109,14 +116,25 @@ metrics:
 
   - id: M-11
     layer: counter
-    name: Share of events auto-suppressed
-    definition: Share of detected events never surfaced to a human because of scoring, grouping or suppression rules.
-    target: Monitored, not optimised. Sampled weekly by a human for missed real risk.
+    name: Band distribution, and look-back sample outcome
+    definition: >
+      Share of detected events routed to each severity band (critical, high,
+      medium, low), plus the outcome of the periodic human-read look-back sample
+      of bulk dismissals and of the medium and low bands: how many should have
+      graded higher.
+    target: >
+      Monitored, not optimised. The look-back finding rate is the number that
+      matters - a rising share of "should have been higher" invalidates the
+      grading model regardless of what M-09 says.
     horizon: From week 1
-    source: Platform telemetry plus weekly manual sample
+    source: Platform telemetry plus the look-back review sample
     note: >
-      The direct counter to the triage spine. If we get adoption by hiding real
-      risk, we have built something worse than the firehose.
+      Reframed by ADR-0007. Nothing is suppressed - every event is retained,
+      scored and contributes to the driver record, and the band decides only the
+      action. So this counter measures grading quality rather than concealment,
+      which is both more honest and more useful. The failure it guards against
+      is an event that deserved a conversation being sent as a notification
+      instead ([[R-12]]).
 
   - id: M-12
     layer: counter

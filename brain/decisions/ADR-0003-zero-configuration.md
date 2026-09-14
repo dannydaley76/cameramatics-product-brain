@@ -19,11 +19,11 @@ metrics: [M-07, M-09]
 The obvious answer to "too many events" is a sensitivity setting. It is also the
 most requested feature in this category, and it is what the competition ships.
 
-Our primary user is a fleet manager with fifteen minutes a day who is not a data
-person and will not tune a threshold ([[personas/fleet-manager]], [[A-03]]).
-Giving them a slider transfers our hardest problem to the person least equipped
-to solve it, and then lets us describe the resulting noise as their
-configuration choice.
+Our primary user is a fleet manager with finite, contested attention who is not a
+data person and will not tune a threshold ([[personas/fleet-manager]],
+[[A-03]]). Giving them a slider transfers our hardest problem to the person
+least equipped to solve it, and then lets us describe the resulting noise as
+their configuration choice.
 
 ## Decision
 

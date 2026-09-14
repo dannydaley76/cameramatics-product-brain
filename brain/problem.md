@@ -31,9 +31,17 @@ manager logs in, sees 340 events, reviews six, and stops logging in. The
 capability is dead inside sixty days and the renewal conversation is awkward.
 
 Detection accuracy is not what saves that rollout. Nothing in the event feed
-does. The scarce resource is **manager attention**: roughly fifteen minutes a
-day, two or three times a week ([[A-03]]), competing with vehicle-off-road,
-driver shortages, compliance and customer calls.
+does. The scarce resource is **manager attention** — finite and contested,
+competing with vehicle-off-road, driver shortages, compliance and customer calls
+([[A-03]]).
+
+How finite, we do not know, and it matters that we resist guessing. The goal is
+fewer collisions, not a faster reviewer: if preventing one takes forty
+well-spent minutes a week, that is the right answer, and a product designed
+around a fifteen-minute budget would be the wrong one. What we can say is that
+attention will never stretch to hundreds of events a day, and that a manager who
+clears a list quickly while changing nothing has got no value from the product at
+all.
 
 ## Problem statement
 

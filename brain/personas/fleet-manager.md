@@ -18,9 +18,13 @@ Often a former driver or transport supervisor. Deeply operational.
 monitor, Chrome. Phone for anything urgent. Lives in email and WhatsApp.
 Already logs into three other systems daily; ours is not one of the three.
 
-**Capacity for this task.** Ten to fifteen minutes a day at most, realistically
-two or three sessions a week, often Monday morning and Friday afternoon
-([[A-03]]). Any workflow that assumes daily attention will not be used.
+**Capacity for this task.** Finite and contested. *How* finite is unknown — an
+earlier version of this persona asserted ten to fifteen minutes a day, which was
+invented rather than observed and has been withdrawn ([[A-03]], J-17). What can
+be said safely: attention here competes with maintenance, compliance,
+recruitment and customer complaints, so a workflow assuming daily attention will
+not be used — and the time this deserves is an output of designing it well, not
+a budget to squeeze into.
 
 **Relationship with drivers.** Personal. Knows them by name, knows who is
 having a bad month. Will not use a tool that makes them the enemy, and will
