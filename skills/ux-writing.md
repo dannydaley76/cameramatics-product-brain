@@ -92,8 +92,16 @@ the product recognises drivers whose actions avoided harm, and recognition copy
 is **specific, evidenced and about the act**:
 
 > ✗ Nice work this week! 🎉 3-week safe streak
-> ✓ Tuesday 14:06, Mill Lane. You stopped in time for a cyclist who came out of
->   the junction. Reviewed and confirmed by Sam Okafor.
+> ✓ Tuesday 14:06, Mill Lane. Stopped in time for a cyclist who came out of the
+>   junction. Confirmed by Sam Okafor.
+
+The v1 reader of that string is the **manager**, who shows it to the driver —
+there is no driver surface until [[../brain/decisions/ADR-0004]] is revisited,
+so the record is written about the act rather than addressed to the person.
+When a driver channel exists the same string becomes second person — *"You
+stopped in time for a cyclist…"* — and nothing else about it changes. That is
+the test of whether recognition copy was written properly: if it only works in
+one of the two voices, it was pointing at a number rather than at an act.
 
 The first is gamification of injury. The second is a person being told that
 something they did was seen and mattered. The distinction is whether the copy

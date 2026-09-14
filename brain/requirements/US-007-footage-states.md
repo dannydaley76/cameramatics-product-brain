@@ -28,12 +28,20 @@ simply in a yard with no signal.
   clip plays without further action.
 - **Given** footage has been requested and not yet arrived, **when** the event is
   opened, **then** the panel reads:
-  *"Footage is on its way. It usually arrives within a few minutes."*
+  *"Footage is on its way. This page will update when it arrives. You can still
+  dismiss this event."*
   and the view updates without a manual refresh when it lands.
+  *The earlier version of this string said "it usually arrives within a few
+  minutes". [[M-10]]'s target is a median of 15 minutes, and a median is not a
+  promise — the string was stating a number this story's own out-of-scope
+  section forbids.*
 - **Given** the vehicle has been offline since before the request, **when** the
   event is opened, **then** the panel reads:
   *"Footage not available yet. This vehicle has been offline since {time} and
-  will upload when it reconnects."*
+  will upload when it reconnects. You can still dismiss this event."*
+  — the final clause is what makes this an absence state rather than an error
+  message ([[../../skills/ux-writing]] W-04), and the story had dropped it from
+  the version in the skill.
 - **Given** footage is unavailable for any reason, **when** the event is
   displayed, **then** *Dismiss* remains available and *Log coaching
   conversation* does not ([[ADR-0005]]).
@@ -44,5 +52,5 @@ simply in a yard with no signal.
 ## Out of scope for this story
 
 - Manually forcing an upload from the portal.
-- Any promise about arrival time beyond the wording above — we do not state a
-  number we cannot hold.
+- Any promise about arrival time. [[M-10]] targets a median under 15 minutes,
+  and a median is not something to say to a manager waiting on one clip.

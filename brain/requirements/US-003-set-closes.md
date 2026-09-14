@@ -29,7 +29,11 @@ adversarial_pass: ran 2026-09-14
 - **Given** items closed unreviewed, **when** the manager opens the current set,
   **then** the count is stated on the face of the set, worded exactly:
   *"{n} events closed unreviewed last week."*
-  and never as a second-person construction ([[../../skills/ux-writing]] W-03).
+  and never as a construction that makes it the manager's failure — *"you have
+  {n} unreviewed events"* is the banned form ([[../../skills/ux-writing]] W-03,
+  [[canon#C-29]]). *Earlier wording of this criterion said "never as a
+  second-person construction", which is not what W-03 says: W-03 is about blame,
+  and the skill uses second person throughout.*
 - **Given** an event closed unreviewed, **when** the manager opens it from the
   closed set, **then** every action available before closure remains available,
   and footage is retrievable if within the device retention window ([[A-10]]).

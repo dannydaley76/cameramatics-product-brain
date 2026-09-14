@@ -756,8 +756,8 @@ except those listed in §8 as read in full.
 
 Per [`../skills/adversarial-review.md`](../skills/adversarial-review.md): every
 finding gets a disposition, and a rejection or a deferral carries its reason.
-Sixteen findings survived. Twelve are accepted and fixed, two are partly fixed
-with the remainder deferred, and two are deferred outright — with the reasons below, because deferring silently is the
+Sixteen findings survived. Thirteen are accepted and fixed, two are partly
+fixed with the remainder deferred, and one is deferred — with the reasons below, because deferring silently is the
 same failure as not reviewing at all.
 
 The fixes are committed separately from this review so the diff shows what the
@@ -780,7 +780,7 @@ pass bought.
 | 13 | **Accepted, fixed** | [[phasing]] written, with `skills/phasing.md` as its recipe. The dangling `[[phasing]]` link in `stack-outline.md` now resolves. The 15/15-v1 observation is answered rather than obeyed: the unit of value is the loop, so v1 is a thin whole loop and the one defensible cut is ratified as J-24 |
 | 14 | **Accepted, fixed** | README's account of research corrected |
 | 15 | **Accepted, fixed** | Judgement log counts corrected; J-11's attribution corrected in a dated note rather than overwritten; J-05 removed from the exemplary list with the reason stated |
-| 16 | **Deferred** | See below |
+| 16 | **Accepted, fixed** | All four resolved while building the prototype, which is where the strings got written for real. See below |
 | 17 | Refuted | No action |
 | 18 | Folded into 5 | The argument holds; the detection sentence was the defect, and [[ADR-0012]] answers it |
 
@@ -823,12 +823,29 @@ set now would be a false precision in the one control that has to be trusted
 unpriced; that belongs in the phasing section rather than in a figure invented
 to close a finding.
 
-**16 — Copy rules contradict themselves inside acceptance criteria.** Accepted
-as correct and deferred deliberately, because these four strings get written for
-real when the prototype is built against
-[`../skills/ux-writing.md`](../skills/ux-writing.md). Fixing them on paper now
-and again in the prototype does the work twice and risks the two drifting apart.
-The prototype is where the contradiction resolves or the rule changes.
+**16 — Copy rules contradict themselves inside acceptance criteria.** Deferred
+to the prototype, and resolved there, because that is where the strings got
+written for real rather than twice.
+
+- **US-007's offline string** now ends *"You can still dismiss this event."* The
+  skill's own version always had that clause; the story had dropped the part
+  that makes it an absence state rather than an error message (W-04).
+- **US-007's fetching string** loses its time claim. *"It usually arrives within
+  a few minutes"* contradicted [[M-10]]'s 15-minute median and the story's own
+  out-of-scope line. It now reads *"Footage is on its way. This page will update
+  when it arrives."*
+- **US-003 cited W-03 for something W-03 does not say.** W-03 is about blame,
+  not grammatical person, and the skill uses second person throughout. The
+  criterion now bans the blaming construction and says which one.
+- **The skill's own recognition exemplar** was written to a driver for a release
+  with no driver surface. It is now the manager-facing third-person form, with
+  a note that the second-person version is what it becomes when a driver channel
+  exists — and that a recognition string which only works in one voice was
+  pointing at a number rather than at an act.
+
+The reviewer was right that these are small. They are also the exact strings
+that ship, and three of the four were the requirement disagreeing with the rule
+it cited.
 
 ### Also carried, not raised as an attack
 

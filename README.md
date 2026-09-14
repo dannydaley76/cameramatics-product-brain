@@ -30,6 +30,7 @@ check it.
 | [`reviews/`](reviews/) | The adversarial pass. Verdict: **Not yet.** Read it before you read anything else here charitably |
 | [`brain/canon.md`](brain/canon.md) | The thirty rules this brain does not break. The most opinionated file here |
 | [`docs/traceability.md`](docs/traceability.md) | Generated. Metric → stories → risks → phase, on one page |
+| [`prototype/index.html`](prototype/index.html) | The queue, the clip, the coaching record. Grey boxes, real behaviour — open it and try the bulk dismissal |
 
 Then the machinery: [`AGENTS.md`](AGENTS.md) for the division of labour,
 [`skills/`](skills/) for the recipe behind each document type,
@@ -97,10 +98,10 @@ finished.
 - [x] Skills (9), adversarial reviewer, division of labour
 - [x] Validator (`scripts/validate.py`) and generated traceability matrix
 - [x] CI workflow (`.github/workflows/validate.yml`) — runs the validator and fails on a stale traceability matrix
-- [x] Adversarial pass — **ran 2026-09-14, verdict: Not yet.** 16 of 18 attacks survived; 12 fixed, 2 partly fixed, 2 deferred — every one with its reason stated. See `reviews/`
+- [x] Adversarial pass — **ran 2026-09-14, verdict: Not yet.** 16 of 18 attacks survived; 13 fixed, 2 partly fixed, 1 deferred — every one with its reason stated. See `reviews/`
 - [x] Prioritisation and phasing — section 4 (`brain/phasing.md`)
 - [x] Risk and assumption narrative — section 5 (`brain/risks-narrative.md`)
-- [ ] Clickable prototype
+- [x] Clickable prototype (`prototype/index.html`) — low fidelity, real behaviour
 - [ ] Submission deck
 
 ## What this is built on

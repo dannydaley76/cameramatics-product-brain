@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototype — event triage and coaching loop</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --mid: #595959;
+    --faint: #8a8a8a;
+    --line: #c9c9c9;
+    --box: #e4e4e4;
+    --page: #f4f4f4;
+    --panel: #fff;
+    --focus: #2b5cb8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+    font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 0 16px 64px; }
+
+  /* ---- the "this is a wireframe" frame ---------------------------------- */
+  .proto-note {
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+    padding: 14px 16px;
+  }
+  .proto-note .inner { max-width: 940px; margin: 0 auto; }
+  .proto-note h1 { font-size: 15px; margin: 0 0 6px; }
+  .proto-note p { margin: 0 0 6px; color: var(--mid); max-width: 70ch; }
+  .proto-note p:last-child { margin-bottom: 0; }
+  .proto-note code { background: var(--page); padding: 1px 4px; }
+
+  /* ---- app chrome -------------------------------------------------------- */
+  .appbar {
+    background: var(--box);
+    border-bottom: 1px solid var(--line);
+    margin-top: 20px;
+    padding: 10px 14px;
+    display: flex;
+    gap: 14px;
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+  .appbar .name { font-weight: 600; }
+  .appbar .who { color: var(--mid); }
+  .appbar .spacer { flex: 1 1 auto; }
+  .critbar {
+    background: #fff;
+    border: 1px solid var(--ink);
+    border-top: 0;
+    padding: 8px 14px;
+    font-weight: 600;
+  }
+  .critbar[hidden] { display: none; }
+
+  .panel { background: var(--panel); border: 1px solid var(--line); border-top: 0; padding: 16px 14px; }
+  h2 { font-size: 16px; margin: 0 0 4px; }
+  h3 { font-size: 14px; margin: 20px 0 6px; }
+  .sub { color: var(--mid); margin: 0 0 14px; }
+
+  /* ---- band strip -------------------------------------------------------- */
+  .bands { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 16px; }
+  .bands button {
+    font: inherit; background: #fff; border: 1px solid var(--line);
+    padding: 6px 10px; cursor: pointer; text-align: left;
+  }
+  .bands button[aria-pressed="true"] { border-color: var(--ink); border-width: 2px; padding: 5px 9px; }
+  .bands .n { font-weight: 600; display: block; }
+  .bands .l { color: var(--mid); font-size: 13px; }
+
+  /* ---- event rows -------------------------------------------------------- */
+  ul.rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  ul.rows li { border-bottom: 1px solid var(--line); }
+  .row {
+    width: 100%; display: block; text-align: left; font: inherit; color: inherit;
+    background: #fff; border: 0; padding: 12px 10px; cursor: pointer;
+  }
+  .row:hover { background: #fafafa; }
+  .row:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+  .row .top { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .row .what { font-weight: 600; }
+  .row .meta { color: var(--mid); }
+  .row .row-meta, .row .why { display: block; color: var(--mid); margin-top: 3px; }
+  .tag {
+    border: 1px solid var(--ink); padding: 0 6px; font-size: 12px;
+    text-transform: uppercase; letter-spacing: .04em;
+  }
+  .tag.credit { border-style: dashed; }
+  .tag.neutral { border-style: dotted; }
+  .shape { font-weight: 700; margin-right: 2px; }
+
+  /* ---- footage placeholder ---------------------------------------------- */
+  .footage {
+    background: var(--box); border: 1px dashed var(--faint);
+    min-height: 190px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 10px;
+    padding: 18px; text-align: center;
+  }
+  .footage .state { color: var(--mid); max-width: 52ch; }
+  .footage .frame { color: var(--faint); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+  .scrub { width: 100%; max-width: 380px; border-top: 1px solid var(--faint); position: relative; height: 20px; }
+  .scrub span { position: absolute; top: 3px; font-size: 12px; color: var(--mid); }
+  .scrub .a { left: 0; } .scrub .b { left: 33%; font-weight: 700; color: var(--ink); } .scrub .c { right: 0; }
+
+  /* ---- forms and buttons ------------------------------------------------- */
+  button.act, a.act {
+    font: inherit; background: #fff; border: 1px solid var(--ink);
+    padding: 7px 12px; cursor: pointer; margin: 0 8px 8px 0; display: inline-block;
+  }
+  button.act.primary { border-width: 2px; font-weight: 600; padding: 6px 11px; }
+  button.act:disabled { border-color: var(--line); color: var(--faint); cursor: not-allowed; }
+  button.link { font: inherit; background: none; border: 0; padding: 0; color: var(--focus); text-decoration: underline; cursor: pointer; }
+  .hint { color: var(--mid); margin: 0 0 10px; }
+  label { display: block; font-weight: 600; margin: 12px 0 2px; }
+  label .opt { font-weight: 400; color: var(--mid); }
+  .helper { color: var(--mid); margin: 0 0 4px; }
+  textarea, input[type=text] {
+    font: inherit; width: 100%; border: 1px solid var(--faint); padding: 8px; background: #fff;
+  }
+  textarea { min-height: 72px; resize: vertical; }
+  .checkrow { margin: 12px 0 0; display: flex; gap: 8px; align-items: flex-start; }
+  .checkrow label { font-weight: 400; margin: 0; }
+
+  .card { border: 1px solid var(--line); background: #fff; padding: 12px; margin: 10px 0; }
+  .card h4 { margin: 0 0 4px; font-size: 14px; }
+  .card p { margin: 0 0 6px; color: var(--mid); }
+  .card p:last-child { margin-bottom: 0; }
+  .kv { color: var(--mid); }
+
+  .empty { border: 1px dashed var(--faint); background: #fff; padding: 28px 18px; text-align: center; }
+  .empty p.big { font-size: 16px; font-weight: 600; margin: 0 0 6px; color: var(--ink); }
+  .empty p { margin: 0; color: var(--mid); }
+
+  .storyref {
+    margin-top: 18px; padding-top: 10px; border-top: 1px dashed var(--line);
+    color: var(--faint); font-size: 12px;
+  }
+
+  /* ---- platform readout (explicitly not product UI) ---------------------- */
+  .readout { margin-top: 26px; border: 1px dashed var(--faint); background: #fff; padding: 12px 14px; }
+  .readout h3 { margin: 0 0 4px; font-size: 13px; text-transform: uppercase; letter-spacing: .05em; }
+  .readout p.why { color: var(--mid); margin: 0 0 10px; max-width: 74ch; }
+  .readout table { border-collapse: collapse; width: 100%; }
+  .readout th, .readout td { text-align: left; padding: 4px 8px 4px 0; vertical-align: top; border-bottom: 1px solid var(--line); }
+  .readout th { color: var(--mid); font-weight: 400; }
+  .readout td.num { font-weight: 600; white-space: nowrap; }
+  .readout td.note { color: var(--mid); }
+
+  .crumb { margin: 0 0 10px; }
+  @media (max-width: 620px) {
+    .bands button { flex: 1 1 44%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="proto-note">
+  <div class="inner">
+    <h1>Prototype — event triage and coaching loop</h1>
+    <p><strong>Low fidelity on purpose.</strong> Grey boxes, no visual design, no
+    brand. What is real is the <em>behaviour</em>: the queue empties, footage
+    states differ, coaching is gated on having watched the clip, and a bulk
+    dismissal counts as one judgement. Those are the claims in the requirements
+    that a picture cannot demonstrate.</p>
+    <p>Every user-visible string is written against <code>skills/ux-writing.md</code>.
+    All data is fixture data — nothing here is measured.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="appbar">
+    <span class="name">Northgate Logistics</span>
+    <span class="who">Safety review · week of 8–14 September 2026</span>
+    <span class="spacer"></span>
+    <span class="who">Signed in as Sam Okafor</span>
+  </div>
+  <div class="critbar" id="critbar" hidden></div>
+
+  <div class="panel" id="screen"></div>
+
+  <div class="readout">
+    <h3>Platform readout</h3>
+    <p class="why">Not part of the product and not shown to a fleet manager. It is
+    here so the metric definitions can be checked against the behaviour — in
+    particular what a bulk dismissal does to M-09, which is the reason M-09 is
+    reported twice and the reason M-14 exists.</p>
+    <table id="readout"></table>
+  </div>
+
+</div>
+
+<script>
+"use strict";
+
+/* ------------------------------------------------------------------ state */
+
+const WEEK = { medium: 38, low: 112, closedUnreviewedLastWeek: 14 };
+
+function ev(o) {
+  return Object.assign({
+    band: "high", klass: "risk", played: false, state: "reviewing",
+    footage: "ready", offlineSince: null, outcome: null, group: null
+  }, o);
+}
+
+const STATE = {
+  screen: { name: "set" },
+  filter: "set",
+  events: [
+    ev({
+      id: "E-104", band: "critical", vehicle: "YJ19 KTX", driver: "Marek Nowak",
+      when: "Monday 8 September, 07:42", behaviour: "Hard braking",
+      where: "31 mph zone, Ashby Road",
+      why: "Graded critical: deceleration consistent with an impact, and the forward camera shows a vehicle ahead. The clip uploaded without waiting to be asked.",
+      ruleset: "severity ruleset v4"
+    }),
+    ev({
+      id: "E-121", vehicle: "BK21 OHP", driver: "Dee Fitzgerald",
+      when: "Tuesday 9 September, 09:14", behaviour: "Hard braking",
+      where: "42 mph zone, Coldharbour Lane",
+      why: "Graded high: deceleration in the top few percent, with a vehicle ahead.",
+      ruleset: "severity ruleset v4"
+    }),
+    ev({
+      id: "E-127", klass: "credit", vehicle: "LM70 VDC", driver: "Priya Raman",
+      when: "Tuesday 9 September, 14:06", behaviour: "Hard braking",
+      where: "Mill Lane",
+      why: "Graded high: deceleration in the top few percent.",
+      classWhy: "Proposed as avoided harm: a cyclist entered from the left and there was no contact.",
+      ruleset: "severity ruleset v4"
+    }),
+    ev({
+      id: "E-133", vehicle: "YJ19 KTX", driver: "Marek Nowak",
+      when: "Wednesday 10 September, 16:51", behaviour: "Phone in hand",
+      where: "6 seconds, 48 mph zone, A41",
+      why: "Graded high: phone in hand for 6 seconds at speed.",
+      ruleset: "severity ruleset v4", footage: "fetching"
+    }),
+    ev({
+      id: "E-140", vehicle: "RV18 EWA", driver: "Alan Reid",
+      when: "Thursday 11 September, 11:23", behaviour: "Hard cornering",
+      where: "Roundabout approach, Ladywell Way",
+      why: "Graded high: lateral force in the top few percent for this vehicle type.",
+      ruleset: "severity ruleset v4", footage: "offline", offlineSince: "11:20 on Thursday"
+    }),
+    ev({
+      id: "E-150", klass: "neutral", vehicle: "KX67 TRB", driver: "Joe Mensah",
+      when: "Saturday 13 September, 08:05", behaviour: "Hard braking",
+      where: "30 mph zone, Farnham Road",
+      why: "Graded high: deceleration in the top few percent.",
+      classWhy: "Proposed as not the driver's doing: a vehicle cut in from the left.",
+      ruleset: "severity ruleset v4"
+    }),
+    ev({
+      id: "E-142", vehicle: "GV69 NPD", driver: "Tomasz Bielik", group: "G-1",
+      when: "Friday 12 September, 05:40", behaviour: "Hard braking",
+      where: "Ashby Road", why: "Graded high: deceleration in the top few percent.",
+      ruleset: "severity ruleset v4"
+    }),
+    ev({ id: "E-143", vehicle: "GV69 NPD", driver: "Tomasz Bielik", group: "G-1",
+      when: "Friday 12 September, 05:48", behaviour: "Hard braking", where: "Ashby Road",
+      why: "Graded high: deceleration in the top few percent.", ruleset: "severity ruleset v4" }),
+    ev({ id: "E-144", vehicle: "GV69 NPD", driver: "Tomasz Bielik", group: "G-1",
+      when: "Friday 12 September, 05:55", behaviour: "Hard braking", where: "Ashby Road",
+      why: "Graded high: deceleration in the top few percent.", ruleset: "severity ruleset v4" }),
+    ev({ id: "E-145", vehicle: "GV69 NPD", driver: "Tomasz Bielik", group: "G-1",
+      when: "Friday 12 September, 06:04", behaviour: "Hard braking", where: "Ashby Road",
+      why: "Graded high: deceleration in the top few percent.", ruleset: "severity ruleset v4" }),
+    ev({ id: "E-146", vehicle: "GV69 NPD", driver: "Tomasz Bielik", group: "G-1",
+      when: "Friday 12 September, 06:12", behaviour: "Hard braking", where: "Ashby Road",
+      why: "Graded high: deceleration in the top few percent.", ruleset: "severity ruleset v4" })
+  ],
+  coaching: [],
+  recognitions: [],
+  dismissals: [],          // one entry per judgement; .events = how many events it covered
+  seededCoaching: [
+    { driver: "Marek Nowak", behaviour: "Phone in hand", date: "12 August 2026",
+      discussed: "Watched the clip together. Marek said the call was from the depot and he thought it was quicker to answer than pull over. Agreed he routes depot calls to voicemail and pulls in at the next layby.",
+      said: "Said he did not realise it had been that long.", disputed: false }
+  ]
+};
+
+/* ------------------------------------------------------------- derivations */
+
+const live = () => STATE.events.filter(e => e.state === "reviewing");
+const inSet = () => live().filter(e => e.band === "critical" || e.band === "high");
+const criticalOpen = () => live().filter(e => e.band === "critical").length;
+const byId = id => STATE.events.find(e => e.id === id);
+
+function groupsOf(list) {
+  // one entry per bulk-eligible group (driver + behaviour + trip), singles pass through
+  const out = [], seen = {};
+  for (const e of list) {
+    if (!e.group) { out.push({ kind: "single", event: e }); continue; }
+    if (seen[e.group]) { seen[e.group].events.push(e); continue; }
+    const g = { kind: "group", key: e.group, events: [e] };
+    seen[e.group] = g; out.push(g);
+  }
+  return out;
+}
+
+/* ------------------------------------------------------------------ render */
+
+const el = document.getElementById("screen");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function go(name, arg) { STATE.screen = { name, arg }; render(); }
+
+function render() {
+  const c = document.getElementById("critbar");
+  const n = criticalOpen();
+  c.hidden = n === 0;
+  c.textContent = n === 1 ? "1 critical event needs review" : n + " critical events need review";
+
+  const s = STATE.screen;
+  el.innerHTML = ({
+    set: viewSet, event: viewEvent, dismiss: viewDismiss, bulk: viewBulk,
+    coach: viewCoach, recognise: viewRecognise, driver: viewDriver, band: viewBand
+  })[s.name](s.arg);
+
+  el.querySelectorAll("[data-go]").forEach(b => {
+    b.addEventListener("click", () => go(b.dataset.go, b.dataset.arg));
+  });
+  el.querySelectorAll("[data-act]").forEach(b => {
+    b.addEventListener("click", () => ACTIONS[b.dataset.act](b.dataset.arg, el));
+  });
+  el.querySelectorAll("[data-watch]").forEach(t => {
+    t.addEventListener("input", () => ACTIONS[t.dataset.watch](t.dataset.arg, el));
+  });
+  renderReadout();
+  const h = el.querySelector("h2");
+  if (h) { h.setAttribute("tabindex", "-1"); }
+}
+
+function refs(list) {
+  return '<p class="storyref">Implements ' + list.join(", ") + "</p>";
+}
+
+/* --------------------------------------------------------------- the queue */
+
+function viewSet() {
+  const set = inSet();
+  const items = groupsOf(set);
+
+  let html = "<h2>This week&rsquo;s review set</h2>";
+  html += '<p class="sub">' + (set.length === 0
+      ? "Nothing left to work through."
+      : set.length + " to go &middot; ranked by severity, highest first") + "</p>";
+
+  html += bandStrip("set", set.length);
+
+  if (set.length === 0) {
+    html += '<div class="empty">'
+      + '<p class="big">Nothing needs your attention this week.</p>'
+      + "<p>" + (WEEK.medium + WEEK.low)
+      + " events were graded and handled without you. You can look at any of them.</p></div>";
+  } else {
+    html += '<ul class="rows">';
+    for (const it of items) {
+      if (it.kind === "single") html += "<li>" + rowSingle(it.event) + "</li>";
+      else html += "<li>" + rowGroup(it) + "</li>";
+    }
+    html += "</ul>";
+  }
+
+  html += "<h3>Last week</h3><p class='kv'>" + WEEK.closedUnreviewedLastWeek
+    + " events closed unreviewed last week. They are still open from the closed set.</p>";
+
+  return html + refs(["US-001", "US-002", "US-003", "US-004", "ADR-0007", "ADR-0009"]);
+}
+
+function classTag(e) {
+  if (e.klass === "credit")  return '<span class="tag credit"><span class="shape">&#9651;</span> Credit &mdash; proposed</span>';
+  if (e.klass === "neutral") return '<span class="tag neutral"><span class="shape">&#9711;</span> Neutral &mdash; proposed</span>';
+  return "";
+}
+
+function rowSingle(e) {
+  return '<button class="row" data-go="event" data-arg="' + e.id + '">'
+    + '<span class="top">'
+    + '<span class="tag">' + (e.band === "critical" ? "Critical" : "High") + "</span>"
+    + classTag(e)
+    + '<span class="what">' + esc(e.behaviour) + "</span>"
+    + '<span class="meta">' + esc(e.where) + "</span>"
+    + "</span>"
+    + '<span class="row-meta meta">' + esc(e.driver) + " &middot; " + esc(e.vehicle)
+    + " &middot; " + esc(e.when) + "</span>"
+    + '<span class="why">' + esc(e.classWhy || e.why) + "</span>"
+    + "</button>";
+}
+
+function rowGroup(g) {
+  const e = g.events[0];
+  return '<button class="row" data-go="bulk" data-arg="' + g.key + '">'
+    + '<span class="top"><span class="tag">High</span>'
+    + '<span class="what">' + g.events.length + " events, one trip</span>"
+    + '<span class="meta">' + esc(e.behaviour) + " &middot; " + esc(e.where) + "</span></span>"
+    + '<span class="meta">' + esc(e.driver) + " &middot; " + esc(e.vehicle)
+    + " &middot; Friday 12 September, 05:40 to 06:12</span>"
+    + '<span class="why">Grouped because these share a driver, a behaviour and a trip.</span>'
+    + "</button>";
+}
+
+function bandStrip(active, setCount) {
+  const b = [
+    ["set", setCount, "need you this week"],
+    ["medium", WEEK.medium, "driver informed, no conversation"],
+    ["low", WEEK.low, "recorded only"]
+  ];
+  let h = '<div class="bands">';
+  for (const [k, n, l] of b) {
+    h += '<button data-go="' + (k === "set" ? "set" : "band") + '" data-arg="' + k + '" aria-pressed="'
+      + (active === k) + '"><span class="n">' + n + '</span><span class="l">'
+      + (k === "set" ? "Critical and high" : k[0].toUpperCase() + k.slice(1)) + " &mdash; " + l + "</span></button>";
+  }
+  return h + "</div>";
+}
+
+function viewBand(which) {
+  const n = WEEK[which];
+  let h = "<h2>" + which[0].toUpperCase() + which.slice(1) + " band</h2>";
+  h += '<p class="sub">' + n + " events this week. Every one is kept, scored and counted on the driver&rsquo;s record. "
+    + "The band decides what happens next, not whether the event exists.</p>";
+  h += bandStrip(which, inSet().length);
+  h += '<div class="empty"><p class="big">Nothing here needs a conversation.</p>'
+    + "<p>" + (which === "medium"
+      ? "These are passed to the driver as a group rather than discussed one at a time."
+      : "These are recorded and contribute to trends. Nobody is asked to look at them.")
+    + "</p></div>";
+  h += '<p class="hint" style="margin-top:14px">A full list would sit here. It is left out of the prototype '
+    + "because the behaviour it would demonstrate &mdash; a list &mdash; is not in question.</p>";
+  h += '<button class="act" data-go="set">Back to the review set</button>';
+  return h + refs(["US-001", "US-013", "ADR-0007", "M-11"]);
+}
+
+/* -------------------------------------------------------------- one event */
+
+function footagePanel(e) {
+  if (e.footage === "ready" && !e.played) {
+    return '<div class="footage"><span class="frame">Road-facing camera</span>'
+      + '<p class="state">Clip ready. 6 seconds either side of the event.</p>'
+      + '<button class="act primary" data-act="play" data-arg="' + e.id + '">Play clip</button></div>';
+  }
+  if (e.footage === "ready" && e.played) {
+    return '<div class="footage"><span class="frame">Road-facing camera &middot; playing</span>'
+      + '<div class="scrub"><span class="a">&minus;6s</span><span class="b">start &minus;3s</span><span class="c">+6s</span></div>'
+      + '<p class="state">Channels: road-facing (shown), driver-facing.</p></div>';
+  }
+  if (e.footage === "fetching") {
+    return '<div class="footage"><span class="frame">Road-facing camera</span>'
+      + '<p class="state">Footage is on its way. This page will update when it arrives. '
+      + "You can still dismiss this event.</p></div>";
+  }
+  return '<div class="footage"><span class="frame">Road-facing camera</span>'
+    + '<p class="state">Footage not available yet. This vehicle has been offline since '
+    + esc(e.offlineSince) + " and will upload when it reconnects. You can still dismiss this event.</p></div>";
+}
+
+function viewEvent(id) {
+  const e = byId(id);
+  let h = '<p class="crumb"><button class="link" data-go="set">Review set</button></p>';
+  h += "<h2>" + esc(e.behaviour) + ". " + esc(e.where) + ", " + esc(e.when) + ".</h2>";
+  h += '<p class="sub">'
+    + '<span class="tag">' + (e.band === "critical" ? "Critical" : "High") + "</span> "
+    + classTag(e) + " &nbsp; "
+    + '<button class="link" data-go="driver" data-arg="' + esc(e.driver) + '">' + esc(e.driver) + "</button>"
+    + " &middot; " + esc(e.vehicle) + " &middot; " + esc(e.id) + "</p>";
+
+  h += footagePanel(e);
+
+  h += "<h3>Why it was graded this way</h3><p class='kv'>" + esc(e.why) + "</p>";
+  if (e.classWhy) {
+    h += "<h3>Why it was classified this way</h3><p class='kv'>" + esc(e.classWhy) + "</p>";
+  }
+  h += "<p class='kv'>Scored by " + esc(e.ruleset) + ". Kept with the event so a later change does not rewrite history.</p>";
+
+  h += "<h3>What you can do</h3>";
+  const watched = e.played;
+
+  if (e.klass === "credit") {
+    h += '<button class="act primary" data-act="toRecognise" data-arg="' + e.id + '"'
+      + (watched ? "" : " disabled") + ">Confirm recognition</button>";
+  } else {
+    h += '<button class="act primary" data-act="toCoach" data-arg="' + e.id + '"'
+      + (watched ? "" : " disabled") + ">Log coaching conversation</button>";
+  }
+  h += '<button class="act" data-go="dismiss" data-arg="' + e.id + '">Dismiss with a reason</button>';
+
+  if (!watched) {
+    h += '<p class="hint">Watch the clip before recording a conversation.</p>';
+  }
+  if (e.footage !== "ready") {
+    h += '<p class="hint">There is no footage to watch, so this event can be dismissed but not coached.</p>';
+  }
+
+  return h + refs(["US-005", "US-006", "US-007", "US-009", "US-010", "US-012", "ADR-0005", "ADR-0010"]);
+}
+
+/* ------------------------------------------------------------- dismissals */
+
+function viewDismiss(id) {
+  const e = byId(id);
+  let h = '<p class="crumb"><button class="link" data-go="event" data-arg="' + e.id + '">Back to the event</button></p>';
+  h += "<h2>Dismiss this event</h2>";
+  h += '<p class="sub">' + esc(e.behaviour) + ", " + esc(e.when) + " &middot; " + esc(e.driver) + "</p>";
+
+  h += '<label for="dr">Why is this not worth a conversation?</label>';
+  h += '<p class="helper">Free text. It is read later in the downgrade audit, so write it for someone who was not there.</p>';
+  h += '<textarea id="dr" data-watch="watchDismiss" data-arg="' + e.id + '"></textarea>';
+
+  h += "<h3>Is this the right classification?</h3>";
+  h += '<p class="helper">If it was not the driver&rsquo;s doing, or if they actually avoided harm, say so &mdash; '
+    + "the event stays on the record either way, and dismissing it would lose that.</p>";
+  h += '<div class="checkrow"><input type="radio" name="reclass" id="rc0" value="" checked><label for="rc0">Leave it as risk</label></div>';
+  h += '<div class="checkrow"><input type="radio" name="reclass" id="rc1" value="neutral"><label for="rc1">Not the driver&rsquo;s doing &mdash; record as neutral</label></div>';
+  if (e.footage === "ready" && e.played) {
+    h += '<div class="checkrow"><input type="radio" name="reclass" id="rc2" value="credit"><label for="rc2">They avoided harm &mdash; send to recognition instead</label></div>';
+  } else {
+    h += '<div class="checkrow"><input type="radio" id="rc2" disabled><label for="rc2">They avoided harm &mdash; send to recognition instead '
+      + '<span class="opt">(watch the clip first)</span></label></div>';
+  }
+
+  h += '<p style="margin-top:16px">'
+    + '<button class="act primary" id="dgo" data-act="doDismiss" data-arg="' + e.id + '" disabled>Record dismissal</button>'
+    + '<button class="act" data-go="event" data-arg="' + e.id + '">Cancel</button></p>';
+
+  return h + refs(["US-009", "ADR-0008", "ADR-0010", "M-09"]);
+}
+
+function viewBulk(key) {
+  const g = groupsOf(live()).find(x => x.kind === "group" && x.key === key);
+  const e = g.events[0];
+  let h = '<p class="crumb"><button class="link" data-go="set">Review set</button></p>';
+  h += "<h2>Dismiss " + g.events.length + " events with a reason</h2>";
+  h += '<p class="sub">' + esc(e.driver) + " &middot; " + esc(e.behaviour) + " &middot; one trip, Friday 12 September, 05:40 to 06:12</p>";
+
+  h += '<ul class="rows">';
+  for (const x of g.events) {
+    h += "<li><div class='row' style='cursor:default'><span class='meta'>" + esc(x.id) + " &middot; "
+      + esc(x.when) + " &middot; " + esc(x.where) + "</span></div></li>";
+  }
+  h += "</ul>";
+
+  h += '<label for="br">Why do these not need a conversation?</label>';
+  h += '<p class="helper">One reason covers the group. It is read later in the downgrade audit.</p>';
+  h += '<textarea id="br" data-watch="watchBulk" data-arg="' + key + '"></textarea>';
+
+  h += '<p style="margin-top:16px">'
+    + '<button class="act primary" id="bgo" data-act="doBulk" data-arg="' + key + '" disabled>Dismiss '
+    + g.events.length + " events</button>"
+    + '<button class="act" data-go="set">Cancel</button></p>';
+
+  h += '<p class="hint">This counts as one dismissal decision, not ' + g.events.length
+    + ". Both numbers are shown in the platform readout below.</p>";
+
+  return h + refs(["US-004", "ADR-0008", "M-09", "M-14"]);
+}
+
+/* ---------------------------------------------------------------- coaching */
+
+function viewCoach(id) {
+  const e = byId(id);
+  let h = '<p class="crumb"><button class="link" data-go="event" data-arg="' + e.id + '">Back to the event</button></p>';
+  h += "<h2>Log a coaching conversation</h2>";
+  h += '<p class="sub">' + esc(e.driver) + " &middot; " + esc(e.behaviour) + ", " + esc(e.when) + "</p>";
+
+  h += '<label for="beh">Behaviour</label>';
+  h += '<input type="text" id="beh" value="' + esc(e.behaviour) + '">';
+
+  h += '<label for="disc">What was discussed and agreed</label>';
+  h += '<p class="helper">Enough that someone reading this later can see what happened, '
+    + "not just that something happened. The driver may be shown this.</p>";
+  h += '<textarea id="disc" data-watch="watchCoach" data-arg="' + e.id + '"></textarea>';
+
+  h += '<label for="said">What the driver said <span class="opt">&mdash; optional</span></label>';
+  h += '<p class="helper">In their words, as close as you can.</p>';
+  h += '<textarea id="said"></textarea>';
+
+  h += '<div class="checkrow"><input type="checkbox" id="disp"><label for="disp">Driver disputes this</label></div>';
+
+  h += '<p style="margin-top:16px">'
+    + '<button class="act primary" id="cgo" data-act="doCoach" data-arg="' + e.id + '" disabled>Save coaching record</button>'
+    + '<button class="act" data-go="event" data-arg="' + e.id + '">Cancel</button></p>';
+  h += '<p class="hint">The clip reference is attached automatically.</p>';
+
+  return h + refs(["US-010", "US-011", "ADR-0005", "M-03", "M-12"]);
+}
+
+function viewRecognise(id) {
+  const e = byId(id);
+  let h = '<p class="crumb"><button class="link" data-go="event" data-arg="' + e.id + '">Back to the event</button></p>';
+  h += "<h2>Confirm recognition</h2>";
+  h += '<p class="sub">' + esc(e.driver) + " &middot; " + esc(e.when) + "</p>";
+  h += '<p class="hint">You have watched the clip. Confirming records this on '
+    + esc(e.driver) + "&rsquo;s record and attaches the footage. Nothing is sent anywhere &mdash; "
+    + "you show them.</p>";
+
+  h += '<div class="card"><h4>What will be recorded</h4>'
+    + "<p>Tuesday 14:06, Mill Lane. Stopped in time for a cyclist who came out of the junction.</p>"
+    + "<p class='kv'>Confirmed by Sam Okafor &middot; clip attached</p></div>";
+
+  h += '<p style="margin-top:16px">'
+    + '<button class="act primary" data-act="doRecognise" data-arg="' + e.id + '">Confirm recognition</button>'
+    + '<button class="act" data-act="toCoach" data-arg="' + e.id + '">This was not avoidance &mdash; reclassify</button>'
+    + "</p>";
+
+  return h + refs(["US-012", "ADR-0010", "M-13", "canon C-30"]);
+}
+
+/* ---------------------------------------------------------- driver record */
+
+function viewDriver(name) {
+  const mine = STATE.events.filter(e => e.driver === name);
+  const coached = STATE.coaching.filter(c => c.driver === name);
+  const seeded = STATE.seededCoaching.filter(c => c.driver === name);
+  const rec = STATE.recognitions.filter(r => r.driver === name);
+  const neutral = STATE.events.filter(e => e.driver === name && e.klass === "neutral");
+
+  let h = '<p class="crumb"><button class="link" data-go="set">Review set</button></p>';
+  h += "<h2>" + esc(name) + "</h2>";
+  h += '<p class="sub">Events, conversations and recognitions on one page.</p>';
+
+  h += "<h3>Events this week</h3>";
+  h += "<p class='kv'>" + mine.length + " in the critical and high bands. "
+    + "2 events could not be attributed to a driver this week and are not counted here.</p>";
+
+  h += "<h3>Coaching conversations</h3>";
+  const all = coached.concat(seeded);
+  if (all.length === 0) {
+    h += "<p class='kv'>None recorded.</p>";
+  } else {
+    for (const c of all) {
+      h += '<div class="card"><h4>' + esc(c.behaviour) + " &middot; " + esc(c.date || "today") + "</h4>"
+        + "<p>" + esc(c.discussed) + "</p>"
+        + (c.said ? "<p><strong>What the driver said.</strong> " + esc(c.said) + "</p>" : "")
+        + (c.disputed ? "<p><strong>Driver disputes this.</strong></p>" : "")
+        + "<p class='kv'>Clip attached &middot; recorded by Sam Okafor</p></div>";
+    }
+  }
+
+  h += "<h3>Did it change anything?</h3>";
+  if (seeded.length) {
+    h += '<div class="card"><h4>Phone in hand &mdash; 28 days either side of 12 August</h4>'
+      + "<p>4 events before, 1 after. Shown as a comparison, not as proof &mdash; one driver over four weeks "
+      + "cannot separate a conversation from an ordinary quiet month.</p></div>";
+  }
+  if (coached.length) {
+    h += '<div class="card"><h4>' + esc(coached[0].behaviour) + " &mdash; today&rsquo;s conversation</h4>"
+      + "<p>Too early to say. This needs 4 weeks after the conversation.</p></div>";
+  }
+  if (!seeded.length && !coached.length) {
+    h += "<p class='kv'>Nothing to compare yet.</p>";
+  }
+
+  h += "<h3>Recognised</h3>";
+  if (rec.length === 0) {
+    h += "<p class='kv'>None recorded.</p>";
+  } else {
+    for (const r of rec) {
+      h += '<div class="card"><h4>' + esc(r.when) + "</h4><p>" + esc(r.text) + "</p>"
+        + "<p class='kv'>Confirmed by Sam Okafor &middot; clip attached</p></div>";
+    }
+  }
+
+  h += "<h3>Recorded on their side</h3>";
+  h += neutral.length
+    ? "<p class='kv'>" + neutral.length + " event recorded as not their doing.</p>"
+    : "<p class='kv'>None this week.</p>";
+
+  return h + refs(["US-014", "US-011", "R-06", "R-09"]);
+}
+
+/* ---------------------------------------------------------------- actions */
+
+const ACTIONS = {
+  play(id) { byId(id).played = true; go("event", id); },
+
+  toCoach(id) { go("coach", id); },
+  toRecognise(id) { go("recognise", id); },
+
+  watchDismiss(id, root) {
+    root.querySelector("#dgo").disabled = root.querySelector("#dr").value.trim() === "";
+  },
+  watchBulk(key, root) {
+    root.querySelector("#bgo").disabled = root.querySelector("#br").value.trim() === "";
+  },
+  watchCoach(id, root) {
+    root.querySelector("#cgo").disabled = root.querySelector("#disc").value.trim() === "";
+  },
+
+  doDismiss(id, root) {
+    const e = byId(id);
+    const choice = (root.querySelector('input[name="reclass"]:checked') || {}).value || "";
+    if (choice === "credit") {
+      e.klass = "credit";
+      e.classWhy = "Reclassified by Sam Okafor as avoided harm.";
+      e.humanInitiated = true;
+      go("recognise", id);
+      return;
+    }
+    if (choice === "neutral") e.klass = "neutral";
+    e.state = "dismissed";
+    e.outcome = "dismissed";
+    STATE.dismissals.push({
+      events: 1, bulk: false, withoutFootage: e.footage !== "ready", reclass: choice
+    });
+    go("set");
+  },
+
+  doBulk(key) {
+    const g = groupsOf(live()).find(x => x.kind === "group" && x.key === key);
+    for (const e of g.events) { e.state = "dismissed"; e.outcome = "dismissed"; }
+    STATE.dismissals.push({ events: g.events.length, bulk: true, withoutFootage: false, reclass: "" });
+    go("set");
+  },
+
+  doCoach(id, root) {
+    const e = byId(id);
+    STATE.coaching.push({
+      driver: e.driver,
+      behaviour: root.querySelector("#beh").value.trim() || e.behaviour,
+      discussed: root.querySelector("#disc").value.trim(),
+      said: root.querySelector("#said").value.trim(),
+      disputed: root.querySelector("#disp").checked,
+      date: "today"
+    });
+    e.state = "coached"; e.outcome = "coached";
+    go("driver", e.driver);
+  },
+
+  doRecognise(id) {
+    const e = byId(id);
+    STATE.recognitions.push({
+      driver: e.driver, when: "Tuesday 9 September, 14:06",
+      text: "Tuesday 14:06, Mill Lane. Stopped in time for a cyclist who came out of the junction.",
+      humanInitiated: !!e.humanInitiated
+    });
+    e.state = "recognised"; e.outcome = "recognised";
+    go("set");
+  }
+};
+
+/* ------------------------------------------------------- platform readout */
+
+function renderReadout() {
+  const judgements = STATE.dismissals.length;
+  const dismissedEvents = STATE.dismissals.reduce((a, d) => a + d.events, 0);
+  const sweptEvents = STATE.dismissals.filter(d => d.bulk).reduce((a, d) => a + d.events, 0);
+
+  const decisions = judgements + STATE.coaching.length + STATE.recognitions.length;
+  const resolvedEvents = STATE.events.filter(e => e.state !== "reviewing").length;
+  const individually = resolvedEvents - sweptEvents;
+
+  const pj = decisions ? Math.round((judgements / decisions) * 1000) / 10 : null;
+  const pe = resolvedEvents ? Math.round((dismissedEvents / resolvedEvents) * 1000) / 10 : null;
+
+  const rows = [
+    ["M-09 per judgement", pj === null ? "&mdash;" : pj + "%",
+      judgements + " of " + decisions + " decisions were a dismissal. Target under 20%. This is the pass/fail term."],
+    ["M-09 per event", pe === null ? "&mdash;" : pe + "%",
+      dismissedEvents + " of " + resolvedEvents + " resolved events ended dismissed. Reported, not targeted."],
+    ["M-14 sweep share", sweptEvents + " swept vs " + individually + " looked at",
+      "Bar is that no account clears more by bulk action than by individual review."],
+    ["M-11 band distribution", "1 / 10 / " + WEEK.medium + " / " + WEEK.low,
+      "Critical, high, medium, low. Nothing discarded &mdash; the band decides the action."],
+    ["M-03 coaching records", String(STATE.coaching.length),
+      "Each anchors a 28-day repeat window. Recognition and dismissal do not."],
+    ["M-13 recognition", String(STATE.recognitions.length),
+      "Ratio to coaching is watched, never targeted."]
+  ];
+
+  document.getElementById("readout").innerHTML =
+    "<tr><th>Metric</th><th>Now</th><th>What it means</th></tr>"
+    + rows.map(r => "<tr><td>" + r[0] + '</td><td class="num">' + r[1]
+      + '</td><td class="note">' + r[2] + "</td></tr>").join("");
+}
+
+render();
+</script>
+</body>
+</html>
