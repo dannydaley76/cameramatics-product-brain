@@ -17,8 +17,10 @@
 
   .shell { max-width: 1180px; margin: 0 auto; padding: 22px 16px 60px; }
   .cols { display: grid; grid-template-columns: 1fr; gap: 18px; align-items: start; }
-  .cols.with-notes { grid-template-columns: 1fr; }
-  @media (min-width: 940px) { .cols.with-notes { grid-template-columns: minmax(0,1fr) 316px; } }
+  @media (min-width: 940px) {
+    .cols { grid-template-columns: minmax(0,1fr) 316px; }
+    .cols.notes-collapsed { grid-template-columns: minmax(0,1fr) max-content; }
+  }
 
   /* ---- chrome ---- */
   .appbar { background: var(--box); border: 1px solid var(--line); border-bottom: 0;
@@ -119,7 +121,8 @@
   .notes p { color: var(--mid); font-size: 13px; }
   .notes .m { border-top: 1px solid var(--hair); padding: 8px 0 0; margin: 8px 0 0; }
   .notes .m .top { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
-  .notes .m .id { font-size: 12px; }
+  .notes .m .id { font-size: 12px; font-weight: 600; }
+  .notes .m .id a { font-weight: 400; color: var(--faint); }
   .notes .m .val { font-weight: 600; white-space: nowrap; }
   .notes .m .note { color: var(--mid); font-size: 12px; margin: 2px 0 0; }
   .toggle { font: inherit; background: #fff; border: 1px solid var(--ink); padding: 4px 9px; cursor: pointer; }
@@ -129,7 +132,7 @@
 
 <div class="shell">
 
-  <div class="cols with-notes" id="cols">
+  <div class="cols" id="cols">
     <div>
       <div class="appbar">
         <span class="name">Northgate Logistics</span>
@@ -148,14 +151,16 @@
 
     <aside class="notes" id="notes">
       <div class="notes-hd">
-        <h3>Notes &mdash; not product</h3>
+        <h3>Behind the screen</h3>
         <button class="toggle" id="notesbtn" aria-expanded="true">Hide</button>
       </div>
       <div id="notesbody">
-        <p>A fleet manager never sees this. It shows what the platform emits as you
-        work, so the metric definitions can be checked against the behaviour.
-        Work through a few events individually, then sweep the group of five, and
-        watch <a href="#" data-doc="M">M-09</a>'s two numbers come apart.</p>
+        <p>A fleet manager never sees this panel. It is here so you can check that
+        the numbers this design promises behave the way it says they will when
+        somebody actually uses it.</p>
+        <p><strong>Try this.</strong> Handle two or three events one at a time,
+        then clear the group of five in a single action, and watch the two
+        dismissal numbers come apart.</p>
         <div id="readout"></div>
       </div>
     </aside>
@@ -808,7 +813,7 @@ const ACTIONS = {
 document.getElementById("notesbtn").addEventListener("click", function () {
   STATE.notes = !STATE.notes;
   document.getElementById("notesbody").hidden = !STATE.notes;
-  document.getElementById("cols").classList.toggle("with-notes", STATE.notes);
+  document.getElementById("cols").classList.toggle("notes-collapsed", !STATE.notes);
   this.textContent = STATE.notes ? "Hide" : "Show";
   this.setAttribute("aria-expanded", String(STATE.notes));
 });
@@ -830,23 +835,31 @@ function renderNotes() {
   const was = n => n === 1 ? " was" : " were";
 
   const rows = [
-    ["M-09", "per judgement", pct(judgements, decisions),
-      judgements + " of " + decisions + " decision" + (decisions === 1 ? "" : "s") + was(judgements)
-      + " a dismissal. Under 20% is the pass/fail term. Critical and high bands, this week only."],
-    ["M-09", "per event", pct(dismissedEvents, resolved),
-      dismissedEvents + " of " + resolved + " resolved events ended dismissed. Reported, not targeted."],
-    ["M-14", "sweep share", swept + " swept / " + looked + " looked at",
-      "Bar: never more cleared by bulk action than by looking." + (swept > looked ? " Breached." : "")],
-    ["M-11", "confirmed without change", matched + " of " + cls,
-      "Added by ADR-0014, and only a person can add to it — a sweep classifies nothing. High is either good grading or rubber-stamping; the rate alone cannot say which."],
-    ["M-11", "band distribution", "1 / 10 / " + WEEK.medium + " / " + WEEK.low,
-      "Critical, high, medium, low. Nothing discarded."],
-    ["M-03", "coaching records", String(STATE.coaching.length), "Each anchors a 28-day repeat window."],
-    ["M-13", "recognition", String(STATE.recognitions.length), "Ratio to coaching watched, never targeted."]
+    ["Dismissals, per decision", "M-09", pct(judgements, decisions),
+      judgements + " of your " + decisions + " decision" + (decisions === 1 ? "" : "s")
+      + was(judgements) + " to dismiss. Clearing a whole group counts once, because it "
+      + "was one decision. Staying under 20% is what the 90-day test holds us to."],
+    ["Dismissals, per event", "M-09", pct(dismissedEvents, resolved),
+      dismissedEvents + " of the " + resolved + " event" + (resolved === 1 ? "" : "s")
+      + " you have finished with ended dismissed. A group of five counts as five here. "
+      + "Reported beside the number above, never instead of it."],
+    ["Swept vs read one by one", "M-14", swept + " swept, " + looked + " read",
+      "More read than swept is the bar. If it flips, the queue is being cleared rather than reviewed."
+      + (swept > looked ? " It has flipped." : "")],
+    ["Times you agreed with the system", "M-11", matched + " of " + cls,
+      "Only a person can add to this — clearing a group in one action classifies nothing. "
+      + "A high number could mean the grading is good, or that nobody is really checking it. "
+      + "This number alone cannot tell you which, which is why a person reads a sample."],
+    ["Where this week's events landed", "M-11", "1 / 10 / " + WEEK.medium + " / " + WEEK.low,
+      "Critical, high, medium, low. Nothing is thrown away — the band decides what happens next."],
+    ["Coaching conversations recorded", "M-03", String(STATE.coaching.length),
+      "Each one starts a 28-day clock on whether that behaviour changes."],
+    ["Recognitions confirmed", "M-13", String(STATE.recognitions.length),
+      "Watched against the number of coaching conversations, and never given a target."]
   ];
 
   document.getElementById("readout").innerHTML = rows.map(r =>
-    '<div class="m"><div class="top"><span class="id">' + link(r[0], r[0] + " " + r[1])
+    '<div class="m"><div class="top"><span class="id">' + r[0] + " " + link(r[1])
     + '</span><span class="val">' + r[2] + "</span></div><p class=\"note\">" + r[3] + "</p></div>").join("");
 }
 

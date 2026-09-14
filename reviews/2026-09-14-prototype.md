@@ -241,10 +241,17 @@ findings 1, 2, 3, 4, 5, 6 (absence by grep + DOM), 7, 8 (walked the full queue t
 
 ## Human disposition — 2026-09-14, Danny
 
-Twenty findings. Sixteen fixed, one fixed differently from the way the reviewer
-implied, three deferred. Every fix is verified by a scripted run against the
-rebuilt file rather than by reading the diff — the reviewer's own method, and
-the reason its findings landed.
+Twenty findings. **Sixteen fixed, three partly fixed, one deferred** — and one
+gap outside the numbered findings, accessibility, untouched.
+
+*An earlier version of this section said "sixteen fixed, one fixed differently,
+three deferred". That was tidier than the truth and it is the same fault the
+first adversarial pass caught in the judgement log: a count that reads well and
+does not survive being checked. Corrected here rather than quietly.*
+
+Every fix is verified by a scripted run against the rebuilt file — 30 assertions,
+each tied to a finding — rather than by reading the diff. That is the reviewer's
+own method and the reason its findings landed.
 
 **Fixed, and the four that mattered most were all the same fault.** The
 recognition record is now built from the event it belongs to, so confirming
@@ -288,18 +295,31 @@ marked on a button, and the cost tracks what an action reaches — neutral needs
 clip, credit needs the clip watched, risk needs the clip watched and something
 written. [[ADR-0014]] carries a dated correction; J-27 carries the overrule.
 
+**Partly fixed, and the remainder is named on the screens rather than left
+silent:**
+
+- **6 — US-007's footage states.** The fetching string now renders verbatim,
+  including the clause that makes it an absence state. The **vehicle-offline**
+  state is still not built, and that is a decision rather than a backlog item:
+  Danny's review of the first build was that footage problems appeared on too
+  many pages for a set this size, so the prototype demonstrates pending and
+  expired and names offline as specified-but-not-shown.
+- **13 — false *Implements* lines.** Fixed: every footer now claims only what is
+  built. The underlying absence is not fixed — US-013, US-008 and US-015 are
+  still not in the prototype. Each is now declared where a reader would look for
+  it, with the reason: not built, assumption A-23, and v1.1 by J-24 respectively.
+- **20 — the nits.** Most are gone. Two remain and are deliberate: *"not just
+  that something happened"* keeps a banned word in its "not merely" sense, and
+  US-003's quoted string ends in a full stop that the button does not render.
+  The second needs the repo to decide whether a character-exact acceptance
+  criterion outranks the house rule about full stops on buttons. It has not.
+
 **Deferred, and now said out loud on the screens rather than silently:**
 
 - **14 — camera channel selection** is text, not a control. It stays text. The
   behaviour in question is whether a manager can judge an event from the
   evidence, and a channel switcher demonstrates nothing a second grey box would
   not. The screen no longer implies otherwise.
-- **13 — US-013, US-008 and US-015 are absent.** The footers now claim only what
-  is built, and name what is not: the medium-band screen says the send-to-driver
-  action is not built, the driver record says unattributed counts are not built
-  because [[A-23]] assumes attribution solved for this exercise, and the fleet
-  view is v1.1 by J-24. A false *Implements* line is worse than no line, and the
-  reviewer was right that C-24's principle covers this too.
 - **Accessibility.** The reviewer noted zero `aria-label`s, no keyboard-only
   testing and no phone-width check. That is a real gap and it is not fixed. It is
   deferred on time rather than on judgement, which is the honest reason.

@@ -101,7 +101,8 @@ finished.
 - [x] Adversarial pass — **ran 2026-09-14, verdict: Not yet.** 16 of 18 attacks survived; 13 fixed, 2 partly fixed, 1 deferred — every one with its reason stated. See `reviews/`
 - [x] Prioritisation and phasing — section 4 (`brain/phasing.md`)
 - [x] Risk and assumption narrative — section 5 (`brain/risks-narrative.md`)
-- [x] Clickable prototype (`prototype/index.html`) — low fidelity, real behaviour. **Adversarial pass ran 2026-09-14, verdict: Not yet.** 16 of 20 findings fixed, 1 fixed differently, 3 deferred; see `reviews/`
+- [x] Clickable prototype (`prototype/index.html`) — low fidelity, real behaviour. **Adversarial pass ran 2026-09-14, verdict: Not yet.** Of 20 findings: 16 fixed, 3 partly fixed, 1 deferred, and accessibility untouched. Dispositions in `reviews/`
+- [ ] **No adversarial pass on ADR-0012, ADR-0013 and ADR-0014.** They carry `adversarial_pass: not run` and they are load-bearing — forward-facing detection, the downgrade audit, and classification confirmation. Canon C-24 says the difference is never silent, so it is stated here rather than inferred from frontmatter
 - [ ] Submission deck
 
 ## What this is built on
