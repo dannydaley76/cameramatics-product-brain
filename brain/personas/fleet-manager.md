@@ -4,7 +4,8 @@ title: Fleet manager (primary, v1)
 status: draft
 owner: danny
 assumptions: [A-01, A-03]
-links: [[jtbd]] [[problem]]
+links: [jtbd, problem]
+adversarial_pass: ran 2026-09-14
 ---
 
 # Fleet manager — primary user for v1

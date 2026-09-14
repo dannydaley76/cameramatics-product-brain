@@ -3,6 +3,7 @@ id: CANON
 title: Canon — rules this product brain does not break
 status: active
 owner: danny
+adversarial_pass: ran 2026-09-14
 ---
 
 # Canon

@@ -12,6 +12,7 @@ assumptions: [A-19]
 decisions: [ADR-0007, ADR-0009]
 status: proposed
 drafted_by: agent
+adversarial_pass: ran 2026-09-14
 ---
 
 # US-001 — A weekly review set that can be finished

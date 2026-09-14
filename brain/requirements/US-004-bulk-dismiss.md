@@ -12,6 +12,7 @@ decisions: [ADR-0008]
 questions: [Q-08]
 status: proposed
 drafted_by: agent
+adversarial_pass: ran 2026-09-14
 ---
 
 # US-004 — Dismiss a group of related events with a reason

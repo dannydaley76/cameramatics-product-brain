@@ -12,6 +12,7 @@ assumptions: [A-12]
 decisions: [ADR-0004, ADR-0010]
 status: proposed
 drafted_by: agent
+adversarial_pass: ran 2026-09-14
 ---
 
 # US-011 — Capture the driver's response in their own words

@@ -5,10 +5,11 @@ status: draft
 owner: danny
 section: 1
 assumptions: [A-01, A-02, A-03, A-06, A-08]
-metrics: [M-01, M-03, M-05, M-07, M-09, M-11]
+metrics: [M-01, M-02, M-03, M-05, M-07, M-09, M-11, M-12]
 risks: [R-01, R-06, R-08]
 questions: [Q-01, Q-02, Q-04, Q-06]
-links: [[problem]] [[jtbd]] [[canon]]
+links: [problem, jtbd, canon]
+adversarial_pass: ran 2026-09-14
 ---
 
 # Product brief — risky-driving detection and coaching

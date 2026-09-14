@@ -11,7 +11,7 @@ assumptions: [A-11, A-12, A-13, A-16, A-18]
 risks: [R-06, R-09]
 questions: [Q-09, Q-10]
 decisions: [ADR-0006]
-links: [[problem]] [[company-analysis]] [[canon]]
+links: [problem, company-analysis, canon]
 ---
 
 # Annotated brief

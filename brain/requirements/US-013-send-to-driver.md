@@ -11,6 +11,7 @@ risks: [R-04, R-12]
 decisions: [ADR-0004, ADR-0007]
 status: proposed
 drafted_by: agent
+adversarial_pass: ran 2026-09-14
 ---
 
 # US-013 — Send a medium-band group to the driver

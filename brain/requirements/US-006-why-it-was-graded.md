@@ -11,6 +11,7 @@ risks: [R-02, R-12, R-13]
 decisions: [ADR-0007, ADR-0010]
 status: proposed
 drafted_by: agent
+adversarial_pass: ran 2026-09-14
 ---
 
 # US-006 — See why this event was graded and classified as it was

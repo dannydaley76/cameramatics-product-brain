@@ -10,7 +10,7 @@ adversarial_pass: not run
 metrics: [M-01, M-03, M-05, M-07, M-09, M-10, M-11, M-12]
 risks: [R-06, R-09]
 questions: [Q-07]
-links: [[annotated-brief]] [[business-case]] [[registers/metrics]]
+links: [annotated-brief, business-case, registers/metrics]
 ---
 
 # Success criteria

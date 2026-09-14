@@ -8,7 +8,7 @@ drafted_by: agent
 decided_by: danny
 adversarial_pass: not run
 produced_with: skills/user-stories.md, skills/ux-writing.md
-links: [[../prd]] [[../success-criteria]] [[../decisions/ADR-0007]] [[../decisions/ADR-0010]]
+links: [prd, success-criteria, decisions/ADR-0007, decisions/ADR-0010]
 ---
 
 # Portal requirements

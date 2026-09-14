@@ -12,6 +12,7 @@ assumptions: [A-05, A-10]
 decisions: [ADR-0002, ADR-0005]
 status: proposed
 drafted_by: agent
+adversarial_pass: ran 2026-09-14
 ---
 
 # US-007 — Footage states are honest

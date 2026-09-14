@@ -25,6 +25,12 @@ metrics:
     horizon: 12 months
     source: Customer finance / insurer data, annual
     caveats: Depends on customer willingness to share; likely only available for reference accounts.
+    counters: [M-12]
+    note: >
+      The counter matters more here than it looks. Claims cost falls if a fleet
+      simply stops claiming, or if cost is pushed onto drivers through excess
+      policies and disciplinary routes. M-12 - disputes and coached-cohort
+      attrition - is the signal that a falling number was bought that way.
 
   - id: M-03
     layer: behaviour

@@ -12,6 +12,7 @@ assumptions: [A-10]
 decisions: [ADR-0009]
 status: proposed
 drafted_by: agent
+adversarial_pass: ran 2026-09-14
 ---
 
 # US-003 — The weekly set closes, and what it leaves behind is visible

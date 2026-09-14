@@ -13,7 +13,7 @@ metrics: [M-03, M-07, M-09, M-11, M-12, M-13]
 risks: [R-01, R-02, R-07, R-09, R-13]
 decisions: [ADR-0001, ADR-0002, ADR-0003, ADR-0004, ADR-0005, ADR-0006, ADR-0007, ADR-0008, ADR-0009, ADR-0010]
 questions: [Q-01, Q-02, Q-09, Q-10]
-links: [[problem]] [[success-criteria]] [[stack-outline]] [[portal-requirements]]
+links: [problem, success-criteria, stack-outline, portal-requirements]
 ---
 
 # Event triage and coaching loop
@@ -82,7 +82,7 @@ attrition ([[M-12]]). Full reasoning in [[success-criteria]].
 
 ## Top-level user stories
 
-Parent stories only. Detail in [[portal-requirements]], written against
+Parent stories only. Detail in [[requirements/README]], written against
 [[../skills/user-stories]].
 
 **EP-01 — Review queue.** As a fleet manager, I want a short ranked list of the

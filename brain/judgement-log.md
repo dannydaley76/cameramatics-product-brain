@@ -3,7 +3,8 @@ id: JLOG
 title: Judgement log
 status: active
 owner: danny
-links: [[canon]] [[../AGENTS]]
+links: [canon, AGENTS]
+adversarial_pass: ran 2026-09-14
 ---
 
 # Judgement log

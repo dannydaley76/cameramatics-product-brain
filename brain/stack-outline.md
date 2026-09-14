@@ -12,7 +12,7 @@ metrics: [M-05, M-09, M-10]
 risks: [R-02, R-03, R-04, R-05, R-09]
 decisions: [ADR-0001, ADR-0002, ADR-0003, ADR-0004, ADR-0005]
 questions: [Q-02, Q-03, Q-09]
-links: [[problem]] [[business-case]] [[portal-requirements]]
+links: [problem, business-case, portal-requirements]
 ---
 
 # Solution outline — edge, cloud, portal
@@ -143,7 +143,7 @@ the coaching loop has no reliable subject.
 
 ## 3. Customer web portal
 
-Deliberately brief — [[portal-requirements]] is where the depth goes.
+Deliberately brief — [[requirements/README]] is where the depth goes.
 
 ### What it must do
 - A **finite, ranked review queue** that starts full and ends empty.
@@ -184,5 +184,5 @@ Deliberately brief — [[portal-requirements]] is where the depth goes.
 
 The useful consequence: the portal can be built and tested against a stubbed
 event source while the edge and attribution work proceeds. That is what makes
-the phasing in [[phasing]] possible rather than serial, and it is the reason I
+the phasing possible rather than serial, and it is the reason I
 would start portal work early even though it is last in the data flow.

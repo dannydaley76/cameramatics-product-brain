@@ -7,7 +7,7 @@ drafted_by: agent
 decided_by: pending
 adversarial_pass: not run
 sources: public web only, September 2026
-links: [[problem]] [[business-case]] [[story]]
+links: [problem, business-case, story]
 ---
 
 # CameraMatics — what is actually true

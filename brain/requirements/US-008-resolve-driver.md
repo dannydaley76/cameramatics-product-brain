@@ -12,6 +12,7 @@ assumptions: [A-11]
 questions: [Q-09]
 status: proposed
 drafted_by: agent
+adversarial_pass: ran 2026-09-14
 ---
 
 # US-008 — Resolve who was driving

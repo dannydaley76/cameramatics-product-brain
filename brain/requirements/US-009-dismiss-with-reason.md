@@ -9,10 +9,11 @@ size: S
 metrics: [M-09, M-11, M-13]
 risks: [R-12]
 decisions: [ADR-0008, ADR-0010]
-links: [[US-012]]
+links: [US-012]
 questions: [Q-08]
 status: proposed
 drafted_by: agent
+adversarial_pass: ran 2026-09-14
 ---
 
 # US-009 — Dismiss a single event with a reason

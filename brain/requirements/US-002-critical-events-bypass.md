@@ -12,6 +12,7 @@ assumptions: [A-10]
 decisions: [ADR-0002, ADR-0007, ADR-0011]
 status: proposed
 drafted_by: agent
+adversarial_pass: ran 2026-09-14
 ---
 
 # US-002 — Critical events bypass the weekly rhythm

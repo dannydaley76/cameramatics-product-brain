@@ -3,7 +3,8 @@ id: JTBD
 title: Jobs to be done
 status: draft
 owner: danny
-links: [[problem]] [[personas/fleet-manager]] [[personas/driver]]
+links: [problem, personas/fleet-manager, personas/driver]
+adversarial_pass: ran 2026-09-14
 ---
 
 # Jobs to be done

@@ -12,6 +12,7 @@ assumptions: [A-09]
 decisions: [ADR-0002, ADR-0005]
 status: proposed
 drafted_by: agent
+adversarial_pass: ran 2026-09-14
 ---
 
 # US-005 — Watch the clip with enough before and after to judge it

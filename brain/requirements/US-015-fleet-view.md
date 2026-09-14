@@ -11,6 +11,7 @@ risks: [R-06]
 decisions: [ADR-0010]
 status: proposed
 drafted_by: agent
+adversarial_pass: ran 2026-09-14
 ---
 
 # US-015 — A fleet view that does not overstate what it knows

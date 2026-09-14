@@ -11,6 +11,7 @@ risks: [R-07, R-04]
 decisions: [ADR-0005]
 status: proposed
 drafted_by: agent
+adversarial_pass: ran 2026-09-14
 ---
 
 # US-010 — Record a coaching conversation from the clip

@@ -3,7 +3,8 @@ id: PROBLEM
 title: Problem statement — risky driving events
 status: draft
 owner: danny
-links: [[jtbd]] [[business-case]] [[personas/fleet-manager]]
+links: [jtbd, business-case, personas/fleet-manager]
+adversarial_pass: ran 2026-09-14
 ---
 
 # The problem
