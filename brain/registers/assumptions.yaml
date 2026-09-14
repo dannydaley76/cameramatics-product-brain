@@ -19,6 +19,9 @@ assumptions:
     questions: [Q-04]
 
   - id: A-02
+    gate: >
+      DISCOVERY GATE (engineering). The assumption whose falsity destroys the
+      argument itself. Validate before committing engineering.
     statement: >
       At default sensitivity the installed device generates roughly 0.5-3
       detectable events per vehicle per day, i.e. 50-450/day for a 100-vehicle
@@ -131,23 +134,27 @@ assumptions:
 
   - id: A-11
     statement: >
-      Driver-to-vehicle attribution is not reliably available for a material
-      share of events in mixed-shift fleets today.
+      Driver-to-vehicle attribution is already solved - their existing per-driver
+      scoring in Safety Centre could not function otherwise - but the mechanism
+      is unknown to us: driver login, tachograph card, roster join, key fob or
+      app. Each carries different coverage and different failure modes, and we
+      would inherit whichever exists together with its gaps.
     confidence: medium
-    impact: critical
+    impact: high
     if_wrong: >
-      If attribution is already solid, the coaching loop has a reliable subject
-      and a whole class of v1 workflow disappears - a materially cheaper release.
-    validate: Measure what share of existing events can be attributed to a named driver with confidence, across a sample of fleets.
-    source: stated assumption, no insider data
+      If attribution is weaker than their per-driver scoring implies, coaching
+      has no reliable subject and M-03 cannot be computed. If it is stronger and
+      universal than assumed, the unknown-driver handling in v1 is unnecessary
+      and v1 gets cheaper.
+    validate: >
+      Ask which mechanism is used, what share of events it covers, and what
+      happens on overtime, agency and swapped shifts - the cases where every one
+      of these mechanisms degrades.
+    source: >
+      Danny's read during discovery, inferred from the existence of per-driver
+      scoring in their published product. Not confirmed - see A-18.
     risks: [R-09]
     questions: [Q-09]
-
-  # ---------------------------------------------------------------------------
-  # A-12 to A-18 are derived from public web sources only (see company-analysis.md).
-  # A-18 is the meta-assumption that qualifies every one of them and should be
-  # read first. None of these were confirmed with anyone at CameraMatics.
-  # ---------------------------------------------------------------------------
 
   - id: A-18
     statement: >
@@ -188,6 +195,9 @@ assumptions:
     questions: [Q-10]
 
   - id: A-13
+    gate: >
+      DISCOVERY GATE (pre-interview). The assumption whose falsity destroys the
+      framing rather than the requirements. Validate by asking Q-10 out loud.
     statement: >
       No automated ranking, prioritisation or suppression of events exists. The
       fleet manager triages by scanning the dashboard and "selects events from

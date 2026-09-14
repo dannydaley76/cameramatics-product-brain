@@ -99,10 +99,12 @@ brief mentions.
 3. **Any mention of AI** *(DD)* — notable by absence, and treated as a signal
    rather than an oversight. AI goes in where it demonstrably beats a rule, and
    nowhere else ([[canon#C-28]]).
-4. **Which driver was in the seat** *(agent)* — "coach the driver" assumes
-   attribution the brief never addresses. In mixed-shift fleets it is frequently
-   unknown, and without it no per-driver measurement exists at all ([[A-11]],
-   [[R-09]]).
+4. **Which driver was in the seat** *(DD)* — "coach the driver" assumes an
+   attribution the brief never addresses. They must have this solved already,
+   since per-driver scoring exists — but we do not know *how*, and every
+   plausible mechanism (login, tacho card, roster join, key fob) degrades in the
+   same places: overtime, agency drivers, swapped shifts. We would inherit the
+   mechanism and its gaps ([[A-11]], [[R-09]]).
 5. **Who actually has the conversation** *(agent)* — the brief has one person
    reviewing and coaching. CameraMatics' own published workflow splits it: fleet
    manager triages, depot manager coaches ([[A-16]]).
@@ -121,3 +123,29 @@ exists — detection, scoring, a coaching workflow with statuses, a driver app
 ([[A-12]]). We are treating the exercise as designing the part that is missing
 rather than rebuilding what is there, and holding that reading as a hypothesis to
 be tested in one question ([[Q-10]]), not as a verdict ([[A-18]]).
+
+
+---
+
+## Discovery gates
+
+Discovery closes when the load-bearing assumption is named. There are two, and
+they fail in different ways — saying so is more useful than picking one.
+
+**[[A-02]] — event volume, 0.5–3 per vehicle per day. The engineering gate.**
+The assumption whose falsity destroys the *argument*. Everything rests on there
+being more events than a human can process: the problem statement, the case for
+triage over detection, the cost arithmetic in [[decisions/ADR-0002]]. If real
+volume is an order of magnitude lower, attention is not the scarce resource and
+this is not a triage product — that is a rewrite, not an adjustment. Thirty days
+of telemetry across ten fleets settles it, and I would want that before
+committing engineering.
+
+**[[A-13]] — no event triage exists today. The pre-interview gate.**
+The assumption whose falsity destroys the *framing* rather than the requirements.
+If they already rank and suppress and simply never marketed it, a queue is still
+a queue and the requirements largely survive — but the story collapses, and it
+collapses in front of the person who built the thing. One question answers it
+([[Q-10]]), asked out loud before defending anything.
+
+The distinction matters: one breaks the product, the other breaks the pitch.

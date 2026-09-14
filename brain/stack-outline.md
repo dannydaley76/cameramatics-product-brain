@@ -101,10 +101,12 @@ real OTA reach). [[R-05]] is the delivery risk that most shapes phasing.
   reporting afterthought.
 
 ### Constraints
-- **Driver attribution is the constraint that hurts.** You cannot coach an event
-  you cannot attribute, and vehicle-to-driver mapping in mixed-shift fleets is
-  frequently unreliable ([[A-11]], [[R-09]]). Facial identification would solve
-  it and is disproportionate; I would not propose it.
+- **Driver attribution is inherited, not built — and that is the constraint that
+  hurts.** Per-driver scoring already exists, so attribution is solved by some
+  mechanism ([[A-11]]); we do not know which, and each one fails in the same
+  places — overtime, agency, swapped shifts. We take on that gap rate rather than
+  choosing it ([[R-09]]). Facial identification would close it and is
+  disproportionate; I would not propose it.
 - Device clocks drift, so event ordering cannot trust device timestamps alone.
 - Retention limits and right-to-erasure sit in tension with the evidential value
   of footage in a claim. That tension is a policy decision with a legal owner,

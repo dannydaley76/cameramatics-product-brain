@@ -119,20 +119,24 @@ risks:
 
   - id: R-09
     category: technical
-    title: Driver attribution is too unreliable to coach on
+    title: The attribution mechanism we inherit has gaps we cannot see
     detail: >
-      You cannot coach an event you cannot attribute to a person. In mixed-shift
-      fleets the vehicle-to-driver mapping is often stale or absent ([[A-11]]),
-      and a coaching conversation with the wrong driver costs more trust than ten
-      missed events. It also makes M-03 - the primary product metric -
-      uncomputable, because per-driver repeat rate needs a reliable driver.
-    likelihood: high
+      Attribution is almost certainly solved already - per-driver scoring exists
+      ([[A-11]]) - but by a mechanism we have not seen: login, tacho card, roster
+      join, key fob or app. Every one of those degrades in the same places:
+      overtime, agency drivers, swapped shifts, a vehicle taken at short notice.
+      Those are also the shifts where risk concentrates. A coaching conversation
+      with the wrong driver costs more trust than ten missed events, and gaps in
+      attribution make M-03 uncomputable for exactly the population we most want
+      to measure.
+    likelihood: medium
     impact: high
     mitigation: >
-      Explicit unknown state with a resolve-who-was-driving step in the review
-      workflow; never infer identity silently; treat attribution coverage as a
-      reported metric and an onboarding precondition rather than an assumption.
-      Facial identification would solve it and is disproportionate - not proposed.
+      Treat attribution as inherited infrastructure with a known gap rate rather
+      than as a given: measure and report coverage, carry an explicit unknown
+      state with a resolve-who-was-driving step, and never infer identity
+      silently. Facial identification would close the gap and is
+      disproportionate - not proposed.
     metrics: [M-03]
     questions: [Q-09]
     owner: product + platform

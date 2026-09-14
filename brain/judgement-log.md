@@ -297,6 +297,40 @@ the people setting the exercise.
 *Class of error: privileged evidence it had produced over an instruction it was
 given — the cost of the research inflating its weight.*
 
+## J-15 — Driver attribution: attribution of the point, and the point itself
+
+Two things happened here and both belong on the record.
+
+**The attribution of the observation.** The agent had marked "which driver was in
+the seat" as its own addition in [[annotated-brief]]. Danny asked for it to be
+moved to his column. The agent declined, on the grounds that the annotated brief
+states the human read the brief unaided and that moving an item would make that
+sentence false — in the one artefact whose value is that its attributions can be
+trusted, and against the standing instruction to the adversarial reviewer to hunt
+for exactly this. Danny then confirmed he had thought of it and not written it
+down, which is recall rather than regret, and the mark moved. `decided_by: danny`
+· `status: ratified`
+
+Worth keeping because it is the only entry where the mechanism pushed back on the
+person it exists to credit.
+
+**The substance, where the agent was wrong.** The agent's framing was that driver
+attribution is *frequently unreliable*. Danny's was better: they must have it
+solved — their own per-driver scoring could not work otherwise — and what we do
+not know is *how*. That reframes the risk entirely. It is not a missing
+capability to build; it is inherited infrastructure whose failure modes we take
+on without choosing them, and every plausible mechanism — login, tacho card,
+roster join, key fob — degrades in the same places: overtime, agency drivers,
+swapped shifts. Which are the shifts where risk concentrates.
+
+[[A-11]] and [[R-09]] were rewritten, and the stack outline with them.
+
+*Class of error: reasoned from the brief's silence rather than from evidence it
+had already read. The agent had the Safety Centre page describing automated
+per-driver scoring in front of it and still wrote that attribution was probably
+unreliable. Absence of mention in the brief was allowed to outweigh presence of
+proof in the product.*
+
 ---
 
 ## Where the split actually falls
