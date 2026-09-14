@@ -5,7 +5,7 @@ date: 2026-09-14
 reviewer: adversarial agent (fresh context)
 target: brain/prd.md, brain/requirements/, brain/decisions/, brain/registers/, brain/ (discovery set), skills/, AGENTS.md, README.md
 mode: refute
-status: findings issued, not dispositioned
+status: dispositioned 2026-09-14 by danny
 ---
 
 # Adversarial review — 2026-09-14
@@ -749,3 +749,97 @@ Per `skills/adversarial-review.md`, every finding above needs a human dispositio
 accepted, rejected with a reason, or deferred — and rejections belong in
 `judgement-log.md`. No artefact frontmatter should flip to `adversarial_pass: ran`
 except those listed in §8 as read in full.
+
+---
+
+## 10. Human disposition — 2026-09-14, Danny
+
+Per [`../skills/adversarial-review.md`](../skills/adversarial-review.md): every
+finding gets a disposition, and a rejection or a deferral carries its reason.
+Sixteen findings survived. Eleven are accepted and fixed, one is accepted and
+scheduled, and four are deferred — with the reasons below, because deferring
+silently is the same failure as not reviewing at all.
+
+The fixes are committed separately from this review so the diff shows what the
+pass bought.
+
+| # | Disposition | What happened |
+|---|---|---|
+| 1 | **Accepted, fixed** | `scripts/validate.py` written and committed; README's self-contradiction removed; CI workflow committed |
+| 2 | **Accepted, fixed** | Withdrawn time budget removed from `prd.md`, `business-case.md`, `stack-outline.md` |
+| 3 | **Accepted, fixed** | Withdrawn 90-second target removed from `success-criteria.md`, with the reason it was withdrawn stated in place |
+| 4 | **Accepted, fixed** | ADR-0007's reframe propagated; remaining uses of "suppress" are either historical (ADR-0007 describing what it replaced) or about *their* product, not ours |
+| 5 | **Accepted, fixed** | [[ADR-0012]] supersedes [[ADR-0001]] — forward-facing detection in v1, and every event carries every signal |
+| 6 | **Partly accepted, partly deferred** | See below |
+| 7 | **Accepted, fixed** | [[M-09]] now reports per-judgement and per-event; which one carries the 90-day term is J-22, `proposed` |
+| 8 | **Deferred** | See below |
+| 9 | **Deferred** | See below |
+| 10 | **Accepted, fixed** | [[A-20]], [[A-21]] and [[A-22]] registered; the first-to-market claim removed outright under C-02 |
+| 11 | **Accepted, fixed** | "Severity model" → "severity ruleset" in US-006 and `stack-outline.md`, with the C-28 reasoning stated in both |
+| 12 | **Accepted, fixed** | US-003 gains an acceptance criterion: closed-unreviewed is not a terminal state for [[M-05]] |
+| 13 | **Accepted, scheduled** | Phasing is section 4 of the submission and is not written yet. The dependency chain it rests on is at the foot of `stack-outline.md` |
+| 14 | **Accepted, fixed** | README's account of research corrected |
+| 15 | **Accepted, fixed** | Judgement log counts corrected; J-11's attribution corrected in a dated note rather than overwritten; J-05 removed from the exemplary list with the reason stated |
+| 16 | **Deferred** | See below |
+| 17 | Refuted | No action |
+| 18 | Folded into 5 | The argument holds; the detection sentence was the defect, and [[ADR-0012]] answers it |
+
+### The deferrals, with reasons
+
+**6 — ADR-0001 never repaired.** The half about detection scope is accepted and
+fixed: [[ADR-0012]] supersedes ADR-0001 and brings forward-facing detection in.
+The second-order half is deferred and I would rather say so than answer it
+badly. If the shipped product already detects eleven behaviours and this v1
+grades four, then [[ADR-0007]]'s "every detected event is retained and scored"
+describes a larger set than my scope decision does, and the honest resolution is
+either that v1's scope is a *routing* scope over everything already detected, or
+that it is a detection scope and existing events keep their current treatment.
+That is a scope decision worth more than a guess, it depends on [[Q-10]] — which
+is blocking and unanswered — and it is a good question to be asked in the room.
+Named in ADR-0012 under *What this does not settle*.
+
+**8 — Requirements assume capabilities the stack outline does not contain.** The
+US-002 and US-007 instances are documentation gaps and cost a paragraph each.
+The US-008 one is not: it assumes attribution emits a per-event confidence
+score, and [[A-11]] and [[Q-09]] say the attribution *mechanism itself* is
+unknown. A key fob emits an identity, not a confidence. Writing a stack line
+that says "attribution emits a confidence" would invent an interface to an
+inherited system in order to close a finding, which is the failure mode
+[[canon#C-02]] exists to prevent. Deferred until Q-09 is answered, and carried
+openly rather than papered over.
+
+**9 — The downgrade audit has no owner, no cadence and no story.** Accepted as
+correct, and the largest thing still open. It is deferred rather than fixed
+because what it needs is not prose: who performs the audit, how often, at what
+sample rate, and what it costs are staffing and operations decisions
+([[canon#C-25]] items 2 and 4), and the sampling and finding-recording surface
+is a sixteenth user story that does not exist. The reviewer's sharpest line
+stands unanswered — the control that protects the routing model consumes the
+exact resource the product exists to conserve, and that trade is not priced. It
+belongs in the phasing section and in the conversation, not in a sentence
+invented to close a finding.
+
+**16 — Copy rules contradict themselves inside acceptance criteria.** Accepted
+as correct and deferred deliberately, because these four strings get written for
+real when the prototype is built against
+[`../skills/ux-writing.md`](../skills/ux-writing.md). Fixing them on paper now
+and again in the prototype does the work twice and risks the two drifting apart.
+The prototype is where the contradiction resolves or the rule changes.
+
+### Also carried, not raised as an attack
+
+[[M-12]] proposes joining coaching records to customer HR data for the attrition
+half, and no open question covers the legal basis for that join. [[R-04]] covers
+data protection generally and does not reach this. Left open and named here
+rather than closed quietly.
+
+### What the pass cost and bought
+
+The verdict was **Not yet** and it was right. Of eighteen attacks, sixteen
+survived, and the one that mattered most — [[ADR-0010]] resting on a capability
+[[ADR-0001]] had cut — was a genuine scope inconsistency that two acceptance
+criteria had already written around without anyone noticing. The findings about
+the repository's own bookkeeping were worse than the findings about the product
+thinking, which is the right way round for a submission arguing that its claims
+are checkable, and exactly the reason to have run the pass rather than assert
+it was fine.
