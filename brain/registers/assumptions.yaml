@@ -323,3 +323,74 @@ assumptions:
     validate: Commercial review of installed base, contract structure and current ARPU.
     source: stated assumption, no insider data
     questions: [Q-04]
+
+  - id: A-20
+    statement: >
+      At-fault collision cost in a mid-size commercial fleet is concentrated - a
+      minority of drivers and a short list of repeatable behaviours account for
+      most of it. The shape is assumed, not the size: no distribution, ratio or
+      percentage is asserted anywhere in this brain, and none should be.
+    confidence: low
+    impact: critical
+    if_wrong: >
+      This is the premise of the commercial case. If at-fault cost is spread
+      evenly across drivers, per-driver targeting has no leverage and the
+      product should rank events rather than people - the coaching loop, M-03
+      and the whole driver-record half of the design lose their justification.
+    validate: >
+      The customer's own claims data, joined to their driver records, for one
+      fleet over twelve months. This is the single cheapest validation in the
+      register and it needs no telemetry.
+    source: >
+      Stated assumption, no source. Registered 2026-09-14 after the adversarial
+      pass found it asserted as fact in problem.md and business-case.md - an
+      industry belief restated often enough inside this repo to look sourced,
+      which is exactly the failure C-01 exists to catch. Deliberately not
+      supported with a borrowed benchmark (J-05, J-11).
+    metrics: [M-03]
+    questions: [Q-01]
+
+  - id: A-21
+    statement: >
+      The dominant failure mode of in-cab camera rollouts is attention rather
+      than detection - the manager is overwhelmed by technically-correct events,
+      engagement decays, and the capability is abandoned before any outcome can
+      land.
+    confidence: medium
+    impact: critical
+    if_wrong: >
+      If rollouts mostly fail on detection quality, driver pushback or
+      commercials instead, triage is not the spine and R-01 is not the risk that
+      shapes the design.
+    validate: >
+      Ask CameraMatics' own customer success function which accounts stopped
+      logging in and why. They have this and nobody outside does.
+    source: >
+      Stated assumption, no source. Registered 2026-09-14 after the adversarial
+      pass found the categorical form - "every AI dashcam rollout fails the same
+      way" - asserted in problem.md and in R-01's detail as the justification
+      for the spine.
+    risks: [R-01]
+    questions: [Q-02]
+
+  - id: A-22
+    statement: >
+      Edge detection of risky driving behaviours is approaching commodity -
+      multiple vendors detect a comparable set, and detection breadth is no
+      longer where the category differentiates.
+    confidence: medium
+    impact: high
+    if_wrong: >
+      If detection quality is still a real moat, a triage-and-coaching layer is
+      a feature on someone else's platform rather than the next thing to build,
+      and the submission is aimed at the wrong problem.
+    validate: >
+      CameraMatics' own win/loss reasons. If deals are still won and lost on
+      detection breadth or accuracy, this assumption is wrong in their market.
+    source: >
+      Stated assumption from public positioning across the category
+      ([[A-18]]), no measurement. Registered 2026-09-14 after the adversarial
+      pass found it stated as fact in five places - and it is said to a CTO
+      whose company sells detection, which is the reason to mark it as an
+      assumption rather than lean on it.
+    assumptions: [A-18]

@@ -5,7 +5,7 @@ status: draft
 owner: danny
 drafted_by: agent
 decided_by: pending
-adversarial_pass: not run
+adversarial_pass: ran 2026-09-14
 sources: public web only, September 2026
 links: [problem, business-case, story]
 ---

@@ -227,6 +227,21 @@ A research pass that only confirmed existing work would have been worthless.
 *Class of error: treated a prior decision's scope as settled rather than
 testing whether the category it excluded was the right category.*
 
+> **Correction, 2026-09-14, on the adversarial pass (Attack 15).** The line
+> above debits the agent for a boundary I drew. J-05 records me overruling an
+> agent recommendation to do exactly this research; blaming it afterwards for
+> having complied is the ledger kept in my own favour, and this log cannot
+> afford that more than any other error in it. The original text stays per
+> [[canon#C-16]] and the attribution is corrected here.
+>
+> *Class of error, restated: mine. I excluded a category I meant to keep
+> (analysis of the buyer) along with the one I meant to exclude (borrowed
+> third-party benchmarks), and J-05's reasoning does not distinguish them. The
+> agent's smaller and real share: when the storytelling requirement arrived, it
+> did not flag that a new requirement had invalidated an old constraint — the
+> same frame-blindness the closing section describes, applied to a frame it had
+> itself argued against.*
+
 ## J-12 — Lean on the research, but register it as assumption
 
 **Agent produced:** three ways to use the company analysis — keep it as
@@ -476,22 +491,93 @@ consequences of it.
 
 ---
 
+## J-21 — Forward-facing detection in v1, and every event carries every signal
+
+**Agent produced:** the finding, through the adversarial pass — [[ADR-0010]]
+justified credit classification on forward-camera evidence that [[ADR-0001]] had
+cut and the [[stack-outline]] signal list never contained, while [[US-006]] and
+[[US-012]] both mandated it in acceptance criteria. Two repairs were put up: bring
+forward-facing detection into v1 and pay the inference cost, or supersede
+ADR-0010 and propose credit only from the signals the stack already carries.
+
+**Decided:** bring it in, conditional on the supported-device matrix — and add a
+principle the option set did not contain: **every event carries every sensor
+input available, regardless of which signal triggered it.**
+`decided_by: danny` · `status: ratified` · [[ADR-0012]], superseding
+[[ADR-0001]]
+
+**Why the cheap repair lost.** Narrowing ADR-0010 would have made the repository
+consistent by making the product worse. Recognition inferred from g-force,
+speed, GPS and wiper state cannot tell an emergency stop for a cyclist from an
+emergency stop for a traffic light — [[R-13]] already names that failure — so
+[[canon#C-30]] would have become a claim the product could not back. Consistency
+bought by deleting the capability that made the design defensible to drivers is
+not a repair.
+
+**The part the agent did not produce.** The option set was framed as a scope
+question: which detectors are in v1. The principle is a different shape — it
+separates *what fires* from *what we know*, so classification can read one event
+two ways without a detector per outcome, and a grading rule can change without a
+firmware release. The agent had reasoned about the four signals as a set of
+features to include or exclude, which is how the original ADR framed it, and did
+not step back to the distinction underneath. That is the frame-blindness in this
+log's closing section showing up one more time.
+
+*Class of error: enumerated inside the existing frame (which detectors?) rather
+than testing the frame itself (is a trigger the same thing as a signal?).*
+
+## J-22 — Which M-09 number carries the 90-day pass/fail term
+
+**Agent produced:** the finding, and a proposal. [[ADR-0008]] counts a bulk
+dismissal as one judgement rather than N, which is the right rule — forty clicks
+are not forty judgements — but it leaves [[M-09]]'s denominator in events. A
+manager who dismisses 40 of 45 high-band events in one action therefore records
+2.2%, which reads as excellent precision at the exact moment the queue was
+rejected wholesale. [[M-09]] is now defined as two numbers, per judgement and
+per event.
+
+**Proposed:** that the 90-day test binds to the **per-event** number, the harder
+of the two.
+
+**Decided:** nothing yet. `decided_by: —` · `status: proposed`
+
+**Why it is not the agent's to close.** Reporting both numbers is a definition
+fix and squarely the agent's job. Choosing which one the capability is held to
+ninety days after release is a commitment made to a customer and to a board —
+[[canon#C-25]] item 5 — and the harder number is not automatically the right
+one to sign up to. The register and [[success-criteria]] currently say per-event
+because that is the honest reading of "precision at the top of the queue"; both
+carry the proposal marked as a proposal until it is ratified.
+
+---
+
 ## Where the split actually falls
 
-On the evidence above, across eight decisions: the agent generated the option
-sets, wrote the prose, held the cross-references consistent and enforced the
-schema. Every framing choice, every scope cut, and three outright reversals of
-the agent's own recommendation came from the human — and the reversals were the
-consequential ones. The productivity gain is real and large. It is not the
-judgement, and the record shows which is which.
+Twenty-two entries. The agent generated the option sets, wrote the prose, held
+roughly forty cross-referenced IDs consistent and enforced the schema. Six
+entries are marked *(agent overruled)* — J-04, J-05, J-06, J-10, J-14, J-19.
+Beyond those: J-16 reframes a model the agent had already built, J-13 is a blind
+spot the agent did not see at all, J-18 is an insight the agent under-read in
+its own finding, J-11 reverses an earlier decision on new information, J-17 is
+an invented number caught by a human asking where it came from, J-15 is an
+attribution the agent refused to make, and J-21 is a principle the option set
+did not contain.
 
-### The three reversals share a pattern
+Two entries — **J-03** and **J-22** — are still `proposed`. They are the agent's
+recommendations, not my decisions, and this log will keep saying so until I make
+them.
 
-Read together, J-04, J-05 and J-06 are the same error three times. In each case
-the agent reasoned competently *inside the frame it was handed* and could not
-tell that the frame was wrong: it optimised the artefact rather than the
+The productivity gain is real and large. It is not the judgement, and the record
+shows which is which.
+
+### The overrules share a pattern
+
+Read together, J-04, J-06, J-10 and J-19 are the same error four times. In each
+case the agent reasoned competently *inside the frame it was handed* and could
+not tell that the frame was wrong: it optimised the artefact rather than the
 objective, treated a constraint as an obstacle rather than a signal, and hedged
-a generic risk without checking whether it applied here.
+a generic risk without checking whether it applied here. J-21 is the same shape
+again, and the most recent.
 
 None of these were failures of analysis. Each recommendation was defensible on
 its own terms, which is exactly what makes them the useful entries — a bad
@@ -499,12 +585,45 @@ suggestion is easy to catch. **Choosing the frame is the part that did not
 delegate.** That is a more specific claim than "AI can't replace human
 judgement", and it is the one this log actually evidences.
 
+### J-05 used to be on that list
+
+It has been taken off, and the removal is more interesting than the pattern.
+
+J-11 reversed J-05 on new information, which means my framing there was the
+one that was wrong and the agent's original recommendation was right. An
+overrule that was later reversed does not belong in a list of exemplary human
+framings. Leaving it there — while J-11 separately debited the agent for having
+complied with it — was this log keeping its own ledger in my favour, in the one
+file whose entire value is that it does not. The adversarial pass found it
+(Attack 15) and the correction is recorded inside J-11 rather than written over
+it.
+
+So the claim this log supports is narrower than "the human was right", and more
+useful: **framing is the high-leverage decision, which is exactly why it is
+worth recording when it goes wrong as well as when it goes right.** Three of my
+framings here — the primary user, the research boundary, and the scope of
+ADR-0001 — were wrong and were corrected. That is the argument for the record,
+not an argument against it.
+
 The practical consequence for how I would run a product function: the leverage
 is in setting the frame precisely and then letting agents work at volume inside
 it — and in keeping a record like this one, because an agent's confident output
 inside a wrong frame is the most expensive thing in the process and the hardest
 to notice.
 
+### What this log does not cover
+
+Six of the twelve decision records carry `decided_by: danny` with no entry here
+— ADR-0001, ADR-0003, ADR-0004, ADR-0005, ADR-0008 and ADR-0009. Canon
+[[canon#C-25]] items 2 and 3, scope cuts and severity thresholds, are precisely
+what several of them decide.
+
+They were mine, and the log is not evidence of that. It records the decisions
+where an agent had a position worth disagreeing with, not every decision taken.
+Saying so plainly is cheaper than letting a reader find the gap and wonder what
+else is missing. Also found by the adversarial pass (Attack 15).
+
 *This log is appended to as the work proceeds. Entries are not edited after
-ratification; a changed decision is a new entry that supersedes an old one
-([[canon#C-16]]).*
+ratification; a changed decision is a new entry that supersedes an old one, and
+a correction to an entry's reasoning is appended to it dated rather than written
+over ([[canon#C-16]]).*

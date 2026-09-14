@@ -37,6 +37,10 @@ adversarial_pass: ran 2026-09-14
   opened, **then** the footage panel reads:
   *"Footage no longer available. This event is outside the {n}-day window the
   camera keeps."*
+- **Given** an event closed unreviewed, **when** platform metrics are computed,
+  **then** it is not counted as having reached a terminal review state — closed
+  is neither coached nor dismissed — so [[M-05]] measures review rather than the
+  passage of time.
 - **Given** an account has two or more consecutive weeks with unreviewed
   closures, **when** platform metrics are emitted, **then** that account is
   flagged in [[M-07]] reporting as a product defect signal ([[canon#C-29]]).

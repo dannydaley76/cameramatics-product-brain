@@ -99,15 +99,32 @@ metrics:
     layer: quality
     name: High-severity dismissal rate
     definition: >
-      Share of high-severity events a manager dismisses as not worth action.
-      Our best available proxy for precision at the top of the queue.
-    target: "< 20%"
+      Reported as two numbers, always together, because ADR-0008 makes a bulk
+      dismissal one judgement rather than N.
+      Per judgement - share of dismissal decisions taken on high-severity
+      events, counting a bulk dismissal once.
+      Per event - share of high-severity events that ended in a dismissed state,
+      counting every event inside a bulk dismissal.
+      Together they are the best available proxy for precision at the top of the
+      queue. Neither is readable alone.
+    target: "< 20% per event. Per judgement reported, not targeted."
     horizon: From week 1
     source: Portal review outcomes
+    counters: [M-11]
     note: >
       Deliberately a workflow metric rather than a model metric. We do not have
       ground truth on the road; we have a manager's judgement, and that is the
       judgement adoption depends on ([[R-02]]).
+      The two-number definition exists because one number was gameable by a
+      mechanism we introduced ourselves. Under ADR-0008 a manager who dismisses
+      40 of 45 high-band events in a single action records one dismissal against
+      45 events - 2.2%, which reads as excellent precision at the exact moment
+      the queue was rejected wholesale. The metric moved in the wrong direction
+      as the behaviour it exists to detect got worse.
+      The per-event number is what the 90-day test binds to; the per-judgement
+      number is what tells you whether events were read individually or swept.
+      Which of the two carries the pass/fail term is a commercial commitment
+      (canon C-25.5) - proposed, not ratified. See judgement-log J-22.
 
   - id: M-10
     layer: quality

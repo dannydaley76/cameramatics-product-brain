@@ -7,7 +7,7 @@ supersedes: none
 amends: ADR-0007
 decided_by: danny
 drafted_by: agent
-adversarial_pass: not run
+adversarial_pass: ran 2026-09-14
 assumptions: [A-11, A-12]
 risks: [R-04, R-12, R-13]
 metrics: [M-08, M-12, M-13]

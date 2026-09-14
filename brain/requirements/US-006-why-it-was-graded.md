@@ -33,9 +33,12 @@ adversarial_pass: ran 2026-09-14
 - **Given** an event is classified neutral, **when** it is displayed, **then**
   the reason is stated and the event is recorded on the driver's side rather
   than against them ([[ADR-0010]]).
-- **Given** the severity model version changed after this event was scored,
-  **when** the event is displayed, **then** the version that scored it is
-  retrievable, so historical comparison is not silently invalidated.
+- **Given** the severity **ruleset** version changed after this event was
+  scored, **when** the event is displayed, **then** the version that scored it
+  is retrievable, so historical comparison is not silently invalidated.
+  *Ruleset, not model: grading runs on interpretable thresholds over the
+  attached signals, and [[canon#C-28]] requires a model to earn its place before
+  one ships here.*
 - **Given** any grading reason is displayed, **when** it references a threshold
   or a number, **then** that number traces to a definition
   ([[../../skills/ux-writing]] W-07).

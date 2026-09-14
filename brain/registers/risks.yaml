@@ -8,12 +8,15 @@ risks:
     title: Alert fatigue kills the capability before the outcome can land
     detail: >
       The queue is never empty, the manager reviews a fraction, engagement decays
-      to zero inside 60 days and the renewal is at risk. This is the default
-      outcome for AI dashcam rollouts and the reason triage is the spine.
+      to zero inside 60 days and the renewal is at risk. Assumed to be the
+      dominant failure mode for camera rollouts ([[A-21]]) and the reason triage
+      is the spine - assumed, because nobody outside CameraMatics can measure
+      it and they can.
     likelihood: high
     impact: high
     mitigation: >
-      Severity scoring plus suppression as v1 features rather than settings; a
+      Severity grading and routing as v1 features rather than settings - every
+      event retained and scored, the band deciding only the action ([[ADR-0007]]); a
       finite ranked queue instead of a feed; measure M-07 weekly from day one and
       treat a fall as a P1 product defect, not a customer-success problem.
     metrics: [M-05, M-07, M-11]

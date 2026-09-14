@@ -6,7 +6,7 @@ date: 2026-09-10
 supersedes: none
 decided_by: danny
 drafted_by: agent
-adversarial_pass: not run
+adversarial_pass: ran 2026-09-14
 assumptions: [A-05, A-09, A-10]
 risks: [R-03, R-04]
 metrics: [M-10, M-11]
@@ -77,7 +77,8 @@ rather than sitting beside it.
 3. **Two classes of event exist in the portal** and the manager must never have
    to think about which is which. That pushes real complexity into the portal's
    footage-state handling.
-4. We carry the cost of ingesting metadata for events we then suppress. Accepted:
+4. We carry the cost of ingesting metadata for events we then grade into a band
+   that needs no clip ([[ADR-0007]] — nothing is discarded). Accepted:
    metadata is cheap and cloud-side iteration speed is not ([[STACK]]).
 
 ## Revisit when

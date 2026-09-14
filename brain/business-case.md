@@ -19,11 +19,11 @@ adversarial_pass: ran 2026-09-14
 Fleet managers cannot turn a firehose of detected driving events into a small,
 repeatable weekly routine that measurably changes driver behaviour.
 
-Detection is table stakes and increasingly commodity at the edge. The thing that
+Detection is table stakes and increasingly commodity at the edge ([[A-22]]). The thing that
 is not solved — and the thing every rollout dies on — is that a 100-vehicle
 fleet produces somewhere between 50 and 450 detectable events a day ([[A-02]]),
-and the manager has fifteen minutes ([[A-03]]). Most events are technically
-correct and practically irrelevant. The manager logs in, sees hundreds, reviews
+and the manager's attention is finite and contested, with how finite unknown
+([[A-03]]). Most events are technically correct and practically irrelevant. The manager logs in, sees hundreds, reviews
 six, and stops logging in.
 
 **So the capability we are designing is a triage and coaching loop, not an event
@@ -49,9 +49,10 @@ customer's side is a marketing claim.
 **For the customer: total cost of risk.** At-fault collisions are the expensive
 line — repair, third-party liability, vehicle off-road, admin, and the premium
 consequences that follow. The value is not "we spotted harsh braking"; it is
-that a small number of drivers are responsible for a disproportionate share of
-that cost and this is the first mechanism that finds them before the incident
-rather than after it. Secondary: better evidence on not-at-fault claims, which
+that a small number of drivers are assumed to carry a disproportionate share of
+that cost ([[A-20]]), and that this finds them before the incident rather than
+after it. Whether anyone else already does is not a claim I would make without
+checking ([[canon#C-08]]). Secondary: better evidence on not-at-fault claims, which
 closes them faster and reduces leakage.
 
 **For CameraMatics: revenue on an installed base we have already paid to
@@ -81,13 +82,14 @@ quarter and the metric that *is* readable is a habit ([[registers/metrics]]).
 |---|---|---|
 | Outcome (6–12 mo) | At-fault collisions per 100 vehicles per month ([[M-01]]) | What the buyer is actually buying |
 | Behaviour (4–12 wk) | Coached-driver 28-day repeat rate ([[M-03]]) | The primary product metric: did the loop change anything |
-| Habit (week 1) | Weekly reviewing accounts ([[M-07]]), high-severity events triaged in 7 days ([[M-05]]), median review time under 90s ([[M-06]]) | The earliest honest signal; if this decays the outcome will never arrive |
-| Quality (week 1) | High-severity dismissal rate under 20% ([[M-09]]), video available for 98% of events within 15 min ([[M-10]]) | Trust in the ranking, and the fact that an event without footage is not coachable |
+| Habit (week 1) | Weekly reviewing accounts ([[M-07]]), high-severity events triaged in 7 days ([[M-05]]), median review time per event as a diagnostic, never a target ([[M-06]]) | The earliest honest signal; if this decays the outcome will never arrive |
+| Quality (week 1) | Per-event high-severity dismissal rate under 20% ([[M-09]]), video available for 98% of events within 15 min ([[M-10]]) | Trust in the ranking, and the fact that an event without footage is not coachable |
 
 And two counter-metrics I would report at the same cadence, because this
-capability has an obvious way to cheat: share of events auto-suppressed
-([[M-11]]) — we must not buy adoption by hiding real risk — and driver
-disputes plus coached-cohort attrition ([[M-12]]).
+capability has an obvious way to cheat: how events distribute across the
+severity bands, with a human-read downgrade audit sample ([[M-11]]) — we must
+not buy adoption by grading real risk quietly downward — and driver disputes
+plus coached-cohort attrition ([[M-12]]).
 
 **The 90-day test I would sign up to.** If, ninety days after first release, we
 cannot show that most live accounts have a weekly review habit and that coached

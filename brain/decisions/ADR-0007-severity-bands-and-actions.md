@@ -6,7 +6,7 @@ date: 2026-09-14
 supersedes: none
 decided_by: danny
 drafted_by: agent
-adversarial_pass: not run
+adversarial_pass: ran 2026-09-14
 assumptions: [A-19, A-02]
 risks: [R-01, R-02, R-11]
 metrics: [M-09, M-11]

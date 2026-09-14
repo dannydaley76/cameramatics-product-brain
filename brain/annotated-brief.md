@@ -6,7 +6,7 @@ owner: danny
 stage: discovery
 drafted_by: danny (first read) + agent (additions)
 decided_by: danny
-adversarial_pass: not run
+adversarial_pass: ran 2026-09-14
 assumptions: [A-11, A-12, A-13, A-16, A-18]
 risks: [R-06, R-09]
 questions: [Q-09, Q-10]

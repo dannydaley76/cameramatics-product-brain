@@ -1,18 +1,26 @@
 ---
 id: ADR-0001
 title: Narrow, reliable event set in v1
-status: accepted
+status: superseded
+superseded_by: ADR-0012
 date: 2026-09-10
 supersedes: none
 decided_by: danny
 drafted_by: agent
-adversarial_pass: not run
+adversarial_pass: ran 2026-09-14
 assumptions: [A-02, A-04]
 risks: [R-02, R-05]
 metrics: [M-09]
 ---
 
 # ADR-0001 — Narrow, reliable event set in v1
+
+> **Superseded by [[ADR-0012]] on 2026-09-14.** The reasoning below still holds
+> and is why ADR-0012 keeps headway out of v1. What it got wrong was conflating
+> the set of behaviours that *trigger* an event with the set of signals that
+> *describe* one, which left [[ADR-0010]], [[US-006]] and [[US-012]] depending on
+> forward-facing evidence this decision had excluded. Kept unedited per
+> [[canon#C-16]].
 
 ## Context
 

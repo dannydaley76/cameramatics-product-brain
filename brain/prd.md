@@ -6,12 +6,12 @@ owner: danny
 stage: requirements
 drafted_by: agent
 decided_by: danny
-adversarial_pass: not run
+adversarial_pass: ran 2026-09-14
 produced_with: skills/prd.md
 assumptions: [A-02, A-03, A-11, A-13, A-18]
 metrics: [M-03, M-07, M-09, M-11, M-12, M-13]
 risks: [R-01, R-02, R-07, R-09, R-13]
-decisions: [ADR-0001, ADR-0002, ADR-0003, ADR-0004, ADR-0005, ADR-0006, ADR-0007, ADR-0008, ADR-0009, ADR-0010]
+decisions: [ADR-0001, ADR-0002, ADR-0003, ADR-0004, ADR-0005, ADR-0006, ADR-0007, ADR-0008, ADR-0009, ADR-0010, ADR-0012]
 questions: [Q-01, Q-02, Q-09, Q-10]
 links: [problem, success-criteria, stack-outline, portal-requirements]
 ---
@@ -20,11 +20,11 @@ links: [problem, success-criteria, stack-outline, portal-requirements]
 
 ## Problem
 
-A fleet manager has 10–15 minutes a day ([[A-03]]) and a system that generates
-50–450 detectable events a day across a 100-vehicle fleet ([[A-02]]). Most are
-technically correct and practically irrelevant. Today the triage is manual — the
-manager scans a dashboard and picks events "from which lessons can be learned"
-([[A-13]]). That does not scale to a 250-depot account, and it is the step where
+A fleet manager's attention is finite and contested, and how finite is unknown
+([[A-03]]). The system generates 50–450 detectable events a day across a
+100-vehicle fleet ([[A-02]]). Most are technically correct and practically
+irrelevant. Today the triage is manual — the manager scans a dashboard and picks
+events "from which lessons can be learned" ([[A-13]]). That does not scale to a 250-depot account, and it is the step where
 every camera rollout dies: the manager reviews six of three hundred, then stops
 logging in ([[R-01]]).
 
@@ -45,11 +45,13 @@ a child has not created risk, they have prevented harm, and a system that can
 only ever criticise makes invisibility the best outcome a driver can achieve.
 That is how safety tools come to be resented. The portal presents that queue with honest footage
 states and a one-step coaching action. The platform measures repeat behaviour
-after coaching, with counter-metrics on what we suppressed and what drivers
-disputed.
+after coaching, with counter-metrics on whether the grading was right and what
+drivers disputed.
 
-Not a detection project. The v1 event set is deliberately narrow ([[ADR-0001]]),
-and no model goes anywhere a rule would do ([[canon#C-28]]).
+Not a detection project. The v1 *trigger* set is deliberately narrow
+([[ADR-0012]], superseding [[ADR-0001]]) — four behaviours raise an event, while
+every event carries every signal available to describe it — and no model goes
+anywhere a rule would do ([[canon#C-28]]).
 
 ## Users affected
 
@@ -76,9 +78,10 @@ severity carries its reasons rather than just a score.
 | Leading | Weekly reviewing accounts ([[M-07]]) | > 80% by week 4 |
 | Proof | Coached-driver 28-day repeat rate ([[M-03]]) | Baseline, then hold |
 
-Counter-metrics reported at the same cadence: share of events auto-suppressed
-with a weekly human sample ([[M-11]]), and driver disputes and coached-cohort
-attrition ([[M-12]]). Full reasoning in [[success-criteria]].
+Counter-metrics reported at the same cadence: how events distribute across the
+severity bands, with a human-read downgrade audit sample ([[M-11]]), and driver
+disputes plus coached-cohort attrition ([[M-12]]). Full reasoning in
+[[success-criteria]].
 
 ## Top-level user stories
 

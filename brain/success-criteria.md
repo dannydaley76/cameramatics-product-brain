@@ -6,9 +6,11 @@ owner: danny
 stage: discovery
 drafted_by: agent
 decided_by: danny
-adversarial_pass: not run
-metrics: [M-01, M-03, M-05, M-07, M-09, M-10, M-11, M-12]
-risks: [R-06, R-09]
+adversarial_pass: ran 2026-09-14
+assumptions: [A-03]
+metrics: [M-01, M-03, M-05, M-06, M-07, M-09, M-10, M-11, M-12]
+risks: [R-06, R-09, R-12]
+decisions: [ADR-0007, ADR-0008]
 questions: [Q-07]
 links: [annotated-brief, business-case, registers/metrics]
 ---
@@ -51,8 +53,13 @@ is an engagement metric and should be read as one: it predicts the outcome
 rather than proving it. Treat a decline as a product defect rather than a
 customer-success problem.
 
-Supported by median review time per event under 90 seconds ([[M-06]]) and
-high-severity events triaged within seven days above 90% ([[M-05]]).
+Supported by high-severity events triaged within seven days above 90%
+([[M-05]]), and read alongside median review time per event ([[M-06]]) — which
+carries no target deliberately. An earlier version of this document set 90
+seconds. That was an invention, and worse, it made speed of clearance the
+objective when the objective is fewer collisions ([[A-03]]). Time per event is a
+diagnostic; falling time can mean efficiency or rubber-stamping and the number
+cannot tell you which.
 
 ## Behind it — the six-month proof
 
@@ -69,15 +76,21 @@ caveats stated every time, or not reported.
 Two, reported at the same cadence, because this capability has an obvious way to
 cheat.
 
-**Share of events auto-suppressed** ([[M-11]]), with a weekly human sample of
-what was suppressed. *This one came out of the Discovery conversation and is the
-sharper half of the measurement model.* The instinct was to measure "events
-successfully excluded by triage" — and the word doing the damage is
-*successfully*, because you cannot know an exclusion was correct without looking
-at what you binned. So the honest version is not a success measure at all. It is
-an audit: report how much we are hiding, sample it, and look for real risk in
-the pile. If we buy adoption by suppressing events that mattered, we have built
-something worse than the firehose.
+**Band distribution and the downgrade audit** ([[M-11]]) — how events spread
+across the four severity bands, plus a human-read sample of the medium and low
+bands and of bulk dismissals, asking how many should have graded higher. *This
+one came out of the Discovery conversation and is the sharper half of the
+measurement model.* The instinct was to measure "events successfully excluded by
+triage" — and the word doing the damage is *successfully*, because you cannot
+know an exclusion was correct without looking at what you excluded.
+
+[[ADR-0007]] then removed the exclusion itself. Nothing is suppressed: every
+event is retained, scored and contributes to the driver record, and the band
+decides only what happens next. So this counter no longer measures concealment,
+which is both more honest and more useful — the failure it guards against is an
+event that deserved a conversation being graded down to a notification instead
+([[R-12]]). The audit is the only control on the grading model, and a control
+nobody performs is not a control.
 
 **Driver disputes and coached-cohort attrition** ([[M-12]]) — disputes per 100
 coaching actions, the share upheld, and voluntary attrition among coached
@@ -87,8 +100,16 @@ drivers against the fleet average. A rising upheld-dispute rate invalidates
 ## The 90-day test
 
 > If, ninety days after first release, most live accounts do not have a weekly
-> review habit and the dismissal rate at the top of the queue is above 20%, the
-> capability has failed — regardless of how good the detection is.
+> review habit and the **per-event** dismissal rate at the top of the queue is
+> above 20%, the capability has failed — regardless of how good the detection
+> is.
+
+The word *per-event* is doing real work. [[ADR-0008]] counts a bulk dismissal as
+the one judgement it is, which is the right rule — forty clicks are not forty
+judgements. But it leaves the denominator alone, so the per-judgement number
+reads beautifully at the exact moment a manager rejects a whole queue in one
+action. [[M-09]] is therefore reported twice and the pass/fail term takes the
+harder of the two.
 
 Signing up to that is deliberate. It is a claim that can be checked, on a
 timescale where it can be acted on, using data that will exist. A collision
