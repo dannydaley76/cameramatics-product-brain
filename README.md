@@ -94,12 +94,12 @@ finished.
 - [x] Business case — submission section 1
 - [x] Stack outline — section 2
 - [x] PRD, 13 decision records, 15 stories across 4 epics — section 3
-- [x] Skills (8), adversarial reviewer, division of labour
+- [x] Skills (9), adversarial reviewer, division of labour
 - [x] Validator (`scripts/validate.py`) and generated traceability matrix
 - [x] CI workflow (`.github/workflows/validate.yml`) — runs the validator and fails on a stale traceability matrix
 - [x] Adversarial pass — **ran 2026-09-14, verdict: Not yet.** 16 of 18 attacks survived; 12 fixed, 2 partly fixed, 2 deferred — every one with its reason stated. See `reviews/`
 - [x] Prioritisation and phasing — section 4 (`brain/phasing.md`)
-- [ ] Risk and assumption narrative — section 5
+- [x] Risk and assumption narrative — section 5 (`brain/risks-narrative.md`)
 - [ ] Clickable prototype
 - [ ] Submission deck
 
