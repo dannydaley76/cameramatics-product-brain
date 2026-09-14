@@ -198,3 +198,20 @@ capabilities in this category than bad detection ever has.
 
 The practical consequence: adoption metrics are release gates, not reporting.
 [[M-07]] falling is a P1.
+
+## 9. What the system is for
+
+**C-30 — Praise the good, coach the bad.**
+A system that only detects failure makes the best achievable outcome
+*invisibility* — do everything right and nothing happens, and the only time the
+product speaks to you is to criticise. That is how a safety tool becomes the
+thing drivers resent, and it makes "driver advocate" a claim the product
+contradicts every day.
+
+So a driver action that avoids harm is recognised, not merely not-penalised
+([[decisions/ADR-0010]]). Zero events is not the ceiling.
+
+Two disciplines make this real rather than decorative. Recognition is
+**specific and evidenced** — a named act on a named day with the clip attached,
+never a badge, a streak or a score. And it is **confirmed by a human** before it
+reaches a driver, because unearned praise costs more credibility than silence.

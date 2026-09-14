@@ -386,6 +386,46 @@ optimised against it. Efficiency is the metric that is always available when the
 real outcome is hard to measure — which is precisely why it substitutes itself
 for the goal.*
 
+## J-18 — Praise the good, coach the bad *(human insight; agent under-read its own finding)*
+
+**Agent produced:** the observation that CameraMatics' public voice frames the
+camera as the driver's advocate, and three consequences — treat "not the
+driver's fault" as evidence rather than a dismissal, capture the driver's
+response in the coaching record, and *defer* positive recognition to a later
+phase as a nice-to-have.
+
+**Decided:** recognition is not a nice-to-have and does not defer. A driver
+action can prevent a crash and that should be recognised. A system that only
+detects the bad makes the ceiling *zero events* — do everything right and remain
+invisible — and a product whose only voice is criticism becomes one drivers
+resent. "Praise the good, coach the bad" is now [[canon#C-30]] and
+[[decisions/ADR-0010]]. `decided_by: danny` · `status: ratified`
+
+**Reason for the reversal:** the agent had found the evidence and then filed it
+under *brand consistency* — a marketing observation with some product
+implications — when it was a **defect report**. Under the design as it stood, a
+hard brake for a child would have entered the review set as high-severity harsh
+braking and produced a coaching conversation. We would have coached a driver for
+preventing a collision. That is not a missing feature; it is the product doing
+the wrong thing, and the agent had all the pieces and did not assemble them.
+
+The structural point the agent missed entirely: in a purely negative detector,
+the best achievable outcome is invisibility. Attention only ever arrives as
+criticism. No amount of careful wording fixes an asymmetry built into what the
+system can perceive.
+
+**What it produced:** classification as a second axis independent of severity —
+risk, neutral, credit — using corroborating signals the design already collected
+and had only ever read one way. Plus [[M-13]], [[R-13]] (unearned praise, which
+is its own failure), and an amendment to [[../skills/ux-writing]] W-06, where
+"never celebrate" needed splitting into *never celebrate the tool* and *always be
+specific about the person*.
+
+*Class of error: categorised a finding by the document it came from rather than
+by what it implied. Evidence found while reading marketing was filed as a
+marketing insight — and so its consequences for the product model went
+unexamined.*
+
 ---
 
 ## Where the split actually falls

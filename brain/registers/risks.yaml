@@ -214,3 +214,24 @@ risks:
     metrics: [M-09, M-11]
     owner: product
 
+  - id: R-13
+    category: adoption
+    title: Unearned praise
+    detail: >
+      The system proposes credit for a hard brake that was really a late reaction
+      to a hazard visible for six seconds. The manager confirms it because
+      confirming is easy. The driver knows it was not their finest moment, the
+      drivers who handle things properly notice, and the recognition becomes a
+      joke - taking the coaching side of the product down with it.
+    likelihood: medium
+    impact: high
+    mitigation: >
+      Propose credit only at high confidence and only where avoidance is
+      evidenced - an object detected, a reaction profile, no contact. Require
+      manager confirmation before recognition reaches a driver ([[ADR-0010]]).
+      Sample proposed-and-confirmed credit in the downgrade audit alongside
+      downgrades, since the audit exists to catch classification error in both
+      directions. Never set a recognition target ([[M-13]]).
+    metrics: [M-13, M-12]
+    owner: product
+

@@ -146,3 +146,22 @@ metrics:
     horizon: From month 2
     source: Coaching records; customer HR data where shared
     note: Proxy for the fairness constraint in [[personas/fleet-manager]] and [[jtbd]].
+
+  - id: M-13
+    layer: engagement
+    name: Recognition actions, and the recognition-to-coaching ratio
+    definition: >
+      Count of confirmed recognition actions per 100 credit-classified events,
+      and the ratio of recognition actions to coaching actions across the fleet.
+    target: >
+      No target on the raw count. The ratio is watched: a fleet where the product
+      has spoken to drivers only to criticise, over a quarter, is failing canon
+      C-30 whatever the coaching numbers say.
+    horizon: From week 2
+    source: Portal instrumentation
+    counters: [M-12]
+    note: >
+      Introduced by ADR-0010. Deliberately not a target, because a recognition
+      quota would produce exactly the unearned praise that R-13 warns about. It
+      is a distribution to look at, not a number to hit.
+

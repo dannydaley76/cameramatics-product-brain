@@ -82,9 +82,22 @@ distrust everything else on the screen.
 **W-05 — Buttons name the action and its consequence.** "Log coaching
 conversation", not "Submit". If a button is irreversible, the label says so.
 
-**W-06 — Never celebrate.** No streaks, no confetti, no "Great job!". A cleared
-review set gets a calm acknowledgement. This is a product about people being
-injured on roads and the copy should never forget it.
+**W-06 — Never celebrate the tool. Always be specific about the person.**
+No streaks, no confetti, no badges, no "Great job!". A cleared review set gets a
+calm acknowledgement, not a party — this is a product about people being injured
+on roads and the copy should never forget it.
+
+That is not the same as never praising. Under [[../brain/decisions/ADR-0010]]
+the product recognises drivers whose actions avoided harm, and recognition copy
+is **specific, evidenced and about the act**:
+
+> ✗ Nice work this week! 🎉 3-week safe streak
+> ✓ Tuesday 14:06, Mill Lane. You stopped in time for a cyclist who came out of
+>   the junction. Reviewed and confirmed by Sam Okafor.
+
+The first is gamification of injury. The second is a person being told that
+something they did was seen and mattered. The distinction is whether the copy
+points at a real act with evidence attached, or at a number going up.
 
 **W-07 — Any number on screen traces to a metric definition** and is never
 rounded in a direction that flatters us ([[../brain/canon]] C-01).
@@ -131,10 +144,14 @@ the product.**
 ## Words
 
 **Use:** event · coaching conversation · driver · review · dismiss · footage ·
-needs a look · closed unreviewed · graded · vehicle offline
+needs a look · closed unreviewed · graded · vehicle offline · avoided ·
+stopped in time · recognised · confirmed by
 
 **Never:** violation · infraction · offence · offender · culprit · guilty ·
 caught · bad driver · punishment · flagged for discipline
+
+**Never, in recognition copy:** streak · score · points · badge · level ·
+leaderboard · "safest driver" · any emoji
 
 **Also never** (ordinary UI sins): oops · whoops · simply · just · easily ·
 seamless · leverage · utilise · unfortunately · please note · are you sure

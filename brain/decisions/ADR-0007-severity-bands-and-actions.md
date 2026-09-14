@@ -78,3 +78,17 @@ decoration that makes the ranking harder to explain.
 The downgrade audit sample shows systematic mis-grading at the medium/high boundary,
 or the driver channel ships and the medium band's action becomes real rather
 than defined.
+
+---
+
+## Amended 2026-09-14 by [[ADR-0010]]
+
+This ADR grades *how much attention* an event needs. It did not answer *what kind
+of event it was*, and that omission was not neutral: a hard brake that avoided a
+collision would have entered the review set as high-severity harsh braking and
+attracted a coaching conversation. We would have coached a driver for preventing
+a crash.
+
+[[ADR-0010]] adds classification — risk, neutral, credit — as a second and
+independent axis. The four bands here are unchanged.
+

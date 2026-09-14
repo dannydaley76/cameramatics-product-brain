@@ -9,9 +9,9 @@ decided_by: danny
 adversarial_pass: not run
 produced_with: skills/prd.md
 assumptions: [A-02, A-03, A-11, A-13, A-18]
-metrics: [M-03, M-07, M-09, M-11, M-12]
-risks: [R-01, R-02, R-07, R-09]
-decisions: [ADR-0001, ADR-0002, ADR-0003, ADR-0004, ADR-0005, ADR-0006]
+metrics: [M-03, M-07, M-09, M-11, M-12, M-13]
+risks: [R-01, R-02, R-07, R-09, R-13]
+decisions: [ADR-0001, ADR-0002, ADR-0003, ADR-0004, ADR-0005, ADR-0006, ADR-0007, ADR-0008, ADR-0009, ADR-0010]
 questions: [Q-01, Q-02, Q-09, Q-10]
 links: [[problem]] [[success-criteria]] [[stack-outline]] [[portal-requirements]]
 ---
@@ -36,8 +36,14 @@ Without this, detection quality keeps improving and nothing changes in a cab.
 evidenced, and measure whether it worked.**
 
 Three parts. The cloud scores and groups every event into one of four severity
-bands, each with its own action — nothing is discarded ([[ADR-0007]]) — producing
-a weekly review set that can be finished rather than a feed that cannot. The portal presents that queue with honest footage
+bands, each with its own action — nothing is discarded ([[ADR-0007]]) — and
+classifies it independently as risk, neutral or credit ([[ADR-0010]]), producing
+a weekly review set that can be finished rather than a feed that cannot.
+
+**Praise the good, coach the bad** ([[canon#C-30]]). A driver who brakes hard for
+a child has not created risk, they have prevented harm, and a system that can
+only ever criticise makes invisibility the best outcome a driver can achieve.
+That is how safety tools come to be resented. The portal presents that queue with honest footage
 states and a one-step coaching action. The platform measures repeat behaviour
 after coaching, with counter-metrics on what we suppressed and what drivers
 disputed.
@@ -66,6 +72,7 @@ severity carries its reasons rather than just a score.
 | | Metric | Target |
 |---|---|---|
 | Headline | Dismissal rate at the top of the queue ([[M-09]]) | < 20% |
+| Balance | Recognition-to-coaching ratio ([[M-13]]) | Watched, never targeted |
 | Leading | Weekly reviewing accounts ([[M-07]]) | > 80% by week 4 |
 | Proof | Coached-driver 28-day repeat rate ([[M-03]]) | Baseline, then hold |
 
