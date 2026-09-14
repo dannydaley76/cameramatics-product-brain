@@ -167,3 +167,19 @@ useful thing the log produces, because they say where to watch next time.
 judgement in written form. Every rule it checks was a choice about what good
 looks like. That is the division of labour in one file, and it is why the
 validator is committed rather than described.
+
+## 7. AI in the product
+
+**C-28 — AI goes into the product only where it demonstrably beats a rule.**
+The brief asks for AI nowhere except where edge vision already requires it. So
+nothing in triage, scoring, grouping, routing or coaching gets a model because a
+model was available. The test, before any model ships: say what it does that a
+deterministic rule cannot; name the failure mode it introduces — unexplainable
+ranking, drift, no ground truth to measure against; and show why that is worth
+paying. Where a rule and a model are close, ship the rule. A rule is explainable
+to a fleet manager, debuggable by an engineer, and reversible in an afternoon.
+
+Note the asymmetry, because it is deliberate: this repository is heavily
+agent-produced, and it argues for restraint about putting AI in the product.
+Those are not in tension. They are the same judgement applied twice — use the
+tool where it earns its place, and not where it does not.

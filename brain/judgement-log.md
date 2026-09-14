@@ -252,6 +252,51 @@ open the walkthrough with — asked out loud, before defending anything.
 *Class of error: presented a genuine choice on the wrong axis, framing an
 epistemic question as a boldness question.*
 
+## J-13 — AI restraint as canon *(human-initiated; agent blind spot)*
+
+**Agent produced:** nothing. Across two full passes of the brief the agent never
+noticed that the brief does not ask for AI anywhere except where edge vision
+implies it.
+
+**Decided:** make restraint a canon rule — AI goes into the product only where it
+demonstrably beats a rule ([[canon#C-28]]). `decided_by: danny` ·
+`status: ratified`
+
+**What it rested on:** reading the *absence* of a word as a signal rather than a
+gap to fill. The brief's "Working with AI" section is about how the candidate
+works; the easy misread is to answer it by putting AI in the product, and a CTO
+reading many submissions will see exactly that.
+
+Worth naming plainly: the agent missed this because it is an AI, and reaching
+for a model is its default rather than a decision it notices making. An
+absence is invisible to something that would have filled it. That is a
+structural blind spot, not a lapse in attention, and it is the best argument in
+this log for a human reading the brief first.
+
+*Class of error: could not see an absence it was predisposed to fill.*
+
+## J-14 — Follow the brief on primary user, show the research *(agent overruled)*
+
+**Agent recommended:** design for the triager/coach split found in CameraMatics'
+published workflow, scoping v1 to the triaging role — on the grounds that it
+matches their real org model and the accounts the growth capital targets.
+
+**Decided:** single fleet-manager role who reviews and coaches, exactly as the
+brief specifies, with the delegated model recorded as a known divergence and the
+first phase-2 candidate ([[decisions/ADR-0006]]). `decided_by: danny` ·
+`status: ratified`
+
+**Reason for reversal:** the agent weighted research it had just gathered above
+an explicit, twice-repeated instruction in the brief. The rule it missed: when an
+instruction conflicts with an inference, follow the instruction and *show* the
+inference. Acting on the inference means answering a question nobody asked while
+appearing to have misread the one they did — and the inference came from public
+pages of unknown currency ([[A-18]]), which is thin ground on which to overrule
+the people setting the exercise.
+
+*Class of error: privileged evidence it had produced over an instruction it was
+given — the cost of the research inflating its weight.*
+
 ---
 
 ## Where the split actually falls

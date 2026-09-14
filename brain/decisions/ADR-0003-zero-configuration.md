@@ -62,3 +62,26 @@ half of this decision rather than pretending no tuning happens.
 Accounts reach the point of asking for control *after* their dismissal rate is
 already low — that is a request for expressiveness rather than for relief, and
 it is a different and much safer feature.
+
+---
+
+## Addendum, 2026-09-14 — what they already ship
+
+Research after this ADR was written establishes that CameraMatics shipped
+customer-facing configuration in April 2024: distraction split into looking
+left / right / down, phone use separated from general distraction, and an
+alert trigger window tunable from 2–8 seconds ([[A-15]]).
+
+That is a real and sensible response to alert noise, and it is a *different*
+strategy from the one here. Configuration lowers the **rate** at which events are
+generated. Triage decides **which of the survivors deserve a person**. They are
+complementary, and this ADR should not be read as arguing against what they
+built.
+
+So the decision narrows rather than reverses: **no configuration of what
+surfaces** — the ranking is our responsibility and handing it over transfers our
+hardest problem to the person least equipped to solve it. Configuration of
+detection sensitivity, presentation and routing is legitimate and already exists.
+
+Stated plainly because arriving at an interview to argue against a feature the
+company shipped two years ago, without acknowledging it, is a bad way to open.
