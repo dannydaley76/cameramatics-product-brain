@@ -8,7 +8,7 @@ priority: must
 size: M
 metrics: [M-09, M-13]
 risks: [R-02, R-12, R-13]
-decisions: [ADR-0007, ADR-0010]
+decisions: [ADR-0007, ADR-0010, ADR-0014]
 status: proposed
 drafted_by: agent
 adversarial_pass: ran 2026-09-14
@@ -33,6 +33,12 @@ adversarial_pass: ran 2026-09-14
 - **Given** an event is classified neutral, **when** it is displayed, **then**
   the reason is stated and the event is recorded on the driver's side rather
   than against them ([[ADR-0010]]).
+- **Given** any classification — risk, neutral or credit — **when** the event is
+  displayed, **then** it is shown as **proposed** with its evidence, and no
+  outcome is recorded until a human confirms it or changes it ([[ADR-0014]]).
+- **Given** a classification is confirmed or changed, **when** the record is
+  written, **then** it states which it was and who did it, so
+  confirmed-without-change is a population the downgrade audit can sample.
 - **Given** the severity **ruleset** version changed after this event was
   scored, **when** the event is displayed, **then** the version that scored it
   is retrievable, so historical comparison is not silently invalidated.

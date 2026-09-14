@@ -26,6 +26,9 @@ them ([[canon#C-30]]).
 - **Given** an event is classified credit, **when** it is displayed, **then** it
   is marked *proposed* and the available action is *"Confirm recognition"*.
   Recognition is never recorded without a human confirming it ([[R-13]]).
+  *Since [[ADR-0014]] this is an instance of a general rule rather than a
+  special case: every classification is proposed and confirmed. What remains
+  particular to credit is that the confirmation is also what reaches a driver.*
 - **Given** the manager has not played the clip, **when** they attempt to confirm
   recognition, **then** the action is unavailable — the same evidence rule that
   governs coaching ([[ADR-0005]]).

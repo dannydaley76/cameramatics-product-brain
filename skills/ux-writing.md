@@ -68,7 +68,7 @@ Mechanics that follow from those, and are house rules rather than quotations:
 Assume they will read it, because during a coaching conversation they will.
 This is [[../brain/canon]] C-07 expressed as copy.
 
-**W-02 — Describe behaviour, never character.** "Hard braking, 42 mph zone" is a
+**W-02 — Describe behaviour, never character.** "Hard braking, 40 mph zone" is a
 fact. "Aggressive driver" is a verdict, and we are not entitled to it.
 
 **W-03 — Never blame the reader for our failure.** "14 events closed unreviewed
@@ -134,7 +134,7 @@ the product.**
 **An event, described.**
 
 > ✗ Harsh braking violation — severity 8.2
-> ✓ Hard braking. 42 mph zone, Tuesday 09:14.
+> ✓ Hard braking. 40 mph zone, Tuesday 09:14.
 >   Graded high: deceleration in the top few percent, with a vehicle ahead.
 
 **Unreviewed work.**

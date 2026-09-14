@@ -633,17 +633,89 @@ and the low-base-rate objection stops deciding it. That sits with [[Q-04]].
 
 ---
 
+## J-25 — Classification is confirmed for all three classes *(human-initiated; agent contradicted its own ADR)*
+
+**Agent had built:** a prototype in which the system's classification — risk,
+neutral or credit — was displayed as settled, with the evidence beside it, and
+the manager acted on it. Only credit required confirmation, because [[US-012]]
+was written against [[R-13]], unearned praise.
+
+**Decided:** every classification is a proposal and requires an explicit human
+confirmation before an outcome is recorded. `decided_by: danny` ·
+`status: ratified` · [[ADR-0014]]
+
+**The question that produced it,** asked while reviewing the prototype: *do
+action proposals remove the onus on the fleet manager to make a decision? They
+can say the system said it was neutral when it actually isn't.* That is the
+whole finding. A classification shown before the manager forms a view is the
+default answer, and *"the system said so"* becomes an account of a decision in a
+product where [[canon#C-07]] requires every call at the top of the queue to be
+defensible to the driver in the clip.
+
+**Why this is worse than a gap.** [[ADR-0010]] already said, in the agent's own
+drafting, *"the system proposes a classification; the manager confirms it."* The
+requirements then implemented that for one class out of three, and the agent
+wrote the stories, the ADR and the prototype without noticing that the second
+did not do what the first said. Four days and an adversarial pass went by. The
+reviewer did not catch it either, because it read the requirement and the ADR as
+consistent on their own terms — it took building the thing to see it.
+
+**Neutral is the one that matters** and the agent had it backwards. Credit is
+confirmed to stop us praising the wrong thing in front of a driver, which is
+embarrassing and visible. Neutral removes a conversation, and nobody ever goes
+looking for the conversations that did not happen.
+
+*Class of error: implemented a principle for the case that had a named risk
+attached and not for the case that did not, then treated the ADR as satisfied
+because one instance of it was. A rule with one worked example gets built as the
+example.*
+
+## J-26 — The speed limits were invented *(agent error, caught by human)*
+
+**Agent produced:** worked examples in [[../skills/ux-writing]] using *"Hard
+braking, 42 mph zone"* — in W-02 as the model of describing behaviour rather
+than character, and again in the pattern library as the model of describing an
+event. The prototype then carried 31, 42 and 48 mph zones.
+
+**Caught:** none of those speed limits exist. UK limits are 20, 30, 40, 50, 60
+and 70. `decided_by: danny` · corrected in the skill, the pattern and the
+prototype.
+
+**Why it is in this log rather than just fixed.** It is [[A-03]] again with a
+different number. A plausible-looking detail was invented to make an example
+concrete, the example was then cited as the model in a skill file, and being in
+a skill made it the thing other documents copied. By the time it was caught it
+had the status of a house standard. The failure is not that a number was wrong;
+it is that the mechanism which is supposed to catch wrong numbers —
+[[canon#C-01]], every figure traces to a source or an assumption — does not look
+at illustrative copy, because copy does not feel like a claim.
+
+And this one would have been read by a fleet-safety company. An invented
+attention budget is an internal embarrassment; an impossible speed limit in a
+worked example is a domain error in front of people who do this for a living.
+
+*Class of error: invented a concrete detail for the sake of a vivid example,
+then promoted the example to a standard. Same class as J-17, one layer further
+from anywhere a validator looks.*
+
+---
+
 ## Where the split actually falls
 
-Twenty-four entries. The agent generated the option sets, wrote the prose, held
+Twenty-six entries. The agent generated the option sets, wrote the prose, held
 roughly forty cross-referenced IDs consistent and enforced the schema. Seven
 entries are marked *(agent overruled)* — J-04, J-05, J-06, J-10, J-14, J-19,
 J-22. Beyond those: J-16 reframes a model the agent had already built, J-13 is a
 blind spot the agent did not see at all, J-18 is an insight the agent under-read
-in its own finding, J-11 reverses an earlier decision on new information, J-17
-is an invented number caught by a human asking where it came from, J-15 is an
-attribution the agent refused to make, J-21 is a principle the option set did
-not contain, and J-23 splits a decision the agent had deferred as one lump.
+in its own finding, J-11 reverses an earlier decision on new information, J-15
+is an attribution the agent refused to make, J-21 is a principle the option set
+did not contain, J-23 splits a decision the agent had deferred as one lump, and
+J-25 is the agent's own ADR implemented for one case out of three without
+noticing.
+
+Two entries — J-17 and J-26 — are invented numbers, caught by a human asking
+where they came from. They are the same error at two different depths, and the
+second one had reached a skill file and become the house example.
 
 One entry — **J-03**, the commercial anchor — is still `proposed`. It is the
 agent's recommendation, not my decision, and this log will keep saying so until
