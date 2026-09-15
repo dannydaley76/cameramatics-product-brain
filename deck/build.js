@@ -12,6 +12,7 @@ const INK="2B3038", DEEP="1E232A", PAPER="FFFFFF", MIST="F2F3F4",
       MID="5E666F", FAINT="98A0A8", ACC="C8621E", ACCW="FAEFE7", LINE="DDE0E3";
 const H="Cambria", B="Calibri";
 const REPO = "https://github.com/dannydaley76/cameramatics-product-brain";
+const HOTSPOTS = require("./hotspots.json");
 
 const p = new pptxgen();
 p.layout = "LAYOUT_WIDE";
@@ -180,8 +181,16 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
     { text:"Read left to right: what the manager does. Underneath: the story that makes it work. Rows are releases. " },
     link("Every card in the live version opens its requirement on GitHub", REPO+"/blob/main/storymap/index.html")
   ], txt({ x:M, y:1.78, w:11.86, h:0.34, fontSize:12.5, color:MID }));
-  img(s, "storymap", 1.55, 2.2, 10.2);
-  foot(s, "The first release is a complete walk across the whole row. The bottom row is not a list of things nobody got to: every one is a decision with a record behind it.", 6.8);
+  const MX = M, MY = 2.2, MW = W - 2*M, MH = Math.round((MW/ar("storymap"))*100)/100;
+  img(s, "storymap", MX, MY, MW);
+  // one invisible, hyperlinked hotspot per card, sized from the card's real
+  // position in the captured page (hotspots.json, regenerated with the image)
+  HOTSPOTS.forEach(h => {
+    s.addImage({ path:S+"clear.png", hyperlink:{ url:h.href, tooltip:h.tip },
+      x: Math.round((MX + h.fx*MW)*1000)/1000, y: Math.round((MY + h.fy*MH)*1000)/1000,
+      w: Math.round((h.fw*MW)*1000)/1000,      h: Math.round((h.fh*MH)*1000)/1000 });
+  });
+  foot(s, "Every card here is a link. The first release is a complete walk across the whole row. The bottom row is not a list of things nobody got to: every one is a decision with a record behind it.", 6.8);
 }
 
 /* ═══════════════════════════════════  8  the queue */
