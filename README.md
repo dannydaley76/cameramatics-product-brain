@@ -91,8 +91,8 @@ for exactly that.
 Honest status, per canon C-24 — an unfinished artefact does not get to look
 finished.
 
-- [x] Canon (30 rules), registers — 23 assumptions, 14 metrics, 13 risks, 10 open questions
-- [x] Annotated brief, company analysis, problem, JTBD, personas, success criteria
+- [x] Canon (30 rules), registers — 24 assumptions, 17 metrics, 13 risks, 10 open questions
+- [x] Annotated brief, company analysis, problem, JTBD, personas (manager, driver, operator), success criteria
 - [x] Business case — submission section 1
 - [x] Stack outline — section 2
 - [x] PRD, 13 decision records, 15 stories across 4 epics — section 3

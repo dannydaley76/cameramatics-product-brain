@@ -44,7 +44,10 @@ forces analysis in [[jtbd]].
 ## Why it matters commercially
 
 Two-sided, and I would state both — a business case that only argues the
-customer's side is a marketing claim.
+customer's side is a marketing claim. On the customer's side, "the customer" is
+the **fleet operator** rather than the fleet manager who uses this
+([[personas/fleet-operator]]): the brief names both, and it is the operator who
+carries the claims bill and signs the renewal.
 
 **For the customer: total cost of risk.** At-fault collisions are the expensive
 line — repair, third-party liability, vehicle off-road, admin, and the premium

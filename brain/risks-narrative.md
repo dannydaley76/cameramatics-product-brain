@@ -11,7 +11,7 @@ produced_with: skills/risk-narrative.md
 assumptions: [A-02, A-04, A-10, A-13, A-18, A-19, A-20, A-21, A-23]
 risks: [R-01, R-02, R-05, R-06, R-10, R-11, R-12, R-13]
 questions: [Q-01, Q-02, Q-03, Q-05, Q-09, Q-10]
-metrics: [M-03, M-07, M-09, M-11, M-14]
+metrics: [M-03, M-07, M-09, M-11, M-14, M-15, M-16, M-17]
 links: [registers/assumptions, registers/risks, registers/questions, phasing]
 ---
 
@@ -188,9 +188,21 @@ Signals, with the metric that carries them and when it becomes readable. Not
 - **Ninety days.** The test in [[success-criteria]], stated as three terms so
   that passing it cannot be arranged.
 
-The thing that would not show up in any of these is [[A-20]] being wrong —
+- **Week 6.** [[M-15]], risky events per 1,000 miles, flat. The events this
+  product detects are the near misses; if their rate is not moving once coaching
+  has been running a month, nothing downstream will move either. This is the
+  earliest signal that is about the road rather than about the software, and it
+  needs neither driver attribution nor a control cohort — so it still works when
+  the two most fragile dependencies fail.
+- **Week 6.** [[M-16]] low while [[M-08]] looks healthy. Coaching volume without
+  coaching reach: the conversations are happening and not with the drivers the
+  events came from.
+
+The thing that would not show up in any of those is [[A-20]] being wrong —
 collision cost not being concentrated in a minority of drivers. Every metric
-above would look healthy while the product targeted the wrong unit. The only
-thing that catches it is one fleet's claims data joined to their driver records,
-which is why it is the check I would want earliest despite being the least
-urgent-looking.
+above would look healthy while the product targeted the wrong unit. [[M-17]] is
+the answer: of at-fault collisions, what share had a high-band event for that
+driver in the preceding 28 days. If that is near zero the queue is pointed at the
+wrong population and a dismissal rate of 8% means nothing. It uses [[M-01]]'s own
+data, so it costs nothing extra to collect, and it is the check I would want
+earliest despite being the least urgent-looking.

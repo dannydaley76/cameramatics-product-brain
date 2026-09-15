@@ -6,6 +6,7 @@
 metrics:
   - id: M-01
     layer: outcome
+    audience: fleet operator
     name: At-fault collisions per 100 vehicles per month
     definition: >
       Count of collisions recorded as at-fault by the customer, normalised per
@@ -19,6 +20,7 @@ metrics:
 
   - id: M-02
     layer: outcome
+    audience: fleet operator
     name: Cost of at-fault claims per vehicle per year
     definition: Total at-fault claim cost including repair, third-party and downtime, per vehicle per year.
     target: Direction of travel down.
@@ -34,6 +36,7 @@ metrics:
 
   - id: M-03
     layer: behaviour
+    audience: fleet operator, and us
     name: Coached-driver repeat rate (28-day)
     definition: >
       For drivers who received a coaching action on behaviour X, the share whose
@@ -47,6 +50,7 @@ metrics:
 
   - id: M-04
     layer: behaviour
+    audience: fleet operator
     name: Share of drivers in the high-risk band
     definition: Percentage of active drivers whose rolling risk score places them in the top band, measured monthly.
     target: Distribution shifts down over two quarters.
@@ -56,6 +60,7 @@ metrics:
 
   - id: M-05
     layer: engagement
+    audience: us
     name: High-severity events triaged within 7 days
     definition: Share of events classified high severity that reach a terminal review state (coached or dismissed) within 7 days of availability.
     target: ">= 90%"
@@ -64,6 +69,7 @@ metrics:
 
   - id: M-06
     layer: engagement
+    audience: us
     name: Median manager time per reviewed event
     definition: Median elapsed time from opening an event to setting a terminal state, per reviewing user.
     target: >
@@ -80,6 +86,7 @@ metrics:
 
   - id: M-07
     layer: engagement
+    audience: us
     name: Weekly reviewing accounts
     definition: Share of live accounts with at least one review session in a given week.
     target: ">= 80% by week 4 of an account going live"
@@ -89,6 +96,7 @@ metrics:
 
   - id: M-08
     layer: engagement
+    audience: us
     name: Coaching actions per 100 high-severity events
     definition: Count of logged coaching actions per 100 high-severity events surfaced.
     target: Baseline first; a very low number means the queue is not trusted, a very high number means severity is under-filtering.
@@ -97,6 +105,7 @@ metrics:
 
   - id: M-09
     layer: quality
+    audience: us
     name: High-severity dismissal rate
     definition: >
       Reported as two numbers, always together, because ADR-0008 makes a bulk
@@ -136,6 +145,7 @@ metrics:
 
   - id: M-10
     layer: quality
+    audience: us
     name: Video availability
     definition: >
       Share of surfaced events with reviewable video, and median time from event
@@ -147,6 +157,7 @@ metrics:
 
   - id: M-11
     layer: counter
+    audience: us
     name: Band distribution, and downgrade audit sample outcome
     definition: >
       Share of detected events routed to each severity band (critical, high,
@@ -172,6 +183,7 @@ metrics:
 
   - id: M-12
     layer: counter
+    audience: fleet operator, and us
     name: Driver disputes and coached-cohort attrition
     definition: >
       Count of driver disputes raised per 100 coaching actions and the share
@@ -183,6 +195,7 @@ metrics:
 
   - id: M-13
     layer: engagement
+    audience: us
     name: Recognition actions, and the recognition-to-coaching ratio
     definition: >
       Count of confirmed recognition actions per 100 credit-classified events,
@@ -201,6 +214,7 @@ metrics:
 
   - id: M-14
     layer: counter
+    audience: us
     name: Sweep share - high-severity events cleared by bulk action
     definition: >
       Share of high-severity events that left the review set through a bulk
@@ -222,3 +236,81 @@ metrics:
       the high-severity set leaves by sweep than by anyone looking at it, the
       queue has been rejected, and that reading needs no invented threshold.
 
+
+  - id: M-15
+    layer: behaviour
+    audience: fleet operator
+    name: Risky-event rate per exposure
+    definition: >
+      Count of critical and high band events across the fleet, normalised per
+      1,000 miles where odometer data is reliable and per 100 vehicle-days where
+      it is not - the same denominator caveat M-01 carries.
+    target: >
+      Direction of travel down. Baseline over the first 4 weeks; no numeric
+      target until there is a baseline to set one against.
+    horizon: Readable from week 4
+    source: Platform telemetry, plus the customer's mileage or vehicle-day data
+    counters: [M-11]
+    note: >
+      The fastest honest signal that something is changing on the road.
+      Collisions are too rare to read inside a quarter (M-01, R-06); the events
+      this product already detects are not, and they are the nearest available
+      measure of near misses.
+      It is the only behaviour metric here that needs neither driver attribution
+      (Q-09, R-09) nor an uncoached control cohort (Q-07), so it survives the two
+      dependencies most likely to fail.
+      What it cannot do: attribute a change to coaching. It measures the fleet,
+      not the driver, and a fleet can improve because two drivers left. That is
+      M-03's job and this does not replace it.
+      Gamed by grading more conservatively, which is why it is read with M-11's
+      band distribution and never on its own.
+
+  - id: M-16
+    layer: behaviour
+    audience: fleet operator, and us
+    name: Coaching coverage of the drivers generating the risk
+    definition: >
+      Of the drivers who generated a critical or high band event in a period,
+      the share who had at least one coaching conversation or confirmed
+      recognition in that period.
+    target: >
+      Baseline first. A low number sitting alongside healthy engagement numbers
+      is the specific failure this exists to catch.
+    horizon: From week 4
+    source: Coaching and recognition records joined to event attribution
+    counters: [M-12]
+    note: >
+      M-08 counts coaching actions per 100 high-severity events and cannot tell
+      you whether the conversations reached the people the events came from. If
+      A-20 holds and risk concentrates in a minority of drivers, coaching that
+      lands on a different set of people leaves the fleet outcome flat while
+      every engagement metric looks healthy.
+      Depends on attribution (A-11, A-23) and degrades exactly where attribution
+      does - overtime, agency drivers and swapped shifts, which R-09 notes are
+      also the shifts where risk concentrates. Read the coverage number with the
+      unattributed count beside it or it flatters itself.
+
+  - id: M-17
+    layer: counter
+    audience: us
+    name: At-fault collisions with a prior warning
+    definition: >
+      Of at-fault collisions in a period, the share where that driver had a
+      critical or high band event in the preceding 28 days.
+    target: >
+      Monitored, never optimised, and deliberately no target. A target here
+      would reward surfacing more events rather than the right ones.
+    horizon: From month 3, and readable only in aggregate across accounts
+    source: Customer-reported incident data (as M-01), joined to the event record
+    note: >
+      The only measure in this register that can say the queue is pointed at the
+      wrong population. Every quality metric here is conditioned on the system
+      having detected something: M-09 asks whether the manager agreed with what
+      we showed them; M-11's audit catches events graded too low within the
+      population we graded. Neither can see an event that never existed.
+      If at-fault collisions routinely have no warning in front of them, triage
+      is looking at the wrong things and a dismissal rate of 8% means nothing.
+      This is the measurement of A-20 - the assumption risks-narrative names as
+      the one no other metric would catch.
+      Low counts make it slow and noisy at single-fleet level (R-06), so it is
+      read across accounts and never quoted to one customer as evidence.

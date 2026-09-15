@@ -7,8 +7,8 @@ stage: discovery
 drafted_by: agent
 decided_by: danny
 adversarial_pass: ran 2026-09-14
-assumptions: [A-03]
-metrics: [M-01, M-03, M-05, M-06, M-07, M-09, M-10, M-11, M-12, M-14]
+assumptions: [A-03, A-20, A-24]
+metrics: [M-01, M-03, M-04, M-05, M-06, M-07, M-09, M-10, M-11, M-12, M-14, M-15, M-16, M-17]
 risks: [R-06, R-09, R-12]
 decisions: [ADR-0007, ADR-0008, ADR-0013]
 questions: [Q-07]
@@ -70,6 +70,47 @@ This is the closest thing to real value and the hardest to produce honestly. It
 needs reliable driver attribution and an uncoached control cohort, because
 regression to the mean will flatter it otherwise ([[Q-07]]). Reported with those
 caveats stated every time, or not reported.
+
+## Who reads what, and how fast they can know
+
+The brief names two people: *"a fleet operator wants to reduce collisions…
+helps their fleet managers act on it."* They ask different questions on
+different clocks, and until this section existed the register answered only one
+of them.
+
+The operator owns the outcome and signs the renewal ([[personas/fleet-operator]]).
+The manager does the work. Everything below is ordered by **how fast it can tell
+you anything**, which is the only ordering either of them cares about.
+
+| When | What moves | Reader |
+|---|---|---|
+| Week 1 | Accounts reviewing weekly ([[M-07]]); dismissal rate at the top of the queue ([[M-09]]) | Us. These say the machine runs, nothing about safety |
+| Week 4 | **Risky events per 1,000 miles ([[M-15]])**; **coaching coverage of the drivers generating the risk ([[M-16]])** | The operator. The first honest answer to *is it working* |
+| Week 8–12 | Coached-driver repeat rate ([[M-03]]); share of drivers in the high-risk band ([[M-04]]) | The operator. Attributable to coaching, and slower because of it |
+| 6–12 months | At-fault collisions ([[M-01]]); claim cost ([[M-02]]) | The operator. What they are actually buying |
+| Continuous | At-fault collisions with a prior warning ([[M-17]]) | Us. Whether the queue points at the right population at all |
+
+**The middle of that ladder is the part worth defending.** Collisions cannot be
+read inside a quarter at a single fleet — the base rate is too low and [[R-06]]
+says so plainly. The repeat rate ([[M-03]]) is the right behaviour metric and it
+is expensive: it needs reliable driver attribution and an uncoached control
+cohort that [[Q-07]] says we do not yet know we can build ethically.
+
+[[M-15]] fills the gap because the events themselves are the near misses. Hard
+braking with a vehicle ahead is the thing that did not become a collision, there
+are hundreds of them a week, and the rate needs neither attribution nor a control
+group. If it is not moving by week six, nothing downstream is going to move
+either, and that is worth knowing in week six rather than month nine.
+
+[[M-16]] is there because coaching volume is not coaching reach. If [[A-20]] is
+right and risk concentrates in a minority of drivers, conversations landing on a
+different set of people leave the fleet flat while every engagement number looks
+healthy.
+
+[[M-17]] is not a leading indicator. It is the check that the whole measurement
+model is pointed at something real: every quality metric above is conditioned on
+the system having detected an event, and none of them can see a collision that
+arrived with no warning in front of it.
 
 ## The counter-metrics
 

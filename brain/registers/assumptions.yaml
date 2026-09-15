@@ -419,3 +419,27 @@ assumptions:
       same footing as A-19, which does the same job for event volume.
     assumptions: [A-11]
     questions: [Q-09]
+
+  - id: A-24
+    statement: >
+      At the target fleet size (A-01, 20-150 vehicles, no dedicated safety
+      manager) the "fleet operator" the brief names is the business owner,
+      managing director or operations director - the person who signs the
+      insurance and the renewal - rather than a safety function. They own the
+      outcome and read it monthly or quarterly; they do not use the product.
+    confidence: low
+    impact: medium
+    if_wrong: >
+      If a dedicated safety or compliance role exists at this size, there is a
+      third user with a real workflow rather than a second reader with a
+      reporting need, and the fleet view stops being a renewal artefact and
+      becomes someone's daily screen.
+    validate: >
+      Ask in the customer interviews (Q-01) who asks the fleet manager whether
+      it is working, and what they look at when they do.
+    source: >
+      Stated assumption. The brief names both roles - "a fleet operator wants to
+      reduce collisions... helps their fleet managers act on it" - and does not
+      say who the operator is.
+    assumptions: [A-01]
+    questions: [Q-01]
