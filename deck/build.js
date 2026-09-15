@@ -140,7 +140,7 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
 {
   const s = light("Grade and route. Nothing gets thrown away.", "The spine");
   const ramp=[[INK,PAPER],["6C757D",PAPER],["AEB4BA",INK],["DFE2E5",INK]];
-  [["Critical","Interrupt. The email goes out carrying almost nothing. The clip is pushed where the device flagged the event high and fetched where it did not, so the screen says which of those is happening rather than implying footage is already there."],
+  [["Critical","Interrupt. An email goes out carrying almost nothing, and the clip is fetched straight away if the device has not already sent it."],
    ["High","This week's review set. A person watches the clip and decides."],
    ["Medium","Passed to the driver as a group. No conversation, and no entry in the evidence half either."],
    ["Low","Recorded, and counted in the trend. It never reaches the evidence half of a driver record, because nobody looked at it."]].forEach(([t,d],i)=>{
