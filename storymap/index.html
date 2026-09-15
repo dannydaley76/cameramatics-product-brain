@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Story map — event triage and coaching loop</title>
+<style>
+  :root { --ink:#1b1b1b; --mid:#5a5a5a; --faint:#8d8d8d; --line:#cfcfcf;
+          --hair:#e3e3e3; --box:#ececec; --page:#f2f2f2; --focus:#2b5cb8; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--page); color:var(--ink);
+         font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
+  .wrap { max-width:1500px; margin:0 auto; padding:24px 20px 60px; }
+  h1 { font-size:20px; margin:0 0 6px; }
+  .lede { color:var(--mid); max-width:82ch; margin:0 0 4px; }
+  .lede a { color:var(--focus); }
+  .meta { color:var(--faint); font-size:13px; margin:12px 0 22px; }
+
+  .scroll { overflow-x:auto; padding-bottom:8px; }
+  table.map { border-collapse:collapse; min-width:1180px; width:100%; }
+  table.map th, table.map td { vertical-align:top; padding:0; }
+
+  .rail { width:96px; padding:10px 10px 10px 0 !important; }
+  .rail .name { font-weight:600; }
+  .rail .n { color:var(--mid); font-size:12px; display:block; }
+
+  .act { background:var(--box); border:1px solid var(--line); padding:10px 12px; }
+  .act .step { color:var(--faint); font-size:11px; letter-spacing:.04em; }
+  .act .t { font-weight:600; display:block; margin-top:2px; }
+  .act .s { color:var(--mid); font-size:12px; display:block; margin-top:3px; }
+
+  td.col { border-left:1px solid var(--hair); padding:10px 8px !important; }
+  tr.band td { border-top:1px solid var(--line); }
+  tr.band.v1 td { background:#fff; }
+  tr.band.v11 td { background:#fafafa; }
+  tr.band.later td { background:#f6f6f6; }
+
+  .card { display:block; background:#fff; border:1px solid var(--line);
+          border-left:3px solid var(--faint); padding:8px 10px; margin:0 0 8px;
+          text-decoration:none; color:inherit; }
+  .card:hover { background:#fbfbfb; border-left-color:var(--ink); }
+  .card .id { font-size:11px; color:var(--focus); }
+  .card .t { display:block; font-weight:600; margin:1px 0 3px; }
+  .card .m { color:var(--mid); font-size:12px; }
+  .card.plat { border-left-style:dotted; }
+  .card.none { border-left-style:dashed; cursor:default; }
+  .card.none:hover { background:#fff; border-left-color:var(--faint); }
+  .empty { color:var(--faint); font-size:12px; padding:4px 2px; }
+
+  .notes { margin-top:26px; border-top:1px solid var(--line); padding-top:16px; }
+  .notes h2 { font-size:15px; margin:0 0 8px; }
+  .notes p { color:var(--mid); max-width:84ch; }
+  .notes a { color:var(--focus); }
+  @media print { body{background:#fff} .scroll{overflow:visible} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Story map — event triage and coaching loop</h1>
+  <p class="lede">The fleet manager's week, left to right, with every story underneath the
+  moment it belongs to. Rows are releases. Each card opens the requirement it stands for in
+  the <a href="https://github.com/dannydaley76/cameramatics-product-brain" target="_blank" rel="noopener">repository</a>.</p>
+  <p class="lede">Two things this shows that prose hides. The <strong>v1 row is a complete
+  walk across the whole backbone</strong> — that is what "the unit of value is the loop"
+  means when you draw it. And the <strong>later row is entirely recorded decisions</strong>,
+  each with an ADR behind it, rather than things nobody got to.</p>
+  <p class="meta">Backbone reads left to right. Cards are user stories except where marked
+  platform, which is behaviour specified in a decision record rather than a story.</p>
+
+  <div class="scroll">
+  <table class="map">
+    <tr>
+      <th class="rail"></th>
+      <td class="col"><div class="act"><span class="step">1</span><span class="t">Events arrive and get graded</span><span class="s">Before the manager sees anything</span></div></td>
+      <td class="col"><div class="act"><span class="step">2</span><span class="t">Start the week</span><span class="s">What needs me, and what happened to last week</span></div></td>
+      <td class="col"><div class="act"><span class="step">3</span><span class="t">Clear the set</span><span class="s">Move through it without it costing an afternoon</span></div></td>
+      <td class="col"><div class="act"><span class="step">4</span><span class="t">Understand the event</span><span class="s">Work out what actually happened</span></div></td>
+      <td class="col"><div class="act"><span class="step">5</span><span class="t">Decide and act</span><span class="s">Coach, recognise, record or dismiss</span></div></td>
+      <td class="col"><div class="act"><span class="step">6</span><span class="t">See whether it worked</span><span class="s">Answer "is this working" honestly</span></div></td>
+    </tr>
+
+    <tr class="band v1">
+      <td class="rail"><span class="name">v1</span><span class="n">first shippable</span><span class="n">14 stories</span></td>
+
+      <td class="col">
+        <a class="card plat" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/decisions/ADR-0012-forward-facing-detection-and-all-signals.md" target="_blank" rel="noopener"><span class="id">ADR-0012 · platform</span><span class="t">Four triggers, every signal</span><span class="m">The trigger says an event exists; it does not decide what evidence it carries</span></a>
+        <a class="card plat" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/decisions/ADR-0002-severity-gated-video-upload.md" target="_blank" rel="noopener"><span class="id">ADR-0002 · platform</span><span class="t">Severity-gated video upload</span><span class="m">Metadata always, clips when they earn it</span></a>
+        <a class="card plat" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/decisions/ADR-0007-severity-bands-and-actions.md" target="_blank" rel="noopener"><span class="id">ADR-0007 · platform</span><span class="t">Four bands, each with an action</span><span class="m">Nothing is discarded — the band decides what happens next</span></a>
+        <a class="card plat" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/decisions/ADR-0010-classification-is-orthogonal-to-severity.md" target="_blank" rel="noopener"><span class="id">ADR-0010 · platform</span><span class="t">Risk, neutral or credit</span><span class="m">What kind of event, separately from how much attention</span></a>
+      </td>
+
+      <td class="col">
+        <a class="card" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/requirements/US-001-weekly-review-set.md" target="_blank" rel="noopener"><span class="id">US-001</span><span class="t">A weekly set that can be finished</span><span class="m">must · M</span></a>
+        <a class="card" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/requirements/US-002-critical-events-bypass.md" target="_blank" rel="noopener"><span class="id">US-002</span><span class="t">Critical events bypass the rhythm</span><span class="m">must · S</span></a>
+        <a class="card" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/requirements/US-003-set-closes.md" target="_blank" rel="noopener"><span class="id">US-003</span><span class="t">The set closes, visibly</span><span class="m">must · M</span></a>
+      </td>
+
+      <td class="col">
+        <a class="card" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/requirements/US-004-bulk-dismiss.md" target="_blank" rel="noopener"><span class="id">US-004</span><span class="t">Dismiss a group with a reason</span><span class="m">should · S — in v1 because R-11 depends on it</span></a>
+        <a class="card" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/requirements/US-009-dismiss-with-reason.md" target="_blank" rel="noopener"><span class="id">US-009</span><span class="t">Dismiss one, with a reason</span><span class="m">must · S</span></a>
+      </td>
+
+      <td class="col">
+        <a class="card" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/requirements/US-005-watch-the-clip.md" target="_blank" rel="noopener"><span class="id">US-005</span><span class="t">Watch the clip, either side</span><span class="m">must · M</span></a>
+        <a class="card" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/requirements/US-006-why-it-was-graded.md" target="_blank" rel="noopener"><span class="id">US-006</span><span class="t">See why it was graded and classified</span><span class="m">must · M</span></a>
+        <a class="card" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/requirements/US-007-footage-states.md" target="_blank" rel="noopener"><span class="id">US-007</span><span class="t">Footage states are honest</span><span class="m">must · M</span></a>
+        <a class="card" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/requirements/US-008-resolve-driver.md" target="_blank" rel="noopener"><span class="id">US-008</span><span class="t">Resolve who was driving</span><span class="m">must · M — gates M-03</span></a>
+      </td>
+
+      <td class="col">
+        <a class="card" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/requirements/US-010-log-coaching.md" target="_blank" rel="noopener"><span class="id">US-010</span><span class="t">Log a coaching conversation</span><span class="m">must · M — gated on watching the clip</span></a>
+        <a class="card" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/requirements/US-011-driver-response.md" target="_blank" rel="noopener"><span class="id">US-011</span><span class="t">Capture what the driver said</span><span class="m">must · XS</span></a>
+        <a class="card" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/requirements/US-012-confirm-recognition.md" target="_blank" rel="noopener"><span class="id">US-012</span><span class="t">Confirm recognition</span><span class="m">must · M — praise the good</span></a>
+        <a class="card" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/requirements/US-013-send-to-driver.md" target="_blank" rel="noopener"><span class="id">US-013</span><span class="t">Send a medium group to the driver</span><span class="m">should · S — in v1 so every band has an action</span></a>
+      </td>
+
+      <td class="col">
+        <a class="card" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/requirements/US-014-driver-record.md" target="_blank" rel="noopener"><span class="id">US-014</span><span class="t">A driver record showing both sides</span><span class="m">must · M — coaching, disputes and recognition on one page</span></a>
+      </td>
+    </tr>
+
+    <tr class="band v11">
+      <td class="rail"><span class="name">v1.1</span><span class="n">opens when an account</span><span class="n">is 4 weeks live</span></td>
+      <td class="col"><p class="empty">—</p></td>
+      <td class="col"><p class="empty">—</p></td>
+      <td class="col"><p class="empty">—</p></td>
+      <td class="col"><p class="empty">—</p></td>
+      <td class="col"><p class="empty">—</p></td>
+      <td class="col">
+        <a class="card" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/requirements/US-015-fleet-view.md" target="_blank" rel="noopener"><span class="id">US-015 · J-24</span><span class="t">A fleet view that does not overstate</span><span class="m">should · M — cut from v1: a trend over 4 weeks of a low base rate can only mislead (R-06)</span></a>
+      </td>
+    </tr>
+
+    <tr class="band later">
+      <td class="rail"><span class="name">later</span><span class="n">each one a</span><span class="n">recorded decision</span></td>
+
+      <td class="col">
+        <a class="card none plat" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/decisions/ADR-0012-forward-facing-detection-and-all-signals.md" target="_blank" rel="noopener"><span class="id">ADR-0012</span><span class="t">Headway and fatigue</span><span class="m">Following distance needs per-install calibration; fatigue is the least defensible signal in the category</span></a>
+      </td>
+
+      <td class="col">
+        <a class="card none" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/decisions/ADR-0009-weekly-review-sets.md" target="_blank" rel="noopener"><span class="id">ADR-0009 · R-11</span><span class="t">Re-engagement on sustained non-use</span><span class="m">Counting closed-unreviewed weeks is a receipt. What to do about it may not be a feature</span></a>
+      </td>
+
+      <td class="col">
+        <a class="card none" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/decisions/ADR-0013-downgrade-audit-practice-before-tooling.md" target="_blank" rel="noopener"><span class="id">ADR-0013</span><span class="t">Downgrade audit tooling</span><span class="m">The audit itself runs from day one, by hand, on our side. Only the surface waits — no story yet, deliberately</span></a>
+      </td>
+
+      <td class="col"><p class="empty">—</p></td>
+
+      <td class="col">
+        <a class="card none" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/decisions/ADR-0004-no-driver-surface-in-v1.md" target="_blank" rel="noopener"><span class="id">ADR-0004</span><span class="t">Any driver-facing surface</span><span class="m">The manager shows them. Recognition reaching a driver directly is ADR-0010's own revisit condition</span></a>
+        <a class="card none" href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/decisions/ADR-0006-primary-user-fleet-manager.md" target="_blank" rel="noopener"><span class="id">ADR-0006 · A-16</span><span class="t">Depot-manager handover</span><span class="m">Their real workflow splits triage from the conversation. Recorded as a known divergence</span></a>
+      </td>
+
+      <td class="col"><p class="empty">—</p></td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="notes">
+    <h2>How to read the gaps</h2>
+    <p>An empty cell in the <strong>later</strong> row is not an oversight — it means that
+    activity is finished in v1 and nothing about it is deferred. An empty cell in
+    <strong>v1.1</strong> means the same. The only thing pulled out of the first release is
+    the fleet roll-up, and that decision is
+    <a href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/judgement-log.md" target="_blank" rel="noopener">J-24</a>,
+    with the condition that would reopen it written down beside it.</p>
+    <p>Column 1 carries no stories because nothing in it is a fleet manager's job. It is
+    platform behaviour, and it is specified in decision records instead — which is also why
+    it is the column where the hardest trade-offs live. Full reasoning in
+    <a href="https://github.com/dannydaley76/cameramatics-product-brain/blob/main/brain/phasing.md" target="_blank" rel="noopener">phasing</a>.</p>
+  </div>
+</div>
+</body>
+</html>

@@ -443,3 +443,22 @@ assumptions:
       say who the operator is.
     assumptions: [A-01]
     questions: [Q-01]
+
+  - id: A-25
+    statement: >
+      Engineering capacity for this capability is unknown. The plan assumes it is
+      enough to run the portal track and at least one of the cloud or edge tracks
+      concurrently - roughly two teams' worth - but nothing here depends on that
+      being true, only the elapsed time does.
+    confidence: low
+    impact: medium
+    if_wrong: >
+      With one team the phases do not change and the order does: portal first
+      against fixtures, because it is the only track that produces something to
+      put in front of a fleet manager early enough to change what gets built.
+      With more, the edge track still cannot be compressed - firmware lead times
+      are months (R-05) and that is the critical path whatever the headcount.
+    validate: Ask. One conversation with engineering leadership settles it.
+    source: Stated assumption; the brief asks for phasing that reflects capacity and we have none.
+    risks: [R-05]
+    questions: [Q-03]

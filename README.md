@@ -32,6 +32,7 @@ check it.
 | [`docs/traceability.md`](docs/traceability.md) | Generated. Metric → stories → risks → phase, on one page |
 | [`prototype/index.html`](prototype/index.html) | The queue, the clip, the coaching record. Grey boxes, real behaviour — open it and work through the group of five |
 | [`prototype/checks/`](prototype/checks/) | 43 scripted assertions against that prototype. The same argument as the validator, one layer out |
+| [`storymap/index.html`](storymap/index.html) | The whole capability as one picture — the manager's week across the top, every story underneath it, sliced by release |
 
 Then the machinery: [`AGENTS.md`](AGENTS.md) for the division of labour,
 [`skills/`](skills/) for the recipe behind each document type,
@@ -91,7 +92,7 @@ for exactly that.
 Honest status, per canon C-24 — an unfinished artefact does not get to look
 finished.
 
-- [x] Canon (30 rules), registers — 24 assumptions, 17 metrics, 13 risks, 10 open questions
+- [x] Canon (30 rules), registers — 25 assumptions, 17 metrics, 13 risks, 10 open questions
 - [x] Annotated brief, company analysis, problem, JTBD, personas (manager, driver, operator), success criteria
 - [x] Business case — submission section 1
 - [x] Stack outline — section 2
@@ -105,6 +106,20 @@ finished.
 - [x] Clickable prototype (`prototype/index.html`) — low fidelity, real behaviour. **Adversarial pass ran 2026-09-14, verdict: Not yet.** Of 20 findings: 17 fixed, 3 partly fixed. Accessibility is out of scope by decision, not oversight. Dispositions in `reviews/`
 - [x] Adversarial pass on ADR-0012, ADR-0013, ADR-0014 — **ran 2026-09-14, verdict: Not yet.** ADR-0012 part 2 signed off; all three sent back on the record. Findings not yet dispositioned; see `reviews/`
 - [ ] Submission deck
+
+## Time, and where the volume came from
+
+About four hours of my own focused effort, spread across a week alongside other
+work — which is what the brief allows for. The commit history shows both halves
+of that honestly: the elapsed days, and the bursts of output inside them that no
+one produces by hand.
+
+That gap is the point rather than an embarrassment. The volume here is agent
+work under direction; the judgement is mine and
+[`brain/judgement-log.md`](brain/judgement-log.md) is where it is written down,
+including the times I was wrong and the times the agent was overruled. If the
+ratio of output to hours looks implausible, that is the submission's actual
+answer to the question the brief asks about AI.
 
 ## What this is built on
 

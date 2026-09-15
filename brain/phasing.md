@@ -8,7 +8,7 @@ drafted_by: agent
 decided_by: danny
 adversarial_pass: not run
 produced_with: skills/phasing.md
-assumptions: [A-02, A-04, A-10, A-11, A-19, A-23]
+assumptions: [A-02, A-04, A-10, A-11, A-19, A-23, A-25]
 metrics: [M-03, M-07, M-09, M-11, M-14]
 risks: [R-05, R-06, R-09, R-11, R-12]
 questions: [Q-01, Q-02, Q-03, Q-05, Q-09]
@@ -161,6 +161,35 @@ before seeing a single account do it would be guessing.
 **The driver surface and the delivery channel** ([[ADR-0004]], [[ADR-0007]]).
 Recognition reaching a driver directly rather than through a manager showing
 them a clip is [[ADR-0010]]'s own revisit condition.
+
+## Capacity — what it changes, and what it cannot
+
+We do not know the team ([[A-25]]), so this plan commits to an order and a set of
+conditions rather than to a date. What capacity changes is elapsed time. What it
+does not change is the shape, and the distinction matters more than it sounds.
+
+**What more people buy.** The three tracks above are genuinely concurrent, so
+capacity converts almost directly into calendar time up to about three teams —
+one on the portal against fixtures, one on cloud ingest and grading, one on the
+edge. Past that the joins become the constraint rather than the work.
+
+**What more people do not buy.** The edge track's lead time is firmware, measured
+in months and not weeks ([[R-05]], [[A-04]]), and no amount of headcount
+compresses it. It is the critical path for v1 as a whole and it is the one part
+of this plan that is not ours to schedule. The same is true of the two inherited
+dependencies in the chain above.
+
+**With one team instead of three**, the phases do not change and the order does.
+Portal first, against fixtures — it is the only track that produces something to
+put in front of a fleet manager early enough to change what gets built, and
+[[Q-01]] is unanswered until someone has been shown something.
+
+**The v1 scope in sizing terms**, for whoever has to resource it: 14 stories,
+one XS, four S, nine M, no L. That profile is deliberate — [[canon#C-10]] means
+a story that moves no metric is not a requirement, and the epics that would have
+produced large stories are the ones [[ADR-0003]] and [[ADR-0004]] cut. I would
+not turn that into a date without knowing the team, and a date offered without
+that knowledge is the thing this section exists to refuse.
 
 ## Gates — what would stop us, not delay us
 
