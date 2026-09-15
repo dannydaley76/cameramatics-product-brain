@@ -25,7 +25,7 @@ A fleet manager's attention is finite and contested, and how finite is unknown
 100-vehicle fleet ([[A-02]]). Most are technically correct and practically
 irrelevant. Today the triage is manual — the manager scans a dashboard and picks
 events "from which lessons can be learned" ([[A-13]]). That does not scale to a 250-depot account, and it is the step where
-every camera rollout dies: the manager reviews six of three hundred, then stops
+every camera rollout dies: the manager opens a handful of several hundred, then stops
 logging in ([[R-01]]).
 
 Without this, detection quality keeps improving and nothing changes in a cab.

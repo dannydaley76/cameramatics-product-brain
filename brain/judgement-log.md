@@ -731,6 +731,51 @@ only told to check whether claims hold, because both defaults hold fine.*
 
 ---
 
+## J-30 — Three numbers nobody had checked against anything *(found in the final pass)*
+
+The last adversarial pass before submission, run on the finished deck, found
+three defects of one kind. None of them was a claim about the world. All three
+were numbers that had never been checked against the thing they described.
+
+**"Reviews six of three hundred."** In [[problem]] and [[prd]] since the first
+day, quoted on two deck slides, and one of them was a section title. There is
+no source and no assumption ID. The prototype, built later from the same
+premise, says the answer is eleven. A reader who opened the artefact the deck
+invites them to open would find the deck's own number contradicted by it.
+Replaced with "several hundred" and "a handful", which is all I actually know.
+
+**Every weekday in the fixture was wrong.** "Monday 8 September" — 8 September
+2026 is a Tuesday. Every date in the prototype was a day out, in the
+screenshots, in the evidence table, and in the live page. The screens whose
+argument is *check the reasoning rather than take it on trust* failed on the
+first checkable field. Fixed by shifting the week back one day, which made
+every named day correct at once.
+
+**The driver record counted the wrong set.** The evidence half said "N events
+in the critical and high bands, each one opened and labelled by a person",
+where N counted every event of that driver's in the week, classified or not.
+So the half of the page built to hold nothing but reviewed evidence was
+showing unreviewed events, under a sentence promising the opposite. This is
+[[decisions/ADR-0015]] violated inside the screen that demonstrates
+ADR-0015, and [[registers/risks#R-14]] reintroduced two days after it was
+closed.
+
+**Why this is one entry and not three.** The class is the same, and it is not
+the class I had been guarding against. [[canon#C-01]] asks whether a number has
+a source. All three of these had sources, or needed none: the six was
+illustration, the dates were typed, the count was computed. What none of them
+had was anyone checking the number against the thing it claimed to describe —
+the prototype, the calendar, the rule it was meant to enforce. A validator
+that checks links resolve cannot do that. Three adversarial passes over the
+repository did not do it either, because they were reading for whether claims
+held rather than recomputing them.
+
+*Class of error: numbers that were never wrong on their face, and were never
+once compared to the artefact they describe. The cheapest check in the
+process, and the only one nobody had written down.*
+
+---
+
 ## J-27 — Friction on neutral, rejected *(agent overruled)*
 
 **Agent proposed:** requiring a typed reason before an event can be classified
@@ -810,7 +855,7 @@ cannot check that two rules can both be obeyed at once.*
 
 ## Where the split actually falls
 
-Twenty-nine entries. The agent generated the option sets, wrote the prose, held
+Thirty entries. The agent generated the option sets, wrote the prose, held
 roughly forty cross-referenced IDs consistent and enforced the schema. Eight
 entries are marked *(agent overruled)* — J-04, J-05, J-06, J-10, J-14, J-19,
 J-22, J-27. Beyond those: J-16 reframes a model the agent had already built, J-13 is a

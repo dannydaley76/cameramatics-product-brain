@@ -26,7 +26,7 @@ check it.
 |---|---|
 | [`brain/annotated-brief.md`](brain/annotated-brief.md) | What your brief says, implies, and leaves out — first read and agent additions marked separately |
 | [`brain/problem.md`](brain/problem.md) | The problem, and the failure mode the whole design aims at |
-| [`brain/judgement-log.md`](brain/judgement-log.md) | Twenty-nine decisions: what the agent proposed, what I decided, every time I overruled it, and the one entry still marked `proposed` |
+| [`brain/judgement-log.md`](brain/judgement-log.md) | Thirty decisions: what the agent proposed, what I decided, every time I overruled it, and the one entry still marked `proposed` |
 | [`reviews/`](reviews/) | The adversarial pass. Verdict: **Not yet.** Read it before you read anything else here charitably |
 | [`brain/canon.md`](brain/canon.md) | The thirty rules this brain does not break. The most opinionated file here |
 | [`docs/traceability.md`](docs/traceability.md) | Generated. Metric → stories → risks → phase, on one page |

@@ -12,7 +12,6 @@ const INK="2B3038", DEEP="1E232A", PAPER="FFFFFF", MIST="F2F3F4",
       MID="5E666F", FAINT="98A0A8", ACC="C8621E", ACCW="FAEFE7", LINE="DDE0E3";
 const H="Cambria", B="Calibri";
 const REPO = "https://github.com/dannydaley76/cameramatics-product-brain";
-const HOTSPOTS = require("./hotspots.json");
 const PAGES = "https://dannydaley76.github.io/cameramatics-product-brain";
 const PROTO = PAGES + "/prototype/";
 const MAP   = PAGES + "/storymap/";
@@ -79,7 +78,7 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
   });
   s.addText([
     { text:"50 to 450", options:{ fontSize:38, bold:true, color:ACC, fontFace:H } },
-    { text:"  events a day, one fleet, one manager, and no way to tell which six matter.", options:{ fontSize:14, color:MID } }
+    { text:"  events a day, one fleet, one manager, and no way to tell which of them matter.", options:{ fontSize:14, color:MID } }
   ], txt({ x:M, y:5.34, w:11.9, h:0.8 }));
   foot(s, "A range, not a single figure. It is assumption A-02, held at low confidence, and it is the one that would end this if it turned out to be wrong.", 6.2);
   s.addNotes("If the reader stops here they still have the argument.");
@@ -87,7 +86,7 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
 
 /* ═══════════════════════════════════  3  the problem */
 {
-  const s = light("The firehose, and the six events", "The problem");
+  const s = light("The firehose, and the few that matter", "The problem");
   s.addText("Detection is table stakes now, and getting cheaper. CameraMatics already spots fatigue, distraction, phone use, tailgating and vulnerable road users, and already scores drivers on those events. What is missing is deciding which event deserves a person this week, and proving the conversation changed anything.",
     txt({ x:M, y:1.84, w:7.5, h:1.1, fontSize:14, color:MID, lineSpacing:19 }));
   s.addText("The manager logs in, sees hundreds, works through a few, and stops logging in. The product is working exactly as built. That is the problem.",
@@ -122,7 +121,7 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
     txt({ x:M, y:1.9, w:11.86, h:0.5, fontSize:13, color:MID, lineSpacing:18 }));
   [["For the customer","Total cost of risk","At-fault collisions are the expensive line: repair, third-party liability, vehicle off the road, admin, and the premium consequences. The value is in finding the small number of drivers assumed to carry most of that cost, before the incident rather than after it.","A-20"],
    ["For CameraMatics","Revenue on an installed base we have already paid for","Nearly 1,000 fleet customers and thousands of vehicles, cameras already fitted. A module priced per vehicle per month is uplift at close to zero acquisition cost. More quietly it is retention: contracts churn when the software goes unused, and a weekly habit is the strongest renewal signal we could build.","A-08"],
-   ["The upside, not the headline","Insurance","Premium influence depends on an insurer partnership and an agreed evidence standard, and neither is ours to grant. I would carry it as an explicit upside with a named validation step rather than lead with a number I cannot source.","A-06, Q-06"]
+   ["Upside, held separately","Insurance","Premium influence depends on an insurer partnership and an agreed evidence standard, and neither is ours to grant. I would carry it as an explicit upside with a named validation step rather than lead with a number I cannot source.","A-06, Q-06"]
   ].forEach(([tag,t,d,a],i)=>{
     const x = M + i*4.02;
     card(s, x, 2.6, 3.74, 3.16, i===2?ACCW:MIST);
@@ -133,7 +132,7 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
   });
   s.addText([
     { text:"How I would size it, and why there is no number here yet. ", options:{ bold:true } },
-    { text:"Revenue is fitted vehicles times price per vehicle per month times attach rate. Payback is one avoided at-fault collision set against the annual cost of the vehicles it took to find it. Not one of those five inputs is knowable from outside. I would have all five in week one, and I would rather show the arithmetic with the gaps marked than fill them in with numbers I made up. All of it written against a company that raised up to 49 million in June to scale into North America and mainland Europe, so whatever we build has to work in more than one market." }
+    { text:"Revenue is fitted vehicles times price per vehicle per month times attach rate. Payback is one avoided at-fault collision set against the annual cost of the vehicles it took to find it. Not one of those five is knowable from outside accurately enough to quote. I would have all five in week one, and I would rather show the arithmetic with the gaps marked than fill them in with numbers I made up. All of it written against a company that raised up to 49m euro in June to scale into North America and mainland Europe, so whatever we build has to work in more than one market." }
   ], txt({ x:M, y:6.0, w:11.86, h:0.9, fontSize:12, color:MID, lineSpacing:16 }));
 }
 
@@ -141,7 +140,7 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
 {
   const s = light("Grade and route. Nothing gets thrown away.", "The spine");
   const ramp=[[INK,PAPER],["6C757D",PAPER],["AEB4BA",INK],["DFE2E5",INK]];
-  [["Critical","Interrupt. The clip uploads without being asked for, and an email goes out carrying almost nothing."],
+  [["Critical","Interrupt. The email goes out carrying almost nothing. The clip is pushed where the device flagged the event high and fetched where it did not, so the screen says which of those is happening rather than implying footage is already there."],
    ["High","This week's review set. A person watches the clip and decides."],
    ["Medium","Passed to the driver as a group. No conversation, and no entry in the evidence half either."],
    ["Low","Recorded, and counted in the trend. It never reaches the evidence half of a driver record, because nobody looked at it."]].forEach(([t,d],i)=>{
@@ -160,12 +159,12 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
 /* ═══════════════════════════════════  6  the stack */
 {
   const s = light("The device decides what to send, the cloud what to show", "Across the stack");
-  [["In-cab device","Detect four behaviours on the device itself, in real time: harsh braking, harsh acceleration, harsh cornering, phone in hand. Attach every signal it has, whichever one set the event off. Keep recording in a loop so a clip can still be fetched days later.",
+  [["In-cab device","The detectors exist. The ask is that every event they raise carries the full signal set, whichever detector fired. v1 routes four of them: harsh braking, acceleration, cornering, phone in hand. Keep recording in a loop so a clip can still be fetched days later.",
     "The device flags a coarse severity, enough to decide what to push. That is not the grade. Metadata always goes; footage is pushed only for what the device flags high, and for anything collision-grade unconditionally. Everything else waits to be fetched."],
    ["Cloud platform","Take events in without tripping over duplicates or late arrivals. Group related ones together. Apply the real grade, route it, and record why. Fetch video and never lie about whether it is coming.",
     "The grade that decides who sees what lives here, never in firmware. These rules will change weekly for the first few months, and a firmware release is far too slow a way to change a number we are guessing at."],
    ["Web portal","A short, ranked list that can be finished. Honest answers about footage. A way to log a conversation that costs less than not logging it.",
-    "It ranks nothing itself and offers no settings. Deciding what deserves attention is our job, not a slider we hand to the customer."]
+    "It ranks nothing itself and offers no settings. Deciding what deserves attention is our job. Handing it over as a slider moves the problem to someone with less to go on."]
   ].forEach(([t,d,tr],i)=>{
     const x = M + i*4.02;
     card(s, x, 1.88, 3.74, 3.94);
@@ -229,9 +228,9 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
         s.addText([
           { text:k.id+"\n", options:{ fontSize:6.6, bold:true, color:FAINT,
               underline:false, hyperlink:{ url:k.href, tooltip:k.t }, breakLine:true } },
-          { text:k.t, options:{ fontSize:8, bold:true, color:INK,
+          { text:k.t, options:{ fontSize:7.8, bold:true, color:INK,
               underline:false, hyperlink:{ url:k.href, tooltip:k.t } } }
-        ], txt({ x:x+0.1, y:y+0.06, w:CW-0.14, h:CH-0.1, lineSpacing:9.8 }));
+        ], txt({ x:x+0.09, y:y+0.06, w:CW-0.11, h:CH-0.1, lineSpacing:9.6 }));
       });
     });
   });
@@ -282,7 +281,7 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
   img(s, "choice", M, 2.46, 11.86);
   [["Nothing is pre-selected","Whichever way the system leans, the three buttons look identical and sit in the same order every time."],
    ["Effort matches consequence","Recording something as not the driver's fault needs no clip. Crediting or coaching them does, because those two reach a person."],
-   ["One click, not two","An earlier version asked the manager to confirm the label after choosing it. Building the screen showed that the second click was a receipt, not a decision, so it went."]
+   ["One click","An earlier version asked the manager to confirm the label after choosing it. Building the screen showed the second click recorded nothing the first had not, so it went."]
   ].forEach(([t,d],i)=>{
     const x = M + i*4.02;
     card(s, x, 4.94, 3.74, 1.7, i===2?ACCW:MIST);
@@ -339,9 +338,9 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
 /* ═══════════════════════════════════ 13  phasing */
 {
   const s = light("The first release is a thin whole loop", "Prioritisation and phasing");
-  [["What ships first","14 of 15 stories. A manager with a queue and no way to act on it has a better dashboard. A manager with a coaching form and no triage has the firehose with extra steps. Neither half is worth shipping on its own."],
+  [["What ships first","14 of 15 stories: 9 sized M, 4 S, 1 XS. A manager with a queue and no way to act on it has a better dashboard. A manager with a coaching form and no triage has the firehose with extra steps. Neither half is worth shipping on its own."],
    ["What waits, and why","Only the fleet-wide view. A trend drawn over four weeks of something as rare as a collision can only mislead, and one misleading number makes every other number on the page suspect."],
-   ["What capacity buys","The three tracks are genuinely concurrent, so more people buy calendar time up to roughly three teams, past which the joins become the constraint. That figure is my judgement, not a measurement. What capacity does not buy is firmware lead time. That is months and it is not ours to schedule."]
+   ["What capacity buys","The three tracks are genuinely concurrent, so more people buy calendar time up to roughly three teams, past which the joins become the constraint. That figure is my judgement, not a measurement. What capacity does not buy is firmware lead time. I have no basis for a number there and will not guess at one, but it is the item most likely to set the date."]
   ].forEach(([t,d],i)=>{
     const x = M + i*4.02;
     card(s, x, 1.9, 3.74, 2.5);
@@ -361,7 +360,7 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
   s.addText("The brief names two readers. The fleet operator owns the outcome and signs the renewal. The fleet manager does the work. They ask different questions on different clocks.",
     txt({ x:M, y:1.8, w:11.86, h:0.44, fontSize:13, color:MID }));
   [["Week 1","Are they opening it, and do they trust what is in it","Us. Says the machine runs, nothing about safety"],
-   ["Week 4","Risky events per 1,000 km, which needs mileage the device does not send today. Are the conversations reaching the drivers causing the events","The operator. The first reading worth arguing about, and at one fleet it is still noisy"],
+   ["Week 4","Risky events per 1,000 km. Assumes distance is on the event record, which I could not confirm from outside and which one question settles. Are the conversations reaching the drivers causing the events","The operator. The first reading worth arguing about, and at one fleet it is still noisy"],
    ["Week 8 to 12","Do coached drivers repeat the behaviour. Is the high-risk group shrinking","The operator. Can be put down to coaching, and slower for it"],
    ["6 to 12 months","Collisions the driver caused, and what claims cost","The operator. What they are actually buying"],
    ["Ongoing","Of the collisions that happen, how many had a warning in front of them","Us. Whether the queue points at the right people at all"]
@@ -408,7 +407,7 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
   [["Does the portal already rank events?","Commercial","The framing of this whole submission. Asked out loud, first, before defending anything."],
    ["How many events does the firmware really produce?","Engineering","Whether this is a triage product at all. If the number is low, we stop and I rewrite the brief."],
    ["Which devices can run the detection?","Engineering","Whether the first release is software or a hardware programme, and whether recognition makes it in."],
-   ["How do you know who was driving, and how often?","Engineering","Assumed solved for this exercise. If it is not, the release splits: review ships, coaching waits."],
+   ["How reliable is driver identification, and how often is it wrong?","Engineering","US-008 ships in v1 either way. The question is how much of it is manual, because coaching a driver the system misnamed is the fastest way to lose the cab."],
    ["What is the legal basis in each market?","Legal","Which markets can use footage for coaching at all. One that cannot needs a different product."],
    ["What does a manager's week actually look like?","Customer","What we are allowed to claim we replace, and the rhythm the set is built around."]
   ].forEach(([q,a,d],i)=>{
@@ -418,13 +417,13 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
     s.addText(a.toUpperCase(), txt({ x:x+4.84, y:y+0.04, w:0.94, h:0.24, fontSize:8.5, bold:true, color:ACC, align:"right", charSpacing:0.8 }));
     s.addText(d, txt({ x:x+0.5, y:y+0.56, w:5.28, h:0.8, fontSize:11.5, color:MID, lineSpacing:15 }));
   });
-  foot(s, "A question whose answer only moves a date was never blocking. Four of these change the plan. The other two change what we are allowed to claim.", 6.62);
+  foot(s, "Four of these change the plan. Two change what we are allowed to claim. None of them is a question I would answer by guessing.", 6.62);
 }
 
 /* ═══════════════════════════════════ 17  the product brain */
 {
   const s = light("All of it came out of a repository you can open", "How I work");
-  s.addText("This is how I run a product function, not something built for this exercise. Every claim in this deck points at a file in here, and every file says who wrote it, who decided it, and whether it has been challenged yet.",
+  s.addText("This is how I run a product function. It predates this exercise and it will outlast it. Every claim in this deck points at a file in here, and every file says who wrote it, who decided it, and whether it has been challenged yet.",
     txt({ x:M, y:1.8, w:11.86, h:0.5, fontSize:13.5, color:MID, lineSpacing:19 }));
 
   [["The documents","26 assumptions, each with a confidence rating, what breaks if it is wrong, and how to check it.\n\n15 decisions, each with the options it beat and the cost it accepts.\n\n15 user stories, 15 risks, 10 open questions, 17 measures. 98 cross-referenced IDs in all."],
@@ -447,7 +446,7 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
     { text:"      " },
     link("the validator", REPO+"/blob/main/scripts/validate.py")
   ], txt({ x:M, y:5.9, w:11.86, h:0.36, fontSize:13 }));
-  foot(s, "About six hours of my own focused effort across two days, fitted around other work. The volume is agent output under my direction, and the commit history shows both halves of that honestly.", 6.4);
+  foot(s, "Every file says who drafted it, who decided it, and whether it has been challenged. The commit history shows the order it happened in.", 6.4);
   s.addNotes("The brain is core to how I work. I want them to actually go and look at it.");
 }
 
@@ -477,14 +476,14 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
 /* ═══════════════════════════════════ 19  the catches */
 {
   const s = light("Five times the judgement had to be mine", "Where the judgement was");
-  s.addText("The judgement log records the decisions where an agent had a view worth arguing with: 29 entries, 9 of them overruled. It does not capture the steering, which happened in conversation before anything was written and is the larger part of the work. What follows is the part you can check.",
+  s.addText("The judgement log records the decisions where an agent had a view worth arguing with: 30 entries, 9 of them overruled. It does not capture the steering, which happened in conversation before anything was written and is the larger part of the work. What follows is the part you can check.",
     txt({ x:M, y:1.82, w:11.86, h:0.6, fontSize:12.5, color:MID, lineSpacing:17 }));
   const o = [
     ["A frame it missed","J-18","It had built a system that would coach a driver for braking to avoid a child. A tool that only ever finds failure makes being invisible the best a driver can achieve. Recognition is now half the product."],
     ["A number it invented","J-17","A fifteen-minute attention budget, quoted by four documents until it looked sourced, had hardened into a design target. I asked where it came from. It came from nowhere."],
     ["A detail it invented","J-26","Worked examples used a 42 mph zone. No such limit exists. It sat in a skill file, so other documents had copied it before anyone looked, and the prototype carried three of them."],
     ["A lever it reached for","J-27","It found a real imbalance and proposed adding friction to fix it. Marking an event as not the driver's fault means nothing to see here. Making someone type that out buys compliance text, not judgement."],
-    ["A question nobody asked","J-29","Rereading after J-26: the whole fixture was British. Coventry street names, mph, UK plates, handed to a Dublin company. Not a wrong fact, a wrong audience, and no validator or adversarial pass can see that. It is a 42-vehicle Dublin fleet now."]
+    ["A question nobody asked","J-29","The fixture defaulted to one market: mph, Coventry street names, UK plates. Not wrong, they sell hard in the UK. Wrong that nobody asked, when the product runs across Ireland, the UK, Europe and the US and has to carry all of them."]
   ];
   o.forEach(([t,id,d],i)=>{
     const x = M + i*2.4;
@@ -496,7 +495,7 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
   card(s, M, 5.9, 11.82, 1.1, ACCW);
   s.addText([
     { text:"And the one a fresh reviewer found, not me. ", options:{ bold:true, color:ACC } },
-    { text:"My prototype was making things up: confirming a driver had avoided harm wrote a fixed sentence onto their record, the wrong day, the wrong road, the wrong thing done, under a named manager's confirmation with a clip attached. Found in eleven minutes by an agent that had never seen the work. Five review passes in all, 53 findings on the repository itself, and every one of them is written down there." }
+    { text:"My prototype was making things up: confirming a driver had avoided harm wrote a fixed sentence onto their record, the wrong day, the wrong road, the wrong thing done, under a named manager's confirmation with a clip attached. Found in eleven minutes by an agent that had never seen the work. The last pass, on the finished deck, found three numbers nobody had ever checked against the thing they described, including one that broke the rule the screen beside it exists to demonstrate. Every finding is in the repository." }
   ], txt({ x:M+0.3, y:6.08, w:11.22, h:0.86, fontSize:11.5, color:MID, lineSpacing:15 }));
 }
 

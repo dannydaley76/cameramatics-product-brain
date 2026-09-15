@@ -103,8 +103,8 @@ const A = (label, cond, extra='') => console.log((cond?'PASS  ':'FAIL  ')+label+
   await load();
   await p.locator('.card',{hasText:'closed unreviewed last week'}).click();
   const closed = await body();
-  A('F9 2 Sept expired', /Tuesday 2 September[\s\S]*?no longer available/.test(closed));
-  A('F9 4 Sept still available', /Thursday 4 September[\s\S]*?still available/.test(closed));
+  A('F9 1 Sept expired', /Tuesday 1 September[\s\S]*?no longer available/.test(closed));
+  A('F9 3 Sept still available', /Thursday 3 September[\s\S]*?still available/.test(closed));
 
   // F10 — no "recorded" placeholders on closed events
   await p.locator('.card',{hasText:'Swords Road'}).click();

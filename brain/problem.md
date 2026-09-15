@@ -33,7 +33,7 @@ churn in an afternoon. The device is technically correct
 and practically overwhelming. A 100-vehicle fleet generates somewhere between 50
 and 450 detectable events a day at default sensitivity ([[A-02]]) — most of them
 real (the van did brake hard) and irrelevant (a cyclist swerved out). The
-manager logs in, sees 340 events, reviews six, and stops logging in. The
+manager logs in, sees several hundred, opens a handful, and stops logging in. The
 capability is dead inside sixty days and the renewal conversation is awkward.
 
 Detection accuracy is not what saves that rollout. Nothing in the event feed
