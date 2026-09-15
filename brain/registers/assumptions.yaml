@@ -462,3 +462,25 @@ assumptions:
     source: Stated assumption; the brief asks for phasing that reflects capacity and we have none.
     risks: [R-05]
     questions: [Q-03]
+
+  - id: A-26
+    statement: >
+      The device can read wiper and lights state from the vehicle bus on a
+      material share of the installed base. That needs an OBD or FMS harness and
+      a decoded parameter set that varies by manufacturer, and a good deal of
+      retrofit fitment is camera-and-power only.
+    confidence: low
+    impact: low
+    if_wrong: >
+      Those two signals drop out of the evidence panel on those vehicles and
+      nothing else changes. The panel already says so when a device cannot flag
+      objects ahead, and would do the same here. No grading rule depends on them.
+    validate: >
+      Ask what share of installs have a bus connection, by device generation and
+      by fitment type.
+    source: >
+      Stated assumption. Registered 2026-09-15 after a reviewer pointed out that
+      the evidence panel lists wipers and lights as though they were free, when
+      they are the only signals in it that come from the vehicle rather than from
+      the device.
+    questions: [Q-03]

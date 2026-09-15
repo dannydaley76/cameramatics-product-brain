@@ -11,12 +11,13 @@
  */
 
 const { chromium } = require('playwright');
+const PAGE = 'file://' + require('path').resolve(__dirname, '..', 'index.html');
 const A = (label, cond, extra='') => console.log((cond?'PASS  ':'FAIL  ')+label+(extra?' :: '+extra:''));
 (async () => {
   const b = await chromium.launch();
   const p = await b.newPage({ viewport:{width:1200,height:1500} });
   const errs=[]; p.on('pageerror',e=>errs.push(e.message));
-  const load = async () => { await p.goto('file:///home/claude/prototype/index.html'); };
+  const load = async () => { await p.goto('file://' + require('path').resolve(__dirname, '../index.html') + ''); };
   const T = async s => (await p.locator(s).first().innerText()).replace(/\s+/g,' ');
   const body = () => p.locator('#screen').innerText();
   await load();

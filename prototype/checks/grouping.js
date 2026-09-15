@@ -11,11 +11,12 @@
  */
 
 const { chromium } = require('playwright');
+const PAGE = 'file://' + require('path').resolve(__dirname, '..', 'index.html');
 const A=(l,c,x='')=>console.log((c?'PASS  ':'FAIL  ')+l+(x?' :: '+x:''));
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({viewport:{width:1200,height:1500}});
   const errs=[]; p.on('pageerror',e=>errs.push(e.message));
-  await p.goto('file:///home/claude/prototype/index.html');
+  await p.goto('file://' + require('path').resolve(__dirname, '../index.html') + '');
   const T=async s=>(await p.locator(s).first().innerText()).replace(/\s+/g,' ');
 
   await p.locator('.card',{hasText:'one trip'}).click();

@@ -34,7 +34,8 @@ list honestly.**
 - Detect the v1 event set **on-device, in real time**, with no cloud round trip.
 - **Attach every available signal to every event, whichever one triggered it**
   ([[ADR-0012]]): speed, the g-force trace, GPS, time of day, whether wipers or
-  lights are on, driver-facing inference, and — where the device supports it —
+  lights are on ([[A-26]]: on a lot of retrofit fitment there is no vehicle bus
+  connection, so that pair may simply be absent), driver-facing inference, and — where the device supports it —
   forward-facing detection of vulnerable road users and of a vehicle ahead. The
   trigger decides that an event exists; it does not decide what evidence the
   event carries. This is what lets the cloud rank rather than guess, and what
