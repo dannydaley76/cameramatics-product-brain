@@ -26,7 +26,7 @@ check it.
 |---|---|
 | [`brain/annotated-brief.md`](brain/annotated-brief.md) | What your brief says, implies, and leaves out — first read and agent additions marked separately |
 | [`brain/problem.md`](brain/problem.md) | The problem, and the failure mode the whole design aims at |
-| [`brain/judgement-log.md`](brain/judgement-log.md) | Twenty-four decisions: what the agent proposed, what I decided, every time I overruled it, and the one entry still marked `proposed` |
+| [`brain/judgement-log.md`](brain/judgement-log.md) | Twenty-eight decisions: what the agent proposed, what I decided, every time I overruled it, and the one entry still marked `proposed` |
 | [`reviews/`](reviews/) | The adversarial pass. Verdict: **Not yet.** Read it before you read anything else here charitably |
 | [`brain/canon.md`](brain/canon.md) | The thirty rules this brain does not break. The most opinionated file here |
 | [`docs/traceability.md`](docs/traceability.md) | Generated. Metric → stories → risks → phase, on one page |
@@ -63,7 +63,7 @@ The honest split, from the record in
 [`brain/judgement-log.md`](brain/judgement-log.md) rather than from memory:
 agents generated the option sets, wrote the prose, held the cross-references
 consistent, and enforced the schema. Every framing choice and every scope cut was
-mine, including seven reversals of the agent's own recommendation — and the
+mine, including eight reversals of the agent's own recommendation — and the
 reversals were the consequential ones.
 
 Three of those reversals fixed something that was wrong rather than merely
@@ -96,7 +96,7 @@ finished.
 - [x] Annotated brief, company analysis, problem, JTBD, personas (manager, driver, operator), success criteria
 - [x] Business case — submission section 1
 - [x] Stack outline — section 2
-- [x] PRD, 13 decision records, 15 stories across 4 epics — section 3
+- [x] PRD, 15 decision records, 15 stories across 4 epics — section 3
 - [x] Skills (9), adversarial reviewer, division of labour
 - [x] Validator (`scripts/validate.py`) and generated traceability matrix
 - [x] CI workflow (`.github/workflows/validate.yml`) — runs the validator and fails on a stale traceability matrix

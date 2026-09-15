@@ -48,6 +48,12 @@ metrics:
     caveats: Regression to the mean will flatter this; needs an uncoached control cohort to be credible.
     counters: [M-11, M-12]
 
+    caveats: >
+      Computed on a population that includes events nobody reviewed (ADR-0015).
+      Medium and low band events reach the driver record without a human ever
+      classifying them, so this number describes behaviour rather than fault.
+      Report it with the reviewed share beside it.
+
   - id: M-04
     layer: behaviour
     audience: fleet operator

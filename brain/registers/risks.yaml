@@ -245,3 +245,24 @@ risks:
     metrics: [M-13, M-12]
     owner: product
 
+
+  - id: R-14
+    category: adoption
+    title: A driver is judged on events nobody looked at
+    detail: >
+      Medium and low band events never reach a manager by design, so nobody
+      classifies them, and under ADR-0007 they contribute to the driver record
+      anyway - 93% of a week in the prototype's own fixture. An unclassified
+      event is treated as the driver's doing by default, which is the assumption
+      of fault canon C-07 exists to prevent. Neither of the first two adversarial
+      passes caught this; a reviewer costing the fixture data did.
+    likelihood: high
+    impact: high
+    mitigation: >
+      ADR-0015: nothing unreviewed is ever used in a conversation with a driver.
+      The evidence half of the record carries only classified events; the trend
+      half carries everything and states how much of it nobody reviewed. The
+      downgrade audit is the only sampling of that unreviewed population, which
+      raises what ADR-0013's deferred cadence costs.
+    metrics: [M-03, M-04, M-11]
+    owner: product

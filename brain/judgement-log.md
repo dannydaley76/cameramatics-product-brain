@@ -739,9 +739,47 @@ made that argument once in a decision the agent drafted.*
 
 ---
 
+## J-28 — The driver record was judging people on events nobody read
+
+**Found by:** the fourth adversarial pass, run against the submission deck. It
+costed the prototype's own fixture data and noticed that 150 events of 161 reach
+the driver record without a human ever classifying them, because medium and low
+band events never reach a manager by design. [[ADR-0007]] says every event
+contributes to the record; [[ADR-0014]] says no outcome is recorded until a
+person has classified it. Both cannot be true, and the gap falls on the driver.
+
+**Agent produced:** four options, ranging from keeping unreviewed events off the
+record entirely to disclosing the split and changing nothing.
+
+**Decided:** split what the record is for. Only classified events go in the half
+a manager would show a driver. Everything goes in the trend, and the trend says
+how much of it nobody reviewed. `decided_by: danny` · `status: ratified` ·
+[[ADR-0015]]
+
+**Why this one is worth reading twice.** Two earlier adversarial passes went
+over these documents and missed it, and so did I. It is not a contradiction you
+can find by reading [[ADR-0007]] and [[ADR-0014]] side by side, because on paper
+they agree: every event is retained, and every event a manager sees gets
+classified. You only see it when you count what a real week looks like, which is
+what the fixture data made possible and what a written requirement never would
+have. The prototype earned its place twice over: once for finding that it was
+fabricating recognition records, once for this.
+
+**The class of error is the one this log keeps finding.** Not a bad decision.
+Two good decisions whose overlap nobody checked, each written by an agent that
+had the other one in context and did not notice. Consistency between documents
+is the thing agents are supposed to be good at, and it is the thing that failed
+here, in the place where it protects a person rather than a schema.
+
+*Class of error: two correct decisions, taken three days apart, whose
+intersection was never examined. The validator checks that links resolve. It
+cannot check that two rules can both be obeyed at once.*
+
+---
+
 ## Where the split actually falls
 
-Twenty-seven entries. The agent generated the option sets, wrote the prose, held
+Twenty-eight entries. The agent generated the option sets, wrote the prose, held
 roughly forty cross-referenced IDs consistent and enforced the schema. Eight
 entries are marked *(agent overruled)* — J-04, J-05, J-06, J-10, J-14, J-19,
 J-22, J-27. Beyond those: J-16 reframes a model the agent had already built, J-13 is a
