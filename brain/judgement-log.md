@@ -704,26 +704,30 @@ from anywhere a validator looks.*
 
 **Found:** rereading the prototype after J-26, every event in it was British.
 Speed limits in mph, Coventry and Rugby street names, UK registration plates.
-CameraMatics is headquartered in Dublin and the reader of this submission works
-there. Irish limits are in km/h.
+Not one line of it was a decision. It was a default.
 
-**Changed:** the fixture is now a 42-vehicle Dublin fleet. Limits in km/h,
-Dublin and Tallaght roads, Irish plates. `decided_by: danny` · the 43 prototype
-assertions were updated with it and all still pass.
+**Changed:** the fixture is now a 42-vehicle fleet running out of Dublin.
+Limits in km/h, Dublin and Tallaght roads, Irish plates. `decided_by: danny` ·
+the 43 prototype assertions were updated with it and all still pass.
 
-**Why it is in this log.** Nothing was factually wrong once J-26 was fixed. The
-UK limits quoted after the correction are real UK limits. The defect is that
-neither I nor any agent asked which market the reader is in, and the default
-that filled the gap was the one the model reaches for. A fixture is a claim
-about who this is for, and this one quietly said *not you*.
+**Why it is in this log, and the correction to my first reading of it.** My
+first instinct was that British was the wrong answer, because CameraMatics is
+headquartered in Dublin. That was wrong too, and wrong in the same way. They
+have offices in London and Darlington, Royal Mail is a named customer, and in
+June they raised up to €49m to scale into mainland Europe and the United
+States ([[company-analysis]]). A British fixture is not the wrong audience for
+them. Neither is an Irish one.
 
-It also undercuts the thing this deck says about itself. A submission whose
-showpiece is catching an invented speed limit, handed to an Irish company with
-a British speed limit on every screen, argues the opposite of what it intends.
+The defect is that nobody asked. An unexamined default filled a gap that
+should have been a question, and the question has no single-country answer:
+this product carries km/h and mph at once, and the units on a screen are a
+market decision rather than a detail. Swapping one default for another would
+have left the same hole.
 
-*Class of error: an unexamined default standing in for a question nobody asked.
-Not a wrong fact, a wrong audience. The validator cannot see this, and neither
-can an adversarial pass that is only told to check whether claims hold.*
+*Class of error: an unexamined default standing in for a question nobody asked
+— and then, on the first correction, a second default standing in for the same
+question. The validator cannot see either. Nor can an adversarial pass that is
+only told to check whether claims hold, because both defaults hold fine.*
 
 ---
 
