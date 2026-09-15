@@ -43,6 +43,78 @@ has been smoothed into a single voice; where the two reads differ, both are here
 Roughly 120 words to design a capability across three layers of a stack. The
 brevity is not an oversight — what gets read into the gaps is most of the test.
 
+## What the brief asks for, verbatim *(added 2026-09-15)*
+
+**Recorded late, and that is worth saying.** Until 15 September this file held
+only the scenario above. Everything below was in the brief from the start and
+was worked from second-hand. Nothing in the repo contradicts it — but four days
+of work were checked against a partial transcription, which is exactly the
+failure the registers exist to prevent, one level up.
+
+### Time and timeline
+
+> "We have designed this exercise to take around **4 hours of focused effort**…
+> We value clarity and judgment over volume: **a tight, well-reasoned submission
+> will score better than an exhaustive one**."
+
+### What to produce — "please cover all five of the following"
+
+> **1. Product brief / business case (about one page):** frame the problem and
+> the fleet manager's job-to-be-done, explain why it matters commercially, and
+> describe how you would measure success.
+>
+> **2. Solution outline across the stack:** for each layer — in-cab
+> device/firmware, cloud platform, and web portal — set out what it needs to do,
+> the key constraints, dependencies and risks, and the main decisions or
+> trade-offs you would make. Bullet-level depth is fine; we are looking for your
+> fluency across the whole stack.
+>
+> **3. Detailed requirements for the portal experience (go deep here):** write
+> implementation-ready user stories with acceptance criteria for the fleet
+> manager's review-and-coaching experience, supported by a couple of rough
+> wireframes or sketches. Low-fidelity or hand-drawn is completely fine.
+>
+> **4. Prioritisation & phasing:** define what you would include in the first
+> shippable version versus later, and why — reflecting **engineering capacity**,
+> lead times, and the dependencies across the stack.
+>
+> **5. Risks, assumptions & open questions:** capture the assumptions you have
+> made, the main risks, and what you would want to validate with customers and
+> engineering before committing to build.
+
+> "The guidance in each tells you where we want depth and where a lighter touch
+> is fine — **matching your effort to what matters is part of the exercise**."
+
+### Working with AI
+
+> "Use whatever tools you normally work with, including AI assistants. That
+> reflects how we want our product function to operate, and **judicious use of AI
+> is a genuine plus**. We would ask you to include **a short note** on where and
+> how you used AI in this exercise, and **what you added, changed or discarded**."
+
+### Format and guidance
+
+> "Use any format you like… **State any assumptions you make.** You will not have
+> all the context an insider would, and **how you handle that is part of the
+> exercise**… **Put depth where it counts (the portal requirements)** and keep
+> the rest proportionate."
+
+### What this changes
+
+Three things, and the first two are corrections rather than additions.
+
+1. **Proportion is being marked.** "Matching your effort to what matters is part
+   of the exercise", and the AI question asks for a *short note*. The submission
+   has to put its weight on section 3 and keep the AI account tight, however
+   interesting the AI account is.
+2. **Phasing owes an answer on engineering capacity**, which [[phasing]] does
+   not currently give — it covers lead times and dependencies and stops there.
+3. **The approach is vindicated on its central bet.** "State any assumptions you
+   make… how you handle that is part of the exercise" is the register, and
+   "what you added, changed or discarded" is the shape of [[judgement-log]]. Both
+   were built before this section was recorded, which is luck rather than
+   judgement, and is the reason to record the source properly next time.
+
 ## Stated, and therefore not up for negotiation *(DD)*
 
 1. **The primary user is the fleet manager.** Named explicitly, twice.
