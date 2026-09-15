@@ -26,7 +26,7 @@ check it.
 |---|---|
 | [`brain/annotated-brief.md`](brain/annotated-brief.md) | What your brief says, implies, and leaves out — first read and agent additions marked separately |
 | [`brain/problem.md`](brain/problem.md) | The problem, and the failure mode the whole design aims at |
-| [`brain/judgement-log.md`](brain/judgement-log.md) | Twenty-eight decisions: what the agent proposed, what I decided, every time I overruled it, and the one entry still marked `proposed` |
+| [`brain/judgement-log.md`](brain/judgement-log.md) | Twenty-nine decisions: what the agent proposed, what I decided, every time I overruled it, and the one entry still marked `proposed` |
 | [`reviews/`](reviews/) | The adversarial pass. Verdict: **Not yet.** Read it before you read anything else here charitably |
 | [`brain/canon.md`](brain/canon.md) | The thirty rules this brain does not break. The most opinionated file here |
 | [`docs/traceability.md`](docs/traceability.md) | Generated. Metric → stories → risks → phase, on one page |
@@ -92,7 +92,7 @@ for exactly that.
 Honest status, per canon C-24 — an unfinished artefact does not get to look
 finished.
 
-- [x] Canon (30 rules), registers — 25 assumptions, 17 metrics, 13 risks, 10 open questions
+- [x] Canon (30 rules), registers — 26 assumptions, 17 metrics, 15 risks, 10 open questions
 - [x] Annotated brief, company analysis, problem, JTBD, personas (manager, driver, operator), success criteria
 - [x] Business case — submission section 1
 - [x] Stack outline — section 2

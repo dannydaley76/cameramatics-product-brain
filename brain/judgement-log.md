@@ -700,6 +700,33 @@ from anywhere a validator looks.*
 
 ---
 
+## J-29 — The whole fixture was in the wrong country *(human catch, on reread)*
+
+**Found:** rereading the prototype after J-26, every event in it was British.
+Speed limits in mph, Coventry and Rugby street names, UK registration plates.
+CameraMatics is headquartered in Dublin and the reader of this submission works
+there. Irish limits are in km/h.
+
+**Changed:** the fixture is now a 42-vehicle Dublin fleet. Limits in km/h,
+Dublin and Tallaght roads, Irish plates. `decided_by: danny` · the 43 prototype
+assertions were updated with it and all still pass.
+
+**Why it is in this log.** Nothing was factually wrong once J-26 was fixed. The
+UK limits quoted after the correction are real UK limits. The defect is that
+neither I nor any agent asked which market the reader is in, and the default
+that filled the gap was the one the model reaches for. A fixture is a claim
+about who this is for, and this one quietly said *not you*.
+
+It also undercuts the thing this deck says about itself. A submission whose
+showpiece is catching an invented speed limit, handed to an Irish company with
+a British speed limit on every screen, argues the opposite of what it intends.
+
+*Class of error: an unexamined default standing in for a question nobody asked.
+Not a wrong fact, a wrong audience. The validator cannot see this, and neither
+can an adversarial pass that is only told to check whether claims hold.*
+
+---
+
 ## J-27 — Friction on neutral, rejected *(agent overruled)*
 
 **Agent proposed:** requiring a typed reason before an event can be classified
@@ -779,7 +806,7 @@ cannot check that two rules can both be obeyed at once.*
 
 ## Where the split actually falls
 
-Twenty-eight entries. The agent generated the option sets, wrote the prose, held
+Twenty-nine entries. The agent generated the option sets, wrote the prose, held
 roughly forty cross-referenced IDs consistent and enforced the schema. Eight
 entries are marked *(agent overruled)* — J-04, J-05, J-06, J-10, J-14, J-19,
 J-22, J-27. Beyond those: J-16 reframes a model the agent had already built, J-13 is a

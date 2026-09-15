@@ -266,3 +266,28 @@ risks:
       raises what ADR-0013's deferred cadence costs.
     metrics: [M-03, M-04, M-11]
     owner: product
+
+  - id: R-15
+    category: quality
+    title: Neutral becomes the cheapest way to clear the set
+    detail: >
+      Classifying an event as not the driver's doing is the only one of the
+      three labels that needs no clip and opens no conversation, so it is the
+      fastest click on the screen. A manager under time pressure can empty the
+      week honestly in form and dishonestly in substance, and nobody goes
+      looking for conversations that never happened. ADR-0014 rejected forcing
+      a written reason on the grounds that it buys compliance text rather than
+      judgement, which was the right call and leaves this uncovered.
+      Found by a fresh reviewer of the submission deck, not by the three passes
+      over the work itself.
+    likelihood: medium
+    impact: high
+    mitigation: >
+      Detect rather than obstruct. M-16 already tracks the dismissal rate per
+      judgement; the same shape applied to the neutral label gives a per-account
+      and per-manager rate with a visible band, surfaced to us and not to the
+      customer. A manager whose neutral rate runs well above their peers is a
+      conversation for the account team, not a blocked button. The downgrade
+      audit (ADR-0013) samples the same population from the other end.
+    metrics: [M-09, M-14]
+    owner: product

@@ -27,10 +27,10 @@ const A = (label, cond, extra='') => console.log((cond?'PASS  ':'FAIL  ')+label+
   A('F12 severity order (critical first, group last-ish)', order[0].includes('Hard braking'));
   const lines = await p.locator('#screen .card').allInnerTexts();
   A('F12 E-127 (0.83g) above E-121 (0.71g)',
-     lines.findIndex(l=>l.includes('Mill Lane')) < lines.findIndex(l=>l.includes('Coldharbour')));
+     lines.findIndex(l=>l.includes('Malahide')) < lines.findIndex(l=>l.includes('Belgard')));
 
   // F5 — equal button weight, one click per classification
-  await p.locator('.card',{hasText:'Coldharbour'}).click();
+  await p.locator('.card',{hasText:'Belgard'}).click();
   const btns = p.locator('button.act[data-act^="choose"]');
   const hs = [];
   for (const b2 of await btns.all()) hs.push((await b2.boundingBox()).height);
@@ -40,24 +40,24 @@ const A = (label, cond, extra='') => console.log((cond?'PASS  ':'FAIL  ')+label+
 
   // F1 — recognition text comes from the event
   await load();
-  await p.locator('.card',{hasText:'Farnham'}).click();          // E-150, Joe Mensah, proposed neutral
+  await p.locator('.card',{hasText:'Clonshaugh'}).click();          // E-150, Joe Mensah, proposed neutral
   await p.locator('button.act',{hasText:'Play clip'}).click();
   await p.locator('button.act[data-act="chooseCredit"]').click();
   const joe = await body();
-  A('F1 Joe’s recognition is not the Mill Lane string', !joe.includes('Mill Lane'));
-  A('F1 Joe’s recognition names his own event', joe.includes('Farnham Road'));
+  A('F1 Joe’s recognition is not the Mill Lane string', !joe.includes('Malahide'));
+  A('F1 Joe’s recognition names his own event', joe.includes('Clonshaugh Road'));
   A('F1 human-spotted credit marked as such', joe.includes('spotted by the manager'));
 
   // credit gated on watching
   await load();
-  await p.locator('.card',{hasText:'Farnham'}).click();
+  await p.locator('.card',{hasText:'Clonshaugh'}).click();
   A('F5 credit disabled before the clip is played',
      await p.locator('button.act[data-act="chooseCredit"]').isDisabled());
   A('neutral needs no clip', !(await p.locator('button.act[data-act="chooseNeutral"]').isDisabled()));
 
   // F2 — coaching needs all three required fields
   await load();
-  await p.locator('.card',{hasText:'Coldharbour'}).click();
+  await p.locator('.card',{hasText:'Belgard'}).click();
   await p.locator('button.act',{hasText:'Play clip'}).click();
   await p.locator('button.act[data-act="chooseRisk"]').click();
   await p.locator('button.act',{hasText:'Log coaching'}).click();
@@ -75,7 +75,7 @@ const A = (label, cond, extra='') => console.log((cond?'PASS  ':'FAIL  ')+label+
   await load();
   await p.locator('.card',{hasText:'one trip'}).click();
   A('F13 group lists all five openably', await p.locator('#screen .card').count()===5);
-  await p.fill('#br','Resurfacing on Ashby Road with temporary signals the whole length. Same trip, same cause.');
+  await p.fill('#br','Resurfacing on Ballymun Road with temporary signals the whole length. Same trip, same cause.');
   await p.locator('#bgo').click();
   const notes1 = await T('#readout');
   A('F3 sweep adds no confirmations', /Times you agreed with the system\s+M-11\s+0 of 0/.test(notes1));
@@ -86,14 +86,14 @@ const A = (label, cond, extra='') => console.log((cond?'PASS  ':'FAIL  ')+label+
 
   // F4 — unclassify removes this event's entry, not the last one
   await load();
-  await p.locator('.card',{hasText:'Coldharbour'}).click();
+  await p.locator('.card',{hasText:'Belgard'}).click();
   await p.locator('button.act[data-act="chooseRisk"]').click();          // matches proposal
   await p.locator('button.link',{hasText:'Review set'}).click();
-  await p.locator('.card',{hasText:'Ladywell'}).click();
+  await p.locator('.card',{hasText:'Kylemore'}).click();
   await p.locator('button.act',{hasText:'Play clip'}).click();
   await p.locator('button.act[data-act="chooseCredit"]').click();        // changed from risk
   await p.locator('button.link',{hasText:'Review set'}).click();
-  await p.locator('.card',{hasText:'Coldharbour'}).click();
+  await p.locator('.card',{hasText:'Belgard'}).click();
   await p.locator('button.link',{hasText:'Change the classification'}).click();
   await p.locator('button.act[data-act="chooseRisk"]').click();
   const notes2 = await T('#readout');
@@ -107,21 +107,21 @@ const A = (label, cond, extra='') => console.log((cond?'PASS  ':'FAIL  ')+label+
   A('F9 4 Sept still available', /Thursday 4 September[\s\S]*?still available/.test(closed));
 
   // F10 — no "recorded" placeholders on closed events
-  await p.locator('.card',{hasText:'Brook Street'}).click();
+  await p.locator('.card',{hasText:'Swords Road'}).click();
   const sig = await T('.signals');
   A('F10 closed event carries real signals', !/\brecorded\b/.test(sig) && sig.includes('0.73 g'), sig.slice(0,80));
   A('F10 no invented range figure anywhere', !(await p.content()).includes('60 m'));
 
   // F11 — no-forward-detection device still has footage, copy is coherent
   await load();
-  await p.locator('.card',{hasText:'Ladywell'}).click();
+  await p.locator('.card',{hasText:'Kylemore'}).click();
   const alan = await body();
   A('F11 device records the road but cannot flag objects', alan.includes('object detection is not supported'));
   A('F11 classification reason matches', alan.includes('cannot flag what is in it'));
 
   // F6/F7 — fetching copy carries US-007's exact clause and no push/fetch contradiction
   await load();
-  await p.locator('.card',{hasText:'M40'}).click();
+  await p.locator('.card',{hasText:'M50'}).click();
   const f = await T('.footage');
   A('F6 exact US-007 fetching string', f.includes('Footage is on its way. This page will update when it arrives. You can still dismiss this event.'));
   A('F7 no "requested rather than pushed"', !f.includes('requested rather than pushed'));
