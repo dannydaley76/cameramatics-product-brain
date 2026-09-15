@@ -341,8 +341,10 @@ STATE.seededRecognition = {
   "Priya Raman": [{ text: "Thursday 21 August, 16:40, Bilton Road. Waited behind a cyclist on the narrow stretch rather than squeezing past.", system: true }]
 };
 STATE.seededNeutral = { "Joe Mensah": 2, "Priya Raman": 1 };
-STATE.unreviewed = { "Marek Nowak": 47, "Dee Fitzgerald": 31, "Priya Raman": 22,
-                     "Joe Mensah": 38, "Alan Reid": 29, "Tomasz Bielik": 44 };
+// Medium and low events this week, per driver. These six carry 61 of the
+// fleet's 150; the other 36 vehicles carry the rest. Nobody opened any of them.
+STATE.unreviewed = { "Marek Nowak": 14, "Dee Fitzgerald": 11, "Priya Raman": 6,
+                     "Joe Mensah": 9, "Alan Reid": 8, "Tomasz Bielik": 13 };
 
 /* ------------------------------------------------------------ derivations */
 
@@ -718,7 +720,7 @@ function viewDriver(name) {
 
   let h = '<p class="crumb"><button class="link" data-go="set">Review set</button></p>';
   h += "<h2>" + esc(name) + "</h2>";
-  h += '<p class="sub">What happened, what was said, and what they got right &mdash; on one page.</p>';
+  h += '<p class="sub">What happened, what was said, and what they got right, on one page.</p>';
   const unrev = STATE.unreviewed[name] || 0;
   h += "<h3>What you can show " + esc(first) + "</h3>";
   h += '<div class="block"><p>' + thisWeek + " event" + (thisWeek === 1 ? "" : "s")
