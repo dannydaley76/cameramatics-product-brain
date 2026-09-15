@@ -181,19 +181,61 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
 {
   const s = light("The manager's week, and everything underneath it", "The portal, where the depth goes");
   s.addText([
-    { text:"Read left to right: what the manager does. Underneath: the story that makes it work. Rows are releases. " },
+    { text:"Read left to right: what the manager does. Underneath: the story or decision that makes it work. Rows are releases, and " },
+    { text:"every card is a link", options:{ bold:true } },
+    { text:".   " },
     link("Open the live story map", MAP)
-  ], txt({ x:M, y:1.78, w:11.86, h:0.34, fontSize:12.5, color:MID }));
-  const MX = M, MY = 2.2, MW = W - 2*M, MH = Math.round((MW/ar("storymap"))*100)/100;
-  img(s, "storymap", MX, MY, MW);
-  // one invisible, hyperlinked hotspot per card, sized from the card's real
-  // position in the captured page (hotspots.json, regenerated with the image)
-  HOTSPOTS.forEach(h => {
-    s.addImage({ path:S+"clear.png", hyperlink:{ url:h.href, tooltip:h.tip },
-      x: Math.round((MX + h.fx*MW)*1000)/1000, y: Math.round((MY + h.fy*MH)*1000)/1000,
-      w: Math.round((h.fw*MW)*1000)/1000,      h: Math.round((h.fh*MH)*1000)/1000 });
+  ], txt({ x:M, y:1.74, w:11.86, h:0.3, fontSize:12, color:MID }));
+
+  const MAP_ = require("./storymap.json");
+  const RAIL = 0.88, GX = M + RAIL, COLW = (W - M - GX) / 6, CW = COLW - 0.07;
+  const CH = 0.52, CG = 0.03;
+
+  // activity backbone
+  MAP_.cols.forEach((c,i)=>{
+    const x = GX + i*COLW;
+    s.addShape(p.ShapeType.rect, { x, y:1.98, w:CW, h:0.46,
+      fill:{ color:INK }, line:{ color:INK, width:0.75 } });
+    s.addText(c.t, txt({ x:x+0.1, y:2.06, w:CW-0.2, h:0.34, fontSize:8.6,
+      bold:true, color:PAPER, fontFace:H, lineSpacing:10.5 }));
   });
-  foot(s, "Every card here is a link. The first release is a complete walk across the whole row. The bottom row is not a list of things nobody got to: every one is a decision with a record behind it.", 6.8);
+
+  // release rows
+  const rowTop = [2.52, 4.88, 5.56];
+  const RAIL_SUB = ["first shippable,\n14 stories", "opens at four\nweeks live", "each one a\nrecorded decision"];
+  MAP_.rows.forEach((r,ri)=>{
+    const depth = Math.max(1, ...r.cells.map(c=>c.length));
+    const yTop = rowTop[ri], yH = depth*CH + (depth-1)*CG;
+    if (ri % 2 === 1) s.addShape(p.ShapeType.rect,
+      { x:M, y:yTop-0.07, w:W-2*M, h:yH+0.14,
+        fill:{ color:"F6F7F8" }, line:{ color:"F6F7F8", width:0.75 } });
+    s.addText(r.label[0], txt({ x:M, y:yTop, w:RAIL-0.1, h:0.24,
+      fontSize:11, bold:true, fontFace:H, color: ri===0?ACC:INK }));
+    s.addText(RAIL_SUB[ri], txt({ x:M, y:yTop+0.23, w:RAIL-0.06, h:0.44,
+      fontSize:7, color:FAINT, lineSpacing:8.6 }));
+
+    r.cells.forEach((cards,ci)=>{
+      const x = GX + ci*COLW;
+      if (!cards.length) {
+        s.addText("-", txt({ x:x+0.1, y:yTop+0.06, w:CW, h:0.2, fontSize:9, color:"CDD2D7" }));
+        return;
+      }
+      cards.forEach((k,ki)=>{
+        const y = yTop + ki*(CH+CG);
+        s.addShape(p.ShapeType.rect, { x, y, w:CW, h:CH,
+          fill:{ color: k.plat ? MIST : PAPER }, line:{ color:LINE, width:0.75 } });
+        s.addShape(p.ShapeType.rect, { x, y, w:0.035, h:CH,
+          fill:{ color: k.plat ? FAINT : ACC }, line:{ width:0 } });
+        s.addText([
+          { text:k.id+"\n", options:{ fontSize:6.6, bold:true, color:FAINT,
+              underline:false, hyperlink:{ url:k.href, tooltip:k.t }, breakLine:true } },
+          { text:k.t, options:{ fontSize:8, bold:true, color:INK,
+              underline:false, hyperlink:{ url:k.href, tooltip:k.t } } }
+        ], txt({ x:x+0.1, y:y+0.06, w:CW-0.14, h:CH-0.1, lineSpacing:9.8 }));
+      });
+    });
+  });
+  foot(s, "The first release is a complete walk across the whole row. The bottom row is not a list of things nobody got to: every one is a decision with a record behind it. The live map carries the sizing and the rationale on each card.", 6.72);
 }
 
 /* ═══════════════════════════════════  8  the queue */
@@ -481,4 +523,9 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
     txt({ x:8.9, y:6.06, w:3.72, h:0.7, fontSize:11, color:"AAB2BA", align:"right", lineSpacing:15 }));
 }
 
-p.writeFile({ fileName:"/home/claude/deck/cameramatics-danny-daley.pptx" }).then(f=>console.log("written:",f));
+const OUT = "/home/claude/deck/cameramatics-danny-daley.pptx";
+p.writeFile({ fileName:OUT }).then(f=>{
+  // pptxgenjs underlines every hyperlink run; the story map has 48 of them
+  require("child_process").execSync(`python3 ${__dirname}/delink.py ${f} 7`, { stdio:"inherit" });
+  console.log("written:", f);
+});
