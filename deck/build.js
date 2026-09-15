@@ -13,6 +13,9 @@ const INK="2B3038", DEEP="1E232A", PAPER="FFFFFF", MIST="F2F3F4",
 const H="Cambria", B="Calibri";
 const REPO = "https://github.com/dannydaley76/cameramatics-product-brain";
 const HOTSPOTS = require("./hotspots.json");
+const PAGES = "https://dannydaley76.github.io/cameramatics-product-brain";
+const PROTO = PAGES + "/prototype/";
+const MAP   = PAGES + "/storymap/";
 
 const p = new pptxgen();
 p.layout = "LAYOUT_WIDE";
@@ -85,30 +88,30 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
 /* ═══════════════════════════════════  3  the problem */
 {
   const s = light("The firehose, and the six events", "The problem");
-  s.addText("Detection is table stakes now, and getting cheaper. CameraMatics already spots fatigue, distraction, phone use, tailgating and vulnerable road users. What is missing is deciding which of those deserves a person, and proving the conversation changed anything.",
+  s.addText("Detection is table stakes now, and getting cheaper. CameraMatics already spots fatigue, distraction, phone use, tailgating and vulnerable road users, and already scores drivers on those events. What is missing is deciding which event deserves a person this week, and proving the conversation changed anything.",
     txt({ x:M, y:1.84, w:7.5, h:1.1, fontSize:14, color:MID, lineSpacing:19 }));
   s.addText("The manager logs in, sees hundreds, works through a few, and stops logging in. The product is working exactly as built. That is the problem.",
     txt({ x:M, y:3.06, w:7.5, h:0.8, fontSize:16, bold:true, fontFace:H, lineSpacing:23 }));
   s.addText("So the thing to design is the manager's week, not the individual event.",
     txt({ x:M, y:4.14, w:7.5, h:0.6, fontSize:14.5, color:ACC, lineSpacing:20 }));
 
-  card(s, M, 5.0, 7.5, 1.72, MIST);
-  s.addText("The question I would open the next conversation with", txt({ x:M+0.3, y:5.2, w:6.9, h:0.3, fontSize:13, bold:true, fontFace:H }));
-  s.addText("Does the portal already rank events? I built this from 120 words of brief and your public pages, so I could not tell. If you do rank them and never marketed it, the requirements survive and this framing does not. I would rather put that on the table than find out in the room.",
-    txt({ x:M+0.3, y:5.56, w:6.9, h:1.0, fontSize:12, color:MID, lineSpacing:16 }));
+  card(s, M, 4.98, 7.5, 1.78, MIST);
+  s.addText("What I checked, and what I still cannot tell", txt({ x:M+0.3, y:5.16, w:6.9, h:0.3, fontSize:13, bold:true, fontFace:H }));
+  s.addText("I started by assuming nothing here was scored or prioritised. Your Safety Centre page says otherwise: automated driver scoring from real events, positive feedback as well as negative. So I withdrew half of that assumption. What I could not find anywhere is a ranked set of individual events a manager works through and finishes, with the conversation recorded against the event that prompted it. If that exists and was never marketed, the requirements survive and this framing does not.",
+    txt({ x:M+0.3, y:5.52, w:6.9, h:1.16, fontSize:11.5, color:MID, lineSpacing:15 }));
 
   card(s, 8.6, 1.84, 3.98, 5.02, ACCW);
   s.addText("What this rests on", txt({ x:8.9, y:2.06, w:3.4, h:0.3, fontSize:13.5, bold:true, fontFace:H, color:ACC }));
-  s.addText("Worked out from 120 words of brief and their public product pages. No inside knowledge.",
+  s.addText("From 120 words of brief, their product pages, and the June funding coverage. No inside knowledge.",
     txt({ x:8.9, y:2.42, w:3.4, h:0.5, fontSize:11.5, color:MID, lineSpacing:15 }));
   [["A-02","How many events a vehicle produces a day. Ten times lower and attention is not the scarce thing. Thirty days of data settles it."],
-   ["A-13","That CameraMatics does not already triage events. If they do, the requirements survive and the story collapses."],
+   ["A-13","Narrowed. Driver scoring exists. A ranked, finishable event set with the conversation recorded does not appear to."],
    ["A-20","That collision cost sits with a minority of drivers. The premise of the commercial case."],
-   ["A-01","That the buyer is a 20 to 150 vehicle fleet with no dedicated safety manager. One with a safety manager is a different product."]
+   ["A-01","A 20 to 150 vehicle fleet with no safety manager. Royal Mail and XPO are on your list, so this aims at part of the base."]
   ].forEach(([id,d],i)=>{
-    const y = 3.0 + i*1.0;
+    const y = 2.98 + i*0.98;
     s.addText(id, txt({ x:8.9, y, w:1, h:0.24, fontSize:11, bold:true, color:ACC }));
-    s.addText(d, txt({ x:8.9, y:y+0.24, w:3.4, h:0.68, fontSize:10.5, color:MID, lineSpacing:13 }));
+    s.addText(d, txt({ x:8.9, y:y+0.24, w:3.4, h:0.7, fontSize:10.5, color:MID, lineSpacing:13 }));
   });
 }
 
@@ -118,7 +121,7 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
   s.addText("A business case that only argues the customer's side is a marketing claim, so here are both. The buyer is the fleet operator, who carries the claims bill and signs the renewal. The user is the fleet manager, who does the work.",
     txt({ x:M, y:1.9, w:11.86, h:0.5, fontSize:13, color:MID, lineSpacing:18 }));
   [["For the customer","Total cost of risk","At-fault collisions are the expensive line: repair, third-party liability, vehicle off the road, admin, and the premium consequences. The value is in finding the small number of drivers assumed to carry most of that cost, before the incident rather than after it.","A-20"],
-   ["For CameraMatics","Revenue on an installed base we have already paid for","The cameras are fitted, the vehicles connected, the relationship exists. A safety module priced per vehicle per month is uplift at close to zero acquisition cost. More quietly it is retention: contracts churn when the software goes unused, and a weekly habit is the strongest renewal signal we could build.","A-08"],
+   ["For CameraMatics","Revenue on an installed base we have already paid for","Nearly 1,000 fleet customers and thousands of vehicles, cameras already fitted. A module priced per vehicle per month is uplift at close to zero acquisition cost. More quietly it is retention: contracts churn when the software goes unused, and a weekly habit is the strongest renewal signal we could build.","A-08"],
    ["The upside, not the headline","Insurance","Premium influence depends on an insurer partnership and an agreed evidence standard, and neither is ours to grant. I would carry it as an explicit upside with a named validation step rather than lead with a number I cannot source.","A-06, Q-06"]
   ].forEach(([tag,t,d,a],i)=>{
     const x = M + i*4.02;
@@ -130,7 +133,7 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
   });
   s.addText([
     { text:"How I would size it, and why there is no number here yet. ", options:{ bold:true } },
-    { text:"Revenue is fitted vehicles times price per vehicle per month times attach rate. Payback is one avoided at-fault collision set against the annual cost of the vehicles it took to find it. Not one of those five inputs is knowable from outside the company. I would have all five in week one, and I would rather show the arithmetic with the gaps marked than fill them in with numbers I made up." }
+    { text:"Revenue is fitted vehicles times price per vehicle per month times attach rate. Payback is one avoided at-fault collision set against the annual cost of the vehicles it took to find it. Not one of those five inputs is knowable from outside. I would have all five in week one, and I would rather show the arithmetic with the gaps marked than fill them in with numbers I made up. All of it written against a company that raised up to 49 million in June to scale into North America and mainland Europe, so whatever we build has to work in more than one market." }
   ], txt({ x:M, y:6.0, w:11.86, h:0.9, fontSize:12, color:MID, lineSpacing:16 }));
 }
 
@@ -179,7 +182,7 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
   const s = light("The manager's week, and everything underneath it", "The portal, where the depth goes");
   s.addText([
     { text:"Read left to right: what the manager does. Underneath: the story that makes it work. Rows are releases. " },
-    link("Every card in the live version opens its requirement on GitHub", REPO+"/blob/main/storymap/index.html")
+    link("Open the live story map", MAP)
   ], txt({ x:M, y:1.78, w:11.86, h:0.34, fontSize:12.5, color:MID }));
   const MX = M, MY = 2.2, MW = W - 2*M, MH = Math.round((MW/ar("storymap"))*100)/100;
   img(s, "storymap", MX, MY, MW);
@@ -196,8 +199,10 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
 /* ═══════════════════════════════════  8  the queue */
 {
   const s = light("A set that starts full and can be finished", "Review queue, screen 1 of 4");
-  s.addText("What you are looking at: the manager's whole week, in a working prototype rather than a design. It is grey and plain because what needed proving is how it behaves. The fixture is a 42-vehicle Dublin fleet.",
-    txt({ x:M, y:1.8, w:11.86, h:0.56, fontSize:12.5, color:MID, lineSpacing:17 }));
+  s.addText([
+    { text:"What you are looking at: the manager's whole week, in a working prototype rather than a design. It is grey and plain because what needed proving is how it behaves. The fixture is one customer, a 42-vehicle fleet running out of Dublin.   " },
+    link("Open the prototype and use it", PROTO, { bold:true })
+  ], txt({ x:M, y:1.8, w:11.86, h:0.56, fontSize:12.5, color:MID, lineSpacing:17 }));
   img(s, "set", M, 2.44, 6.3);
   [["Ranked, and it ends","A feed is never finished. A list can be cleared, and I would rather design for the state where somebody is done."],
    ["Nothing is hidden","The band counts sit on the same screen. 150 of the 161 were routed without the manager this week. They are counted, they can all be opened, and slide 11 is about what they are allowed to be used for."],
@@ -207,14 +212,16 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
     s.addText(t, txt({ x:7.4, y, w:5.22, h:0.3, fontSize:13, bold:true, fontFace:H }));
     s.addText(d, txt({ x:7.4, y:y+0.32, w:5.22, h:0.74, fontSize:11.5, color:MID, lineSpacing:15 }));
   });
-  foot(s, "The fixture runs at 161 events across 42 vehicles in a week, which is 0.55 per vehicle per day: the very bottom of the A-02 range, on purpose. Triage that only earns its keep at 450 events a day would not be worth building.", 6.82);
+  foot(s, "The fixture runs at 161 events across 42 vehicles in a week, which is 0.55 per vehicle per day: the very bottom of the A-02 range, on purpose. Triage that only earns its keep at 450 events a day would not be worth building. Limits and units are per market, and a product going to North America has to carry both.", 6.82);
 }
 
 /* ═══════════════════════════════════  9  the event */
 {
   const s = light("Everything the device recorded, on one page", "Event review, screen 2 of 4");
-  s.addText("What you are looking at: the first card from the queue, opened. The evidence is laid out as a plain table above the grading, so the manager can check the reasoning rather than take it on trust. The clip sits at the top because nothing below it should be acted on until it has been watched.",
-    txt({ x:M, y:1.8, w:11.86, h:0.56, fontSize:12.5, color:MID, lineSpacing:17 }));
+  s.addText([
+    { text:"What you are looking at: the first card from the queue, opened. The evidence is a plain table above the grading, so the manager can check the reasoning rather than take it on trust. The clip is at the top because nothing below it should be acted on until it has been watched.   " },
+    link("Open this event yourself", PROTO, { bold:true })
+  ], txt({ x:M, y:1.8, w:11.86, h:0.56, fontSize:12.5, color:MID, lineSpacing:17 }));
   img(s, "event", M, 2.44, 7.1);
   s.addText("The trigger decides that an event exists. It does not decide what evidence the event carries.",
     txt({ x:8.16, y:2.5, w:4.46, h:0.9, fontSize:14, bold:true, fontFace:H, lineSpacing:20 }));
@@ -226,8 +233,10 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
 /* ═══════════════════════════════════ 10  the decision */
 {
   const s = light("The system proposes. The manager decides. Always.", "Event review, screen 3 of 4");
-  s.addText("What you are looking at: the same event, at the moment the manager takes responsibility for it. The system's suggestion is written in the panel above the buttons, not marked on one of them, so nothing is pre-chosen and agreeing costs exactly what disagreeing costs.",
-    txt({ x:M, y:1.8, w:11.86, h:0.56, fontSize:12.5, color:MID, lineSpacing:17 }));
+  s.addText([
+    { text:"What you are looking at: the same event, at the moment the manager takes responsibility for it. The system's suggestion is written in the panel above the buttons, not marked on one of them, so nothing is pre-chosen and agreeing costs exactly what disagreeing costs.   " },
+    link("Click through it yourself", PROTO, { bold:true })
+  ], txt({ x:M, y:1.8, w:11.86, h:0.56, fontSize:12.5, color:MID, lineSpacing:17 }));
   img(s, "choice", M, 2.46, 11.86);
   [["Nothing is pre-selected","Whichever way the system leans, the three buttons look identical and sit in the same order every time."],
    ["Effort matches consequence","Recording something as not the driver's fault needs no clip. Crediting or coaching them does, because those two reach a person."],
@@ -244,8 +253,10 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
 /* ═══════════════════════════════════ 11  the record */
 {
   const s = light("Evidence and trend, kept apart", "Coaching, screen 4 of 4");
-  s.addText("What you are looking at: the record of the driver whose event we just classified, part-way through the week. This is the page a manager would turn round and show them, so every line on it has to be defensible to the person it is about.",
-    txt({ x:M, y:1.8, w:11.86, h:0.56, fontSize:12.5, color:MID, lineSpacing:17 }));
+  s.addText([
+    { text:"What you are looking at: the record of the driver whose event we just classified, part-way through the week. This is the page a manager would turn round and show them, so every line on it has to be defensible to the person it is about.   " },
+    link("Open the record", PROTO, { bold:true })
+  ], txt({ x:M, y:1.8, w:11.86, h:0.56, fontSize:12.5, color:MID, lineSpacing:17 }));
   img(s, "driver", M, 2.44, 7.1);
   [["The flaw this fixes","Two decisions taken three days apart said every event counts towards the driver record, and no outcome is recorded until a human classifies it. Both are right. Together they put 150 of 161 events, unreviewed, onto driver records."],
    ["The top half is evidence","Only events a person opened and labelled. Nothing else appears there, so any of it can be shown to the driver as it stands."],
@@ -388,9 +399,9 @@ const link = (t,url,o) => ({ text:t, options:Object.assign({ hyperlink:{ url }, 
     { text:"Open it:   " , options:{ bold:true, color:INK } },
     link("the repository", REPO),
     { text:"      " },
-    link("the clickable prototype", REPO+"/blob/main/prototype/index.html"),
+    link("the clickable prototype", PROTO),
     { text:"      " },
-    link("the story map", REPO+"/blob/main/storymap/index.html"),
+    link("the story map", MAP),
     { text:"      " },
     link("the validator", REPO+"/blob/main/scripts/validate.py")
   ], txt({ x:M, y:5.9, w:11.86, h:0.36, fontSize:13 }));
