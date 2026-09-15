@@ -227,21 +227,29 @@ assumptions:
       DISCOVERY GATE (pre-interview). The assumption whose falsity destroys the
       framing rather than the requirements. Validate by asking Q-10 out loud.
     statement: >
-      No automated ranking, prioritisation or suppression of events exists. The
-      fleet manager triages by scanning the dashboard and "selects events from
-      which lessons can be learned".
-    confidence: low
-    impact: critical
+      No ranked, finishable set of individual events exists for a manager to
+      work through, and no record of the coaching conversation is held against
+      the event that prompted it. NARROWED 2026-09-15 after reading their
+      Safety Centre page: automated driver scoring from real events does
+      exist, and so does the framing of positive as well as negative feedback,
+      so the original form of this assumption - that nothing is scored or
+      prioritised at all - was wrong and is withdrawn.
+    confidence: medium
+    impact: high
     if_wrong: >
-      This is the thesis of the entire submission. If triage already exists and
-      simply is not marketed, the submission becomes a critique of an existing
-      queue rather than a proposal for a new one - the design largely survives,
-      the framing does not.
+      Narrower than it was, and correspondingly less fatal. Driver-level
+      scoring is confirmed to exist, so the claim is now only about the event
+      queue and the coaching record. If those exist too, the submission becomes
+      a critique of an existing queue rather than a proposal for a new one: the
+      design largely survives, the framing does not.
     validate: Ask directly, or look at the event list in the live product.
     source: >
-      Inference from absence in public material, chiefly their own description
-      of the coaching workflow. Absence of evidence, which is the weakest kind
-      of evidence there is - see A-18.
+      Their Safety Centre page describes "automated, accurate driver scoring"
+      "based on real events including speeding, braking, cornering" and
+      delivering "both positive and negative feedback". It does not describe a
+      severity-ranked review set or a recorded conversation. That second half
+      is still absence of evidence, which is the weakest kind there is - see
+      A-18 - but it is a much smaller claim than the one this started as.
     assumptions: [A-18]
     questions: [Q-10]
     risks: [R-10]
