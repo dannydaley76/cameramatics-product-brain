@@ -20,8 +20,8 @@ told no.
 `proposed` is the agent's recommendation awaiting my ratification. It is not yet
 my judgement, and this log will not pretend otherwise — the same discipline as
 [[canon#C-04]] (what was said versus what was inferred) and the reason
-[[../AGENTS]] requires a handover to state whether the adversarial pass actually
-ran.
+[[canon#C-24]] requires every artefact to state whether the adversarial pass
+actually ran.
 
 Format: what was on the table, what was decided, and — the load-bearing column —
 **what the decision rested on that the agent did not have.**
